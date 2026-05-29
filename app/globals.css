@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark,
+    cupcake;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #161b1d;
+
+  /* init emerald */
+  --brand-emerald-800: #006045;
+  --brand-emerald-700: #007a55;
+  --brand-emerald-600: #009966;
+  --brand-emerald-500: #00bc7d;
+  --brand-emerald-400: #00d492;
+  --brand-emerald-300: #5ee9b5;
+  --brand-emerald-200: #a4f4cf;
+
+  /* init mist */
+  --brand-mist-800: #22292b;
+  --brand-mist-700: #394447;
+  --brand-mist-600: #4b585b;
+  --brand-mist-500: #67787c;
+  --brand-mist-400: #9ca8ab;
+  --brand-mist-300: #d0d6d8;
+  --brand-mist-200: #f1f3f3;
 }
 
 @theme inline {
@@ -10,12 +35,49 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* reg emerald */
+  --color-brand-emerald-900: var(--brand-emerald-900);
+  --color-brand-emerald-800: var(--brand-emerald-800);
+  --color-brand-emerald-700: var(--brand-emerald-700);
+  --color-brand-emerald-600: var(--brand-emerald-600);
+  --color-brand-emerald-500: var(--brand-emerald-500);
+  --color-brand-emerald-400: var(--brand-emerald-400);
+  --color-brand-emerald-300: var(--brand-emerald-300);
+  --color-brand-emerald-200: var(--brand-emerald-200);
+
+  /* reg mist */
+  --color-brand-mist-800: var(--brand-mist-800);
+  --color-brand-mist-700: var(--brand-mist-700);
+  --color-brand-mist-600: var(--brand-mist-600);
+  --color-brand-mist-500: var(--brand-mist-500);
+  --color-brand-mist-400: var(--brand-mist-400);
+  --color-brand-mist-300: var(--brand-mist-300);
+  --color-brand-mist-200: var(--brand-mist-200);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    /* trans mist */
+    --brand-mist-200: #14191a;
+    --brand-mist-300: #1f2629;
+    --brand-mist-400: #323d40;
+    --brand-mist-500: #4d5d61;
+    --brand-mist-600: #839599;
+    --brand-mist-700: #ccd5d7;
+    --brand-mist-800: #f1f3f3;
+
+    /* trans emerald */
+    --brand-emerald-800: #007a55;
+    --brand-emerald-700: #009966;
+    --brand-emerald-600: #00bc7d;
+    --brand-emerald-500: #00d492;
+    --brand-emerald-400: #5ee9b5;
+    --brand-emerald-300: #a4f4cf;
+    --brand-emerald-200: #004f3b;
   }
 }
 
