@@ -33,7 +33,7 @@ function page() {
           </button>
         </form>
         <Link
-          href="/login/credentials"
+          href="/login"
           className="w-full h-10 flex items-center justify-center border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200">
           Back to login options
         </Link>
