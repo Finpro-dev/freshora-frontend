@@ -2,8 +2,6 @@
 
 - Components: PascalCase (ProductCard.tsx)
 - Pages/Routes: kebab-case sesuai folder App Router (/user-profile/page.tsx)
-- Hooks: camelCase dengan awalan use (useLocalStorage.ts)
-- Utilities: camelCase (formatCurrency.ts)
 
 ## Code Entities
 
@@ -17,14 +15,14 @@ src/
 ├── app/                    # Routes, Layouts, & Server Components
 |       dashboard           # route folder
 |           page.tsx        # page for dasboard
-|           _components     # specifically for dashboard
+|           _components     # specifically for dashboard (private folder)
 |               stats.tsx   # Stats only uses inside dashboard
-├── _components/            # Shared components (Navbar, Footer)
-├── _hooks/                 # Custom reusable hooks
-├── _services/              # API calls (Axios/Fetch instances)
-├── _store/                 # State management (Zustand)
-├── _types/                 # TypeScript interfaces/types
-└── _utils/                 # Helper functions & constants
+├── components/             # Shared components (Navbar, Footer)
+├── hooks/                  # Custom reusable hooks
+├── services/               # API calls (Axios/Fetch instances)
+├── store/                  # State management (Zustand)
+├── types/                  # TypeScript interfaces/types
+└── shared/utils/           # Helper functions & constants
 
 ```
 
@@ -46,3 +44,11 @@ src/
 
 - Commit message
   - feat: adding authentication
+
+## Naming
+
+- ComponentPascalCase.tsx (for components)
+- action-kebab-case.ts (for actions)
+- helper-kebab-case.ts (for helper/utils)
+- types-kebab-case.ts (for types)
+- hooks-kebab-case.ts (for hooks)
