@@ -1,10 +1,10 @@
 "use client";
 
-import { loginUser } from "@/app/actions/login-user";
+import { loginUser } from "@/actions/login-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginInput, loginSchema } from "../../_schema/loginSchema";
+import { LoginInput, loginSchema } from "../../_schema/login-schema";
 import AuthNavigation from "./AuthNavigation";
 import { redirect } from "next/navigation";
 

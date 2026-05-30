@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { LoginInput } from "../login/_schema/loginSchema";
+import { LoginInput } from "../app/login/_schema/login-schema";
 
 export const loginUser = async ({ email, password }: LoginInput) => {
   let res;

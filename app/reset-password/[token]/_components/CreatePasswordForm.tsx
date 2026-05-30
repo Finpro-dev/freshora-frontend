@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import {
   CreatePasswordInput,
   createPasswordSchema,
-} from "../_schema/createPasswordSchema";
+} from "../_schema/create-password-schema";
 import { useParams } from "next/navigation";
-import { createPassword } from "@/app/actions/forgot-password";
+import { createPassword } from "@/actions/forgot-password";
 
 function CreatePasswordForm() {
   const { token } = useParams<Record<string, string>>();

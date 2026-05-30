@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { EmailInput, emailSchema } from "../_schema/resetPasswordSchema";
-import { forgotPassword } from "@/app/actions/forgot-password";
+import { EmailInput, emailSchema } from "../_schema/reset-password-schema";
+import { forgotPassword } from "@/actions/forgot-password";
 
 function ResetPassword() {
   const {
