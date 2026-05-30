@@ -46,3 +46,9 @@ src/
 
 - Commit message
   - feat: adding authentication
+
+## Naming
+
+- ComponentPascalCase.tsx (for components)
+- action-kebab-case.ts (for actions)
+- helper-kebab-case.ts (for helper/utils)
