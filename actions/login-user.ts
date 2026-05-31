@@ -1,13 +1,13 @@
 "use server";
 
-import axios from "axios";
-import { LoginInput } from "../app/login/_schema/login-schema";
+import { LoginInput } from "@/app/login/_schema/login-schema";
+import { api } from "@/lib/axios-instance";
 
 export const loginUser = async ({ email, password }: LoginInput) => {
   let res;
   try {
     console.log(email, password);
-    res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+    res = await api.post("/auth/login", {
       email,
       password,
     });
