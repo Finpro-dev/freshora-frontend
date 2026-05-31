@@ -1,13 +1,10 @@
-import axios from "axios";
+import { api } from "@/lib/axios-instance";
 
 export const forgotPassword = async (email: string) => {
   try {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password-request`,
-      {
-        email,
-      },
-    );
+    await api.post("/auth/reset-password-request", {
+      email,
+    });
 
     //FIXME ->> add toast
   } catch (error) {
@@ -22,13 +19,10 @@ export const createPassword = async (
   token: string,
 ) => {
   try {
-    await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password/${token}`,
-      {
-        password,
-        confirmPassword,
-      },
-    );
+    await api.patch(`auth/reset-password/${token}`, {
+      password,
+      confirmPassword,
+    });
     //FIXME ->> add toast
   } catch (error) {
     //FIXME ->> add toast
