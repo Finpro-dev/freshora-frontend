@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 
 export const forgotPassword = async (email: string) => {
@@ -6,6 +8,9 @@ export const forgotPassword = async (email: string) => {
       `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password-request`,
       {
         email,
+      },
+      {
+        withCredentials: true,
       },
     );
 
@@ -16,7 +21,7 @@ export const forgotPassword = async (email: string) => {
   }
 };
 
-export const createPassword = async (
+export const resetPassword = async (
   password: string,
   confirmPassword: string,
   token: string,

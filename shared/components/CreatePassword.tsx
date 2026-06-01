@@ -1,17 +1,22 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import {
   CreatePasswordInput,
   createPasswordSchema,
-} from "../_schema/create-password-schema";
+} from "@/shared/schemas/create-password-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
-import { createPassword } from "@/actions/forgot-password";
+import { verifyEmailTokenProps } from "../types/verify-email.types";
 
-function CreatePasswordForm() {
-  const { token } = useParams<Record<string, string>>();
+function CreatePassword({
+  tokenProps,
+  handleSubmitPassword,
+}: verifyEmailTokenProps) {
+  const { token: tokenParams } = useParams<Record<string, string>>();
+  const token = tokenProps || tokenParams;
+
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -28,7 +33,7 @@ function CreatePasswordForm() {
   });
 
   const onSubmit = handleSubmit(async ({ password, confirmPassword }) => {
-    await createPassword(password, confirmPassword, token);
+    await handleSubmitPassword(password, confirmPassword, token);
     resetField("password");
     resetField("confirmPassword");
   });
@@ -82,4 +87,4 @@ function CreatePasswordForm() {
   );
 }
 
-export default CreatePasswordForm;
+export default CreatePassword;

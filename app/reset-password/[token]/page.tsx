@@ -1,4 +1,5 @@
-import CreatePasswordForm from "./_components/CreatePasswordForm";
+import { resetPassword } from "@/actions/forgot-password";
+import CreatePassword from "@/shared/components/CreatePassword";
 
 function page() {
   return (
@@ -8,7 +9,7 @@ function page() {
       </div>
 
       <div className="flex flex-col gap-4 md:w-75 sm:w-[60%] w-[80%]">
-        <CreatePasswordForm />
+        <CreatePassword handleSubmitPassword={resetPassword} />
       </div>
     </main>
   );

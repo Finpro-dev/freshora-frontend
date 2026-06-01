@@ -1,15 +1,15 @@
 "use client";
 
-import { loginUser } from "@/actions/login-user";
+import { useAuth } from "@/hooks/use-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginInput, loginSchema } from "../../_schema/login-schema";
+import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
-import { redirect } from "next/navigation";
 
 function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const { loginMutation, isLoggingIn } = useAuth();
 
   const handleShowPassword = () => {
     setIsShowPassword((show) => !show);
@@ -18,15 +18,14 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = handleSubmit(async (data) => {
-    const res = await loginUser(data);
+  const onSubmit = handleSubmit((data) => {
+    const res = loginMutation(data);
     console.log(res);
-    if (res) redirect("/", "replace");
   });
 
   return (
@@ -63,10 +62,10 @@ function LoginForm() {
       />
 
       <button
-        disabled={isSubmitting}
+        disabled={isLoggingIn}
         type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
-        Login
+        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 disabled:cursor-not-allowed cursor-pointer">
+        {isLoggingIn ? "Hold on..." : "Login"}
       </button>
     </form>
   );

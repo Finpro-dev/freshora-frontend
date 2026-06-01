@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type AuthNavigationProps } from "../_types/authNavigationType";
+import { type AuthNavigationProps } from "../_types/auth-navigation-types";
 
 function AuthNavigation({
   onShowPassword,
