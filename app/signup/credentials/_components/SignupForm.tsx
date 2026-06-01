@@ -1,9 +1,11 @@
 "use client";
 
+import { signupCustomer } from "@/actions/signup-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SignupInput, signupSchema } from "../../_schemas/signup-schema";
-import { signupCustomer } from "@/actions/signup-user";
+import SubmitButton from "@/shared/components/SubmitButton";
+import { toast } from "sonner";
 import { redirect } from "next/navigation";
 
 function SignupForm() {
@@ -15,10 +17,15 @@ function SignupForm() {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    const res = await signupCustomer(data);
-    if (res) redirect("/", "replace");
+  const onSubmit = handleSubmit(async (credentials) => {
+    const res = await signupCustomer(credentials);
+
+    if (!res.success) {
+      toast.error(res.error);
+    } else {
+      toast.success("User successfully created, please verify your email!");
+      redirect("/signup/thank-you", "replace");
+    }
   });
 
   return (
@@ -119,12 +126,9 @@ function SignupForm() {
         </div>
       </section>
 
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
-        Continue
-      </button>
+      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
+        Continue verify your email
+      </SubmitButton>
     </form>
   );
 }

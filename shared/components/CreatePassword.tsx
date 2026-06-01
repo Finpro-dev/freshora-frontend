@@ -7,14 +7,20 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "next/navigation";
+import { redirect, useParams, useSearchParams } from "next/navigation";
 import { verifyEmailTokenProps } from "../types/verify-email.types";
+import { toast } from "sonner";
+import SubmitButton from "./SubmitButton";
+import VerifyEmailNavigation from "@/app/verify-email/_components/VerifyEmailNavigation";
 
 function CreatePassword({
   tokenProps,
   handleSubmitPassword,
 }: verifyEmailTokenProps) {
-  const { token: tokenParams } = useParams<Record<string, string>>();
+  const searchParams = useSearchParams();
+  const tokenParams = String(searchParams.get("token"));
+  const verifyType = String(searchParams.get("verifyType"));
+
   const token = tokenProps || tokenParams;
 
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -26,16 +32,25 @@ function CreatePassword({
   const {
     register,
     handleSubmit,
-    resetField,
     formState: { errors, isSubmitting },
   } = useForm<CreatePasswordInput>({
     resolver: zodResolver(createPasswordSchema),
   });
 
   const onSubmit = handleSubmit(async ({ password, confirmPassword }) => {
-    await handleSubmitPassword(password, confirmPassword, token);
-    resetField("password");
-    resetField("confirmPassword");
+    const res = await handleSubmitPassword(password, confirmPassword, token);
+
+    if (!res.success) {
+      toast.error(res.error);
+    } else {
+      toast.success(
+        verifyType === "VERIFY_PASSWORD"
+          ? "Your account verified & password set successfully!"
+          : "Your email verified successfully",
+      );
+
+      redirect("/", "replace");
+    }
   });
 
   return (
@@ -69,20 +84,15 @@ function CreatePassword({
       </div>
 
       <div>
-        <button
-          type="button"
-          onClick={handleShowPassword}
-          className="text-xs text-brand-mist-700 cursor-pointer">
-          {isShowPassword ? "Hide password" : "Show password"}
-        </button>
+        <VerifyEmailNavigation
+          isShowPassword={isShowPassword}
+          onShowPassword={handleShowPassword}
+        />
       </div>
 
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
+      <SubmitButton isSubmitting={isSubmitting} pendingLable="Processing...">
         Create new password
-      </button>
+      </SubmitButton>
     </form>
   );
 }

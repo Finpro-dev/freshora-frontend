@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { LoginInput } from "../app/login/_schemas/login-schema";
+import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 
 export const loginUser = async ({ email, password }: LoginInput) => {
   let res;
@@ -17,11 +18,14 @@ export const loginUser = async ({ email, password }: LoginInput) => {
       },
     );
 
-    return res.data.data;
-  } catch (error) {
-    //FIXME ->> toast
-    console.log(error);
-  }
+    await forwardExpressCookie(res.headers["set-cookie"]);
 
-  //FIXME ->> user role based
+    return { data: res.data.data, success: true };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "There's something wrong with the server!";
+
+    return { success: false, error: errorMessage };
+  }
 };

@@ -1,15 +1,16 @@
 "use client";
 
-import { useAuth } from "@/hooks/use-auth";
+import { loginUser } from "@/actions/login-user";
+import SubmitButton from "@/shared/components/SubmitButton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
 
 function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const { loginMutation, isLoggingIn } = useAuth();
 
   const handleShowPassword = () => {
     setIsShowPassword((show) => !show);
@@ -18,14 +19,19 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    const res = loginMutation(data);
-    console.log(res);
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await loginUser(data);
+
+    if (!res.success) {
+      toast.error(res.error);
+    } else {
+      toast.success("You are logging in!");
+    }
   });
 
   return (
@@ -61,12 +67,9 @@ function LoginForm() {
         isShowPassword={isShowPassword}
       />
 
-      <button
-        disabled={isLoggingIn}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 disabled:cursor-not-allowed cursor-pointer">
-        {isLoggingIn ? "Hold on..." : "Login"}
-      </button>
+      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
+        Login
+      </SubmitButton>
     </form>
   );
 }

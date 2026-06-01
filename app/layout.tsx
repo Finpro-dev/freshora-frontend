@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Providers from "./providers";
+import { toast, Toaster } from "sonner";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -27,6 +28,14 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            classNames: {
+              toast: "!bg-brand-emerald-600 !text-brand-mist-200",
+            },
+          }}
+        />
         <Script
           src="https://app.sandbox.midtrans.com/snap/snap.js"
           data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}

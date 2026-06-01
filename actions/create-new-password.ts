@@ -1,5 +1,7 @@
 "use server";
 
+import { CORS_CREDENTIALS } from "@/config/dotenv-config";
+import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 
 export const createPassword = async (
@@ -8,8 +10,8 @@ export const createPassword = async (
   token: string,
 ) => {
   try {
-    await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/create-password/${token}`,
+    const res = await axios.patch(
+      `${CORS_CREDENTIALS.API_BASE_URL}/auth/create-password/${token}`,
       {
         password,
         confirmPassword,
@@ -18,9 +20,14 @@ export const createPassword = async (
         withCredentials: true,
       },
     );
-    //FIXME ->> add toast
-  } catch (error) {
-    //FIXME ->> add toast
-    console.log(error);
+
+    await forwardExpressCookie(res.headers["set-cookie"]);
+
+    return { data: res.data.data, success: true };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.messsage || "There's an issue in the server!";
+
+    return { success: false, error: errorMessage };
   }
 };

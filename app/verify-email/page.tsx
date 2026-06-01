@@ -1,14 +1,11 @@
 import CreatePassword from "@/shared/components/CreatePassword";
-import Link from "next/link";
 import VerifyOnly from "./_components/VerifyOnly";
 import { createPassword } from "@/actions/create-new-password";
 
 type SearchParams = Promise<Record<string, string>>;
 
 async function page({ searchParams }: { searchParams: SearchParams }) {
-  const { token, verifyType } = await searchParams;
-
-  console.log("search params --> ", token, verifyType);
+  const { verifyType } = await searchParams;
 
   return (
     <main className="min-h-dvh flex flex-col items-center justify-center">

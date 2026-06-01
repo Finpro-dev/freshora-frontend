@@ -1,6 +1,7 @@
 "use server";
 
 import { SignupInput } from "@/app/signup/_schemas/signup-schema";
+import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 
 export const signupCustomer = async (data: SignupInput) => {
@@ -16,9 +17,17 @@ export const signupCustomer = async (data: SignupInput) => {
       },
     );
 
-    return res.data.data;
-  } catch (error) {
-    //FIXME ->> add toast
-    console.log(error);
+    await forwardExpressCookie(res.headers["set-cookie"]);
+
+    return { data: res.data.data, success: true };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "There's something wrong with the server!";
+
+    if (error.response?.headers["set-cookie"])
+      await forwardExpressCookie(error.response.headers["set-cookie"]);
+
+    return { success: false, error: errorMessage };
   }
 };
