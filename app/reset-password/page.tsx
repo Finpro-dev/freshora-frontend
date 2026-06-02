@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import ResetPasswordForm from "./_components/ResetPasswordForm";
+import Spinner from "@/shared/components/Spinner";
 
 function page() {
   return (
@@ -8,7 +10,9 @@ function page() {
       </div>
 
       <div className="flex flex-col gap-4 md:w-75 sm:w-[60%] w-[80%]">
-        <ResetPasswordForm />
+        <Suspense fallback={<Spinner />}>
+          <ResetPasswordForm />
+        </Suspense>
       </div>
     </main>
   );
