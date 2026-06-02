@@ -1,6 +1,5 @@
-import CreatePassword from "@/shared/components/CreatePassword";
+import VerifyCreatePasswordForm from "./_components/VerifyCreatePasswordForm";
 import VerifyOnly from "./_components/VerifyOnly";
-import { createPassword } from "@/actions/create-new-password";
 
 type SearchParams = Promise<Record<string, string>>;
 
@@ -19,7 +18,7 @@ async function page({ searchParams }: { searchParams: SearchParams }) {
 
       <div className="flex flex-col gap-4 md:w-75 sm:w-[60%] w-[80%]">
         {verifyType === "VERIFY_PASSWORD" ? (
-          <CreatePassword handleSubmitPassword={createPassword} />
+          <VerifyCreatePasswordForm />
         ) : (
           <VerifyOnly />
         )}

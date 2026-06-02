@@ -4,7 +4,7 @@ import { CORS_CREDENTIALS } from "@/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 
-export const createPassword = async (
+export const createNewPassword = async (
   password: string,
   confirmPassword: string,
   token: string,
@@ -26,7 +26,8 @@ export const createPassword = async (
     return { data: res.data.data, success: true };
   } catch (error: any) {
     const errorMessage =
-      error.response?.data?.messsage || "There's an issue in the server!";
+      error.response?.data?.message ||
+      "There's something wrong with the server!";
 
     return { success: false, error: errorMessage };
   }

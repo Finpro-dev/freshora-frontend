@@ -1,27 +1,21 @@
 "use client";
 
+import { createNewPassword } from "@/actions/create-new-password";
+import SubmitButton from "@/shared/components/SubmitButton";
 import {
   CreatePasswordInput,
   createPasswordSchema,
 } from "@/shared/schemas/create-password-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { redirect, useParams, useSearchParams } from "next/navigation";
-import { verifyEmailTokenProps } from "../types/verify-email.types";
 import { toast } from "sonner";
-import SubmitButton from "./SubmitButton";
-import VerifyEmailNavigation from "@/app/verify-email/_components/VerifyEmailNavigation";
+import VerifyCreatePasswordNavigation from "./VerifyCreatePasswordNavigation";
 
-function CreatePassword({
-  tokenProps,
-  handleSubmitPassword,
-}: verifyEmailTokenProps) {
+function VerifyCreatePasswordForm() {
   const searchParams = useSearchParams();
-  const tokenParams = String(searchParams.get("token"));
-  const verifyType = String(searchParams.get("verifyType"));
-
-  const token = tokenProps || tokenParams;
+  const token = String(searchParams.get("token"));
 
   const [isShowPassword, setIsShowPassword] = useState(false);
 
@@ -38,17 +32,12 @@ function CreatePassword({
   });
 
   const onSubmit = handleSubmit(async ({ password, confirmPassword }) => {
-    const res = await handleSubmitPassword(password, confirmPassword, token);
+    const res = await createNewPassword(password, confirmPassword, token);
 
     if (!res.success) {
       toast.error(res.error);
     } else {
-      toast.success(
-        verifyType === "VERIFY_PASSWORD"
-          ? "Your account verified & password set successfully!"
-          : "Your email verified successfully",
-      );
-
+      toast.success("New password has been set successfully!");
       redirect("/", "replace");
     }
   });
@@ -84,7 +73,7 @@ function CreatePassword({
       </div>
 
       <div>
-        <VerifyEmailNavigation
+        <VerifyCreatePasswordNavigation
           isShowPassword={isShowPassword}
           onShowPassword={handleShowPassword}
         />
@@ -97,4 +86,4 @@ function CreatePassword({
   );
 }
 
-export default CreatePassword;
+export default VerifyCreatePasswordForm;

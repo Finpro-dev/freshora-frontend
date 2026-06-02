@@ -1,14 +1,11 @@
-"use client";
-
+import { VerifyNavigationProps } from "@/shared/types/verify-navigation-props-type";
 import { useResendVerifyRequest } from "../_hooks/use-resend-verify-request";
-import { VerifyNavigationProps } from "../../../shared/types/verify-navigation-props-type";
 
-function VerifyEmailNavigation({
+function VerifyCreatePasswordNavigation({
   onShowPassword,
   isShowPassword,
-  handleResendLink,
 }: VerifyNavigationProps) {
-  const { mutate } = useResendVerifyRequest();
+  const { mutate, isPending } = useResendVerifyRequest();
 
   return (
     <div>
@@ -25,10 +22,14 @@ function VerifyEmailNavigation({
 
       <div className="flex gap-1">
         <p className="text-xs text-brand-mist-700">Link expired?</p>
+
         <button
           type="button"
-          onClick={() => handleResendLink(undefined)}
-          className="text-xs cursor-pointer text-brand-emerald-700">
+          disabled={isPending}
+          onClick={() =>
+            mutate({ email: undefined, verifyType: "VERIFY_PASSWORD" })
+          }
+          className="text-xs cursor-pointer disabled:cursor-not-allowed text-brand-emerald-700">
           Resend.
         </button>
       </div>
@@ -36,4 +37,4 @@ function VerifyEmailNavigation({
   );
 }
 
-export default VerifyEmailNavigation;
+export default VerifyCreatePasswordNavigation;

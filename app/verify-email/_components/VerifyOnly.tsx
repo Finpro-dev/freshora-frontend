@@ -8,7 +8,6 @@ function VerifyOnly() {
   const searhParams = useSearchParams();
   const token = String(searhParams.get("token"));
   const { mutate: verifyEmail, isPending } = useVerifyEmailOnly();
-  console.log(token);
   const { mutate: resendVerify } = useResendVerifyRequest();
 
   return (
@@ -24,7 +23,9 @@ function VerifyOnly() {
         <p className="text-xs text-brand-mist-700">Link expired?</p>
         <button
           type="button"
-          onClick={() => resendVerify(undefined)}
+          onClick={() =>
+            resendVerify({ email: undefined, verifyType: "VERIFY_ONLY" })
+          }
           className="text-xs cursor-pointer text-brand-emerald-700">
           Resend.
         </button>

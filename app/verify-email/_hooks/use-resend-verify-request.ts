@@ -1,14 +1,21 @@
 import { CORS_CREDENTIALS } from "@/config/dotenv-config";
 import { api } from "@/lib/axios-instance";
+import { EmailVerifyType } from "@/shared/types/email-verify-type";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export function useResendVerifyRequest() {
   const resendVerifyRequestMutation = useMutation({
-    mutationFn: async (email?: string) => {
+    mutationFn: async ({
+      email,
+      verifyType,
+    }: {
+      email?: string;
+      verifyType?: EmailVerifyType;
+    }) => {
       const { data } = await api.post(
         `${CORS_CREDENTIALS.API_BASE_URL}/auth/verify-request`,
-        email,
+        { email, verifyType },
       );
 
       return data;
