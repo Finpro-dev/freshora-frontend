@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type AuthNavigationProps } from "../_types/authNavigationType";
+import { type AuthNavigationProps } from "../_types/auth-navigation-types";
 
 function AuthNavigation({
   onShowPassword,
@@ -13,7 +13,7 @@ function AuthNavigation({
         <div className="flex gap-1">
           <p className="text-xs text-brand-mist-700 ">Forgot password?</p>{" "}
           <Link
-            href="/reset-password"
+            href="/reset-password/request"
             className="text-xs cursor-pointer text-brand-emerald-700">
             Reset.
           </Link>

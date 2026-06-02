@@ -448,17 +448,29 @@
     postcss "^8.5.10"
     tailwindcss "4.3.0"
 
-"@tanstack/query-core@5.100.10":
-  version "5.100.10"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.100.10.tgz"
-  integrity sha512-8UR0yJR+GiQ40m3lPhUr0xbfAupe6GSQiksSBSa9SM2NjezFyxXCIA69/lz8cSoNKZLrw1/PktIyQBJcVeMi3w==
+"@tanstack/query-core@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.100.14.tgz"
+  integrity sha512-5X41dGpxgeaHISCRW2oYwcSycZeULZzAunaudXT9ov1KOTj9xwt0CH6hbwqP1/z74ZWF7rYFnDpyYH07XFcZew==
 
-"@tanstack/react-query@^5.100.10":
-  version "5.100.10"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.100.10.tgz"
-  integrity sha512-FLaZf2RCrA/Zgp4aiu5tG3TyasTRO7aZ99skxQpr3Hg/zXOhu6yq5FZCYQ/tRaJtM9ylnoK8tFK7PolXQadv6Q==
+"@tanstack/query-devtools@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.100.14.tgz"
+  integrity sha512-g96SmSSQecYTYcyuAMRXr895GplJv01UGt7qttQWPOUyZ5EGz5tbRc589bMc2m5BsPFD6O0PCEAHdbDYNP6UBw==
+
+"@tanstack/react-query-devtools@^5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.100.14.tgz"
+  integrity sha512-JkP5VDgKOw3t/QSA1OABRHEqx8BuNs5MfvZRooNqdvN57SzTuGq3fKR1a2IH5rqa5HDLUm+FOXUEnB9ueHiLzg==
   dependencies:
-    "@tanstack/query-core" "5.100.10"
+    "@tanstack/query-devtools" "5.100.14"
+
+"@tanstack/react-query@^5.100.10", "@tanstack/react-query@^5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.100.14.tgz"
+  integrity sha512-oOr6aRdSFEwWhzxEkD/9ZcItM3+LjBSkeVmadWKwUssAHTsqd/7bOjWrX4AbvEkoEhgAxzN0Xk6H/aYzXiYBAw==
+  dependencies:
+    "@tanstack/query-core" "5.100.14"
 
 "@tybys/wasm-util@^0.10.0":
   version "0.10.2"
@@ -466,6 +478,11 @@
   integrity sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==
   dependencies:
     tslib "^2.4.0"
+
+"@types/cookie@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/@types/cookie/-/cookie-0.6.0.tgz"
+  integrity sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==
 
 "@types/estree@^1.0.6":
   version "1.0.9"
@@ -896,6 +913,11 @@ convert-source-map@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
+
+cookie@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/cookie/-/cookie-1.1.1.tgz"
+  integrity sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==
 
 cross-spawn@^7.0.6:
   version "7.0.6"

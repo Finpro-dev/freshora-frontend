@@ -2,20 +2,23 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { EmailInput, emailSchema } from "../_schema/reset-password-schema";
-import { forgotPassword } from "@/actions/forgot-password";
+import { useResendResetPasswordRequest } from "../../_hooks/use-resend-reset-password-request";
+import { EmailInput, emailSchema } from "../../_schema/reset-password-schema";
 
 function ResetPassword() {
+  const { mutateAsync, isPending } = useResendResetPasswordRequest();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
+    resetField,
   } = useForm<EmailInput>({
     resolver: zodResolver(emailSchema),
   });
 
   const onSubmit = handleSubmit(async ({ email }) => {
-    await forgotPassword(email);
+    await mutateAsync(email);
+    resetField("email");
   });
 
   return (
@@ -34,10 +37,10 @@ function ResetPassword() {
         )}
       </div>
       <button
-        disabled={isSubmitting}
+        disabled={isPending}
         type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
-        Send reset link
+        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer disabled:cursor-not-allowed">
+        {isPending ? "Sending..." : "Send reset link"}
       </button>
     </form>
   );

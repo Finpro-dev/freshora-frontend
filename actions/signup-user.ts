@@ -1,17 +1,16 @@
 "use server";
 
-import axios from "axios";
-import { LoginInput } from "../app/login/_schemas/login-schema";
+import { SignupInput } from "@/app/signup/_schemas/signup-schema";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
+import axios from "axios";
 
-export const loginUser = async ({ email, password }: LoginInput) => {
-  let res;
+export const signupCustomer = async (data: SignupInput) => {
   try {
-    res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
       {
-        email,
-        password,
+        ...data,
+        role: "CUSTOMER",
       },
       {
         withCredentials: true,
@@ -25,6 +24,9 @@ export const loginUser = async ({ email, password }: LoginInput) => {
     const errorMessage =
       error.response?.data?.message ||
       "There's something wrong with the server!";
+
+    if (error.response?.headers["set-cookie"])
+      await forwardExpressCookie(error.response.headers["set-cookie"]);
 
     return { success: false, error: errorMessage };
   }

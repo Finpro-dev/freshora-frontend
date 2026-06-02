@@ -1,17 +1,22 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import SubmitButton from "@/shared/components/SubmitButton";
 import {
   CreatePasswordInput,
   createPasswordSchema,
-} from "../_schema/create-password-schema";
-import { useParams } from "next/navigation";
-import { createPassword } from "@/actions/forgot-password";
+} from "@/shared/schemas/create-password-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import ResetPasswordNavigation from "./ResetPasswordNavigation";
+import { resetPassword } from "@/actions/forgot-password";
 
-function CreatePasswordForm() {
-  const { token } = useParams<Record<string, string>>();
+function ResetPasswordForm() {
+  const searchParams = useSearchParams();
+  const token = String(searchParams.get("token"));
+
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -21,16 +26,20 @@ function CreatePasswordForm() {
   const {
     register,
     handleSubmit,
-    resetField,
     formState: { errors, isSubmitting },
   } = useForm<CreatePasswordInput>({
     resolver: zodResolver(createPasswordSchema),
   });
 
   const onSubmit = handleSubmit(async ({ password, confirmPassword }) => {
-    await createPassword(password, confirmPassword, token);
-    resetField("password");
-    resetField("confirmPassword");
+    const res = await resetPassword(password, confirmPassword, token);
+
+    if (!res.success) {
+      toast.error(res.error);
+    } else {
+      toast.success("New password has been set successfully!");
+      redirect("/", "replace");
+    }
   });
 
   return (
@@ -64,22 +73,17 @@ function CreatePasswordForm() {
       </div>
 
       <div>
-        <button
-          type="button"
-          onClick={handleShowPassword}
-          className="text-xs text-brand-mist-700 cursor-pointer">
-          {isShowPassword ? "Hide password" : "Show password"}
-        </button>
+        <ResetPasswordNavigation
+          isShowPassword={isShowPassword}
+          onShowPassword={handleShowPassword}
+        />
       </div>
 
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
+      <SubmitButton isSubmitting={isSubmitting} pendingLable="Processing...">
         Create new password
-      </button>
+      </SubmitButton>
     </form>
   );
 }
 
-export default CreatePasswordForm;
+export default ResetPasswordForm;

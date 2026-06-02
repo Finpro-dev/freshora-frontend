@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { ToasterType } from "../types/toaster-types";
+import { ToasterType } from "../types/toaster-type";
 
 interface errorResponse {
   response: {

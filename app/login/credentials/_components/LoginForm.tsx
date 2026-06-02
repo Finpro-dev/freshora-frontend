@@ -1,12 +1,13 @@
 "use client";
 
 import { loginUser } from "@/actions/login-user";
+import SubmitButton from "@/shared/components/SubmitButton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginInput, loginSchema } from "../../_schema/login-schema";
+import { toast } from "sonner";
+import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
-import { redirect } from "next/navigation";
 
 function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -25,8 +26,12 @@ function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await loginUser(data);
-    console.log(res);
-    if (res) redirect("/", "replace");
+
+    if (!res.success) {
+      toast.error(res.error);
+    } else {
+      toast.success("You are logging in!");
+    }
   });
 
   return (
@@ -62,12 +67,9 @@ function LoginForm() {
         isShowPassword={isShowPassword}
       />
 
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
+      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
         Login
-      </button>
+      </SubmitButton>
     </form>
   );
 }

@@ -20,7 +20,7 @@ function PayButton() {
   }, []);
 
   const handlePayment = () => {
-    window.snap.pay("01107b55-0798-4c59-a998-de782e9aba0b", {
+    window.snap.pay("8bb13c2b-3a79-4d00-8859-4664809cb103", {
       onSuccess: function (result: any) {
         alert("payment success!");
         console.log(result);
