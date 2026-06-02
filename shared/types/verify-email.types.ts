@@ -1,4 +1,4 @@
-interface ServerActionReturnValue {
+export interface ServerActionReturnValue {
   success: boolean;
   error?: string | undefined;
   data?: any | undefined;
@@ -11,4 +11,5 @@ export interface verifyEmailTokenProps {
     confirmPassword: string,
     token: string,
   ) => Promise<ServerActionReturnValue>;
+  handleResendLink: (email?: string) => void;
 }

@@ -3,12 +3,12 @@ import { api } from "@/lib/axios-instance";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export function useResendVerifyRequest() {
-  const resendVerifyRequestMutation = useMutation({
+export function useResendResetPasswordRequest() {
+  const resendResetPasswordRequestMutation = useMutation({
     mutationFn: async (email?: string) => {
       const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/auth/verify-request`,
-        email,
+        `${CORS_CREDENTIALS.API_BASE_URL}/auth/reset-password-request`,
+        { email },
       );
 
       return data;
@@ -22,7 +22,7 @@ export function useResendVerifyRequest() {
 
     // after hitting api
     onSuccess: (_data, _variables, context) => {
-      toast.success("New verification email has been sent", {
+      toast.success("New reset password link has been sent", {
         id: context.toastId,
       });
     },
@@ -36,5 +36,5 @@ export function useResendVerifyRequest() {
     },
   });
 
-  return resendVerifyRequestMutation;
+  return resendResetPasswordRequestMutation;
 }

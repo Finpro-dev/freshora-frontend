@@ -13,7 +13,7 @@ function AuthNavigation({
         <div className="flex gap-1">
           <p className="text-xs text-brand-mist-700 ">Forgot password?</p>{" "}
           <Link
-            href="/reset-password"
+            href="/reset-password/request"
             className="text-xs cursor-pointer text-brand-emerald-700">
             Reset.
           </Link>

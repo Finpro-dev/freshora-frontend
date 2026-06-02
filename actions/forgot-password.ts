@@ -1,25 +1,7 @@
 "use server";
 
+import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
-
-export const forgotPassword = async (email: string) => {
-  try {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password-request`,
-      {
-        email,
-      },
-      {
-        withCredentials: true,
-      },
-    );
-
-    //FIXME ->> add toast
-  } catch (error) {
-    //FIXME ->> add toast
-    console.log(error);
-  }
-};
 
 export const resetPassword = async (
   password: string,
@@ -27,16 +9,20 @@ export const resetPassword = async (
   token: string,
 ) => {
   try {
-    await axios.patch(
+    const res = await axios.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password/${token}`,
       {
         password,
         confirmPassword,
       },
     );
-    //FIXME ->> add toast
-  } catch (error) {
-    //FIXME ->> add toast
-    console.log(error);
+    await forwardExpressCookie(res.headers["set-cookie"]);
+    return { success: true, data: res.data.data };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "There's something wrong with the server!";
+
+    return { success: false, error: errorMessage };
   }
 };

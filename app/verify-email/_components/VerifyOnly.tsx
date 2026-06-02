@@ -21,9 +21,7 @@ function VerifyOnly() {
       </button>
 
       <div className="flex justify-center gap-1">
-        <p className="text-xs text-brand-mist-700">
-          Haven&apos;t received any email?
-        </p>
+        <p className="text-xs text-brand-mist-700">Link expired?</p>
         <button
           type="button"
           onClick={() => resendVerify(undefined)}

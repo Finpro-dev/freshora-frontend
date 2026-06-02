@@ -4,7 +4,7 @@ interface ButtonProps {
   btnType: "primary" | "secondary";
 }
 
-function SubmitButton({ href, btnType, children }: ButtonProps) {
+function Button({ href, btnType, children }: ButtonProps) {
   const basedStyle = "w-full h-10 flex items-center justify-center";
 
   const styles: Record<string, string> = {
@@ -20,4 +20,4 @@ function SubmitButton({ href, btnType, children }: ButtonProps) {
   );
 }
 
-export default SubmitButton;
+export default Button;
