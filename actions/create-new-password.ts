@@ -1,6 +1,6 @@
 "use server";
 
-import { CORS_CREDENTIALS } from "@/config/dotenv-config";
+import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 

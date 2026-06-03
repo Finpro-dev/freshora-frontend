@@ -1,5 +1,5 @@
-import { CORS_CREDENTIALS } from "@/config/dotenv-config";
-import { api } from "@/lib/axios-instance";
+import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
+import { api } from "@/shared/lib/axios-instance";
 import { useMutation } from "@tanstack/react-query";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
