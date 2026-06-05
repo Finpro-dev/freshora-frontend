@@ -1,4 +1,3 @@
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { forwardExpressCookie } from "./shared/utils/cookie-forwarder-util";
 import { forwardMiddlewareCookie } from "./shared/utils/cookie-forwader-middleware-util";
@@ -21,13 +20,25 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next();
   let isRefreshed = false;
 
+  // if user haven't logged in
+  // --> create a complete url
+  // --> store prev link
+  // --> redirect the complete url + prev link as a callback params
+  /* `pathname` in this code snippet is extracting the path
+    part of the URL from the `nextUrl` property of the request
+    object. It represents the path after the domain in the
+    URL, excluding any query parameters. It is used to
+    construct the callback URL for redirection purposes in
+    case the user needs to log in or refresh their access
+    token. */
   if (!accessToken && !refreshToken) {
-    const loginUrl = new URL("/login/credentials", request.url); // create a complete url
-    loginUrl.searchParams.set("callback", pathname); // store prev link
-
+    const loginUrl = new URL("/login/credentials", request.url);
+    loginUrl.searchParams.set("callback", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
+  // if access token has expired & refreshToken is still active
+  // ---> hit the refresh api
   if (!accessToken && refreshToken) {
     try {
       const res = await fetch(`${CORS_CREDENTIALS.API_BASE_URL}/auth/refresh`, {
@@ -48,13 +59,15 @@ export async function middleware(request: NextRequest) {
       const errorMessage =
         error.response?.data?.message || "Your session has finished!";
 
+      // set also the cookie during error in case the error also set cookie
       if (error.response?.headers["set-cookie"])
         await forwardExpressCookie(error.response.headers["set-cookie"]);
 
-      console.log(errorMessage);
+      console.log(errorMessage); // fixme
     }
   }
 
+  // after hitting the refresh api, check the access token
   if (!accessToken) {
     const loginUrl = new URL("/login/credentials", request.url);
     loginUrl.searchParams.set("callback", pathname);
@@ -66,6 +79,7 @@ export async function middleware(request: NextRequest) {
     return resRedirect;
   }
 
+  // if refreshed, return the newest response, if not send the original response
   isRefreshed ? response : NextResponse.next();
 }
 
