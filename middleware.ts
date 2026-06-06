@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { forwardExpressCookie } from "./shared/utils/cookie-forwarder-util";
-import { forwardMiddlewareCookie } from "./shared/utils/cookie-forwader-middleware-util";
+import { forwardMiddlewareCookie } from "./shared/utils/cookie-forwarder-middleware-util";
 import { CORS_CREDENTIALS } from "./shared/config/dotenv-config";
 
 export async function middleware(request: NextRequest) {
@@ -86,6 +86,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/account/:path*",
-    { source: "/", has: [{ type: "cookie", key: "refreshToken" }] },
+    { source: "/:path*", has: [{ type: "cookie", key: "refreshToken" }] },
   ],
 };

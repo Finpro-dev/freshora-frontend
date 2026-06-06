@@ -10,6 +10,7 @@ import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
 import { Router } from "next/router";
 import { useRouter, useSearchParams } from "next/navigation";
+import Button from "@/shared/components/Button";
 
 function LoginForm() {
   const router = useRouter();
@@ -74,10 +75,13 @@ function LoginForm() {
         onShowPassword={handleShowPassword}
         isShowPassword={isShowPassword}
       />
-
-      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
+      <Button
+        btnType="primary"
+        disabled={isSubmitting}
+        pendingLabel="Submitting..."
+        type="submit">
         Login
-      </SubmitButton>
+      </Button>
     </form>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SignupForm from "./_components/SignupForm";
+import Button from "@/shared/components/Button";
 
 function page() {
   return (
@@ -10,11 +11,9 @@ function page() {
 
       <div className="flex flex-col gap-4 lg:w-[40%] md:w-[55%] sm:w-[65%] w-[80%]">
         <SignupForm />
-        <Link
-          href="/signup"
-          className="w-full h-10 flex items-center justify-center border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200">
+        <Button btnType="secondary" href="/signup">
           Back to signup options
-        </Link>
+        </Button>
       </div>
     </main>
   );

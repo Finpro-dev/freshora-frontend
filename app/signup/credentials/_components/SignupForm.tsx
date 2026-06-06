@@ -7,6 +7,7 @@ import { SignupInput, signupSchema } from "../../_schemas/signup-schema";
 import SubmitButton from "@/shared/components/SubmitButton";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
+import Button from "@/shared/components/Button";
 
 function SignupForm() {
   const {
@@ -126,9 +127,13 @@ function SignupForm() {
         </div>
       </section>
 
-      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
+      <Button
+        btnType="primary"
+        disabled={isSubmitting}
+        pendingLabel="Submitting..."
+        type="submit">
         Continue verify your email
-      </SubmitButton>
+      </Button>
     </form>
   );
 }
