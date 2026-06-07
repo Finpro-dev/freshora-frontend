@@ -28,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <AppNavbar />
-        <Providers>{children}</Providers>
+        <Providers>
+          <AppNavbar />
+          {children}
+        </Providers>
         <Toaster
           position="top-center"
           toastOptions={{

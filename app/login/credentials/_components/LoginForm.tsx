@@ -8,9 +8,17 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
+import { Router } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
+import Button from "@/shared/components/Button";
 
 function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  // fixme ->> role base redirect
+  const callbackUrl = searchParams.get("callback") || "/";
 
   const handleShowPassword = () => {
     setIsShowPassword((show) => !show);
@@ -31,6 +39,7 @@ function LoginForm() {
       toast.error(res.error);
     } else {
       toast.success("You are logging in!");
+      router.push(callbackUrl);
     }
   });
 
@@ -66,10 +75,13 @@ function LoginForm() {
         onShowPassword={handleShowPassword}
         isShowPassword={isShowPassword}
       />
-
-      <SubmitButton isSubmitting={isSubmitting} pendingLable="Submitting...">
+      <Button
+        btnType="primary"
+        disabled={isSubmitting}
+        pendingLabel="Submitting..."
+        type="submit">
         Login
-      </SubmitButton>
+      </Button>
     </form>
   );
 }

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import LoginForm from "./_components/LoginForm";
+import Button from "@/shared/components/Button";
 
 function page() {
   return (
@@ -10,11 +10,9 @@ function page() {
 
       <div className="flex flex-col gap-4 md:w-75 sm:w-[60%] w-[80%]">
         <LoginForm />
-        <Link
-          href="/login"
-          className="w-full h-10 flex items-center justify-center border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200">
+        <Button btnType="secondary" href="/login">
           Back to login options
-        </Link>
+        </Button>
       </div>
     </main>
   );

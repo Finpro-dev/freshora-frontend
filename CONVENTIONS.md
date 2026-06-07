@@ -1,7 +1,7 @@
 ## Naming Conventions
 
 - Components: PascalCase (ProductCard.tsx)
-- Pages/Routes: kebab-case sesuai folder App Router (/user-profile/page.tsx)
+- Pages/Routes: kebab-case based on App Router page (/user-profile/page.tsx)
 
 ## Code Entities
 
@@ -37,10 +37,11 @@ src/
 ## Git Workflow
 
 - Branch naming
-  - feat/nama-fitur (fitur baru)
-  - fix/nama-bug (perbaikan bug)
-  - ref/nama-bagian (perbaikan struktur kode)
+  - feat/feature-name (new feature)
+  - fix/bug-name (bug fixing)
+  - ref/section-or-service-name (fixing code structure)
   - chore/setup-description (setting up structure)
+  - wip/progress (work in progress)
 
 - Commit message
   - feat: adding authentication
