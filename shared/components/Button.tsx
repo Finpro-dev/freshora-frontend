@@ -17,7 +17,7 @@ function Button({
   ...props
 }: ButtonProps) {
   const basedStyle =
-    "w-full h-10 flex items-center justify-center cursor-pointer";
+    "w-full h-10 flex items-center justify-center cursor-pointer px-4";
 
   const styles: Record<string, string> = {
     primary:
