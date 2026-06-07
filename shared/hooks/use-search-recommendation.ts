@@ -13,7 +13,7 @@ export function useSearchRecommendation(search: string) {
       return data.data;
     },
 
-    enabled: !!search,
+    // enabled: !!search,
   });
 
   return searchRecommendationMutation;

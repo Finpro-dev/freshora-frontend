@@ -2,33 +2,26 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { searchRecommendationSchema } from "../schemas/search-recommendation-schema";
 import { useDebounce } from "use-debounce";
 import { useSearchRecommendation } from "../hooks/use-search-recommendation";
+import { searchRecommendationSchema } from "../schemas/search-recommendation-schema";
 import SearchRecommendations from "./SearchRecommendations";
 
 function AppSearchBar() {
-  const currentPath = usePathname();
   //fixme ->> show search in relevant page only
+  const currentPath = usePathname();
 
-  const {
-    watch,
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      search: "",
-    },
-    resolver: zodResolver(searchRecommendationSchema),
-  });
+  console.log(currentPath);
 
-  const rawSearch = watch("search");
+  const [isSearchRecommendationOpen, setSearchRecommendationOpen] =
+    useState(false);
 
+  const [rawSearch, setRawSearch] = useState("");
   const [search] = useDebounce(rawSearch, 800);
   const { data, isLoading } = useSearchRecommendation(search as string);
-
+  console.log(search);
   return (
     <div className="relative w-full">
       <label className="input w-full border border-brand-mist-300 text-brand-mist-700 [outline:none] focus-within:[outline:none]">
@@ -47,14 +40,18 @@ function AppSearchBar() {
           </g>
         </svg>
         <input
-          {...register("search")}
+          onChange={(e) => setRawSearch(e.target.value)}
           type="search"
           required
           placeholder="Search"
         />
       </label>
 
-      <SearchRecommendations data={data?.data} />
+      <SearchRecommendations
+        data={data?.data}
+        isSearchRecommendationOpen={isSearchRecommendationOpen}
+        setSearchRecommendationOpen={setSearchRecommendationOpen}
+      />
     </div>
   );
 }
