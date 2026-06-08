@@ -1,9 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
 import freshoraLogo from "@/public/freshora-logo/freshora-logo.png";
 import Button from "@/shared/components/Button";
+import { cookies } from "next/headers";
+import Image from "next/image";
+import { redirect } from "next/navigation";
 
-function page() {
+async function page() {
   return (
     <main className="h-dvh flex justify-center items-center">
       <div className="flex items-center flex-col gap-4 md:w-60 sm:w-[50%] w-[90%]">
