@@ -12,8 +12,6 @@ export function useSearchRecommendation(search: string) {
 
       return data.data;
     },
-
-    // enabled: !!search,
   });
 
   return searchRecommendationMutation;

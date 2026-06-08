@@ -8,20 +8,21 @@ import { useDebounce } from "use-debounce";
 import { useSearchRecommendation } from "../hooks/use-search-recommendation";
 import { searchRecommendationSchema } from "../schemas/search-recommendation-schema";
 import SearchRecommendations from "./SearchRecommendations";
+import { formatSearch } from "../utils/format-search-util";
+import { showSearchbarChecker } from "../utils/show-searchbar-checker-util";
 
 function AppSearchBar() {
-  //fixme ->> show search in relevant page only
   const currentPath = usePathname();
-
-  console.log(currentPath);
+  const isShowSearchBar = showSearchbarChecker(currentPath);
 
   const [isSearchRecommendationOpen, setSearchRecommendationOpen] =
     useState(false);
-
   const [rawSearch, setRawSearch] = useState("");
-  const [search] = useDebounce(rawSearch, 800);
+  const [search] = useDebounce(formatSearch(rawSearch), 300);
   const { data, isLoading } = useSearchRecommendation(search as string);
-  console.log(search);
+
+  if (!isShowSearchBar) return null;
+
   return (
     <div className="relative w-full">
       <label className="input w-full border border-brand-mist-300 text-brand-mist-700 [outline:none] focus-within:[outline:none]">
@@ -40,13 +41,15 @@ function AppSearchBar() {
           </g>
         </svg>
         <input
-          onChange={(e) => setRawSearch(e.target.value)}
+          onChange={(e) => {
+            setRawSearch(e.target.value);
+            setSearchRecommendationOpen(true);
+          }}
           type="search"
           required
           placeholder="Search"
         />
       </label>
-
       <SearchRecommendations
         data={data?.data}
         isSearchRecommendationOpen={isSearchRecommendationOpen}
