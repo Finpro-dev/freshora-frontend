@@ -11,7 +11,7 @@ function UserReferralCode({ myReferralCode }: UserReferralCodeProps) {
           Share this code to your friend
         </p>
       </div>
-      <p className="text-brand-mist-600 font-large text-xl sm:text-2xl md:text-3xl">
+      <p className="text-brand-mist-600 font-large text-lg sm:text-xl md:text-2xl">
         {myReferralCode}
       </p>
     </div>

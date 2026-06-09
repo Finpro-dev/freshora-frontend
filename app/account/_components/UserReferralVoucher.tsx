@@ -1,3 +1,5 @@
+import { formatDate } from "@/shared/utils/date-formatter";
+
 interface UserReferralVoucherProps {
   voucherCode: string;
   validUntil: string;
@@ -16,10 +18,12 @@ function UserReferralVoucher({
         </p>
       </div>
       <div>
-        <p className="text-brand-mist-600 font-large text-xl sm:text-2xl md:text-3xl">
+        <p className="text-brand-mist-600 font-large text-lg sm:text-xl md:text-2xl mb-1">
           {voucherCode}
         </p>
-        <p className="text-xs text-brand-mist-400">Valid until {validUntil}</p>
+        <p className="text-xs text-brand-mist-400">
+          Valid until {formatDate(validUntil)}
+        </p>
       </div>
     </div>
   );

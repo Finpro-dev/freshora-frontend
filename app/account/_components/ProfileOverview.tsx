@@ -23,7 +23,7 @@ async function ProfileOverview() {
 
   return (
     <div>
-      {/* data */}
+      {/* user details */}
       <UserDetails
         firstName={user!.firstName}
         lastName={user!.lastName || ""}
@@ -32,15 +32,16 @@ async function ProfileOverview() {
         phone={user?.phone}
         isVerified={user!.isVerified}
       />
-      {!user?.isVerified && <VerificationAlert email={user?.email as string} />}
-      <div className="mt-5 px-5 py-5 rounded-sm shadow-sm shadow-brand-mist-300 border border-brand-mist-100">
-        Address management
-      </div>
 
-      {/* REFERRAL SECTIONS */}
+      {/* verification alert */}
+      {!user?.isVerified && <VerificationAlert email={user!.email as string} />}
+
+      {/* referral sections */}
       <div className="flex flex-col sm:flex-row gap-5 mt-5 ">
-        {/* voucher */}
+        {/* my referral code */}
         <UserReferralCode myReferralCode={user!.myReferralCode} />
+
+        {/* referral voucher */}
         {referralVoucher ? (
           <UserReferralVoucher
             voucherCode={referralVoucher!.couponCode}
