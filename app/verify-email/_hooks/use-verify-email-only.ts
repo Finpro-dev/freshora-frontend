@@ -1,7 +1,7 @@
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { api } from "@/shared/lib/axios-instance";
 import { useMutation } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export function useVerifyEmailOnly() {
@@ -17,16 +17,19 @@ export function useVerifyEmailOnly() {
 
     onMutate: () => {
       const toastId = toast.loading("Verifying...");
-
       return { toastId };
     },
 
     onSuccess: (_data, _variables, context) => {
-      toast.success("Accout verified successfully", {
-        id: context.toastId,
-      });
+      toast.success(
+        "Account verified successfully, directing to login page...",
+        {
+          id: context.toastId,
+        },
+      );
 
-      router.replace("/");
+      router.replace("/login");
+      router.refresh();
     },
 
     onError: (error: any, _variables, context) => {

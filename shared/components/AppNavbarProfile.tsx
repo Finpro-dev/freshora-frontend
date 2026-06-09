@@ -25,7 +25,7 @@ async function AppNavbarProfile() {
   const avatar = data.data?.avatar || defaultUserProfile;
 
   return (
-    <Link href="/profile">
+    <Link href="/account">
       <div className="relative w-8 sm:w-10 h-8 sm:h-10 border-2 rounded-full border-mist-200 ring-3 ring-brand-emerald-700 overflow-hidden">
         <Image
           src={avatar}

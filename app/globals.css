@@ -28,6 +28,7 @@
   --brand-mist-400: #9ca8ab;
   --brand-mist-300: #d0d6d8;
   --brand-mist-200: #f1f3f3;
+  --brand-mist-100: #f1f3f3;
 }
 
 @theme inline {
@@ -54,6 +55,7 @@
   --color-brand-mist-400: var(--brand-mist-400);
   --color-brand-mist-300: var(--brand-mist-300);
   --color-brand-mist-200: var(--brand-mist-200);
+  --color-brand-mist-100: var(--brand-mist-100);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -62,6 +64,7 @@
     --foreground: #ededed;
 
     /* trans mist */
+    --brand-mist-100: #14191b;
     --brand-mist-200: #14191a;
     --brand-mist-300: #1f2629;
     --brand-mist-400: #323d40;
