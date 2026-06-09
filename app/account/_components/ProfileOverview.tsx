@@ -1,15 +1,9 @@
-import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
-import { ApiResponse } from "@/shared/types/api-type";
-import { User } from "@/shared/types/user-type";
-
-import defaultUserProfile from "@/public/user/default-user-profile.png";
-import { cookies } from "next/headers";
-import Image from "next/image";
 import { getUserProfile } from "@/actions/profile-user";
-import UserDetails from "./UserDetails";
 import { getUserReferralVoucher } from "@/actions/referral-voucher-user";
-import UserReferralVoucher from "./UserReferralVoucher";
+import defaultUserProfile from "@/public/user/default-user-profile.png";
+import UserDetails from "./UserDetails";
 import UserReferralCode from "./UserReferralCode";
+import UserReferralVoucher from "./UserReferralVoucher";
 import VerificationAlert from "./VerificationAlert";
 
 async function ProfileOverview() {

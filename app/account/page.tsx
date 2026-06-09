@@ -1,11 +1,11 @@
 import BackButton from "@/shared/components/BackButton";
-import Button from "@/shared/components/Button";
 import { Suspense } from "react";
+import { ImAddressBook } from "react-icons/im";
+import { MdEditSquare } from "react-icons/md";
 import ProfileOverview from "./_components/ProfileOverview";
 import ProfileOverviewSkeleton from "./_components/ProfileOverviewSkeleton";
-import { ImAddressBook } from "react-icons/im";
 import UserConfigBar from "./_components/UserConfigBar";
-import { MdEditSquare } from "react-icons/md";
+import LogoutButton from "./_components/LogoutButton";
 
 function page() {
   return (
@@ -40,7 +40,7 @@ function page() {
           </UserConfigBar>
 
           <div className="mt-5">
-            <Button btnType="danger">Logout</Button>
+            <LogoutButton />
           </div>
         </section>
       </div>

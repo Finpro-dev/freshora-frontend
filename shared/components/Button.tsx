@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  type?: "submit" | "button";
   href?: string;
   btnType: "primary" | "secondary" | "danger" | "primaryRounded" | "text";
   pendingLabel?: string;
@@ -12,6 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 function Button({
   href,
+  type = "button",
   btnType = "primary",
   pendingLabel = "Hold on...",
   textColor = "text-emerald-600",
@@ -32,7 +34,7 @@ function Button({
       " border border-brand-mist-300 text-foreground hover:bg-brand-mist-200 disabled:bg-brand-mist-500 disabled:cursor-not-allowed",
     danger:
       basedStyle +
-      " bg-red-200/50 border border-red-300 text-foreground hover:bg-red-200 disabled:bg-red-500 disabled:cursor-not-allowed",
+      " bg-red-200/50 border border-red-300 text-foreground hover:bg-red-200 disabled:cursor-not-allowed disabled:bg-brand-mist-500 disabled:border-brand-mist-500 disabled:text-brand-mist-100",
 
     primaryRounded:
       basedStyle +
@@ -51,7 +53,7 @@ function Button({
 
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled}
       className={styles[btnType]}
       {...props}>
