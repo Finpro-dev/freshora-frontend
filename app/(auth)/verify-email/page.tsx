@@ -8,7 +8,7 @@ async function page({ searchParams }: { searchParams: SearchParams }) {
 
   return (
     <main className="min-h-dvh flex flex-col items-center justify-center">
-      <div className="pb-10 text-2xl text-brand-mist-600">
+      <div className="pb-10 text-2xl sm:text-3xl font-semibold text-brand-mist-700">
         <h1>
           {verifyType === "VERIFY_PASSWORD"
             ? "Create new password"

@@ -1,6 +1,5 @@
 "use client";
 
-import { createNewPassword } from "@/actions/create-new-password";
 import SubmitButton from "@/shared/components/SubmitButton";
 import {
   CreatePasswordInput,
@@ -11,9 +10,10 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import VerifyCreatePasswordNavigation from "./VerifyCreatePasswordNavigation";
+import ResetPasswordNavigation from "./ResetPasswordNavigation";
+import { resetPassword } from "@/actions/forgot-password";
 
-function VerifyCreatePasswordForm() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = String(searchParams.get("token"));
 
@@ -32,7 +32,7 @@ function VerifyCreatePasswordForm() {
   });
 
   const onSubmit = handleSubmit(async ({ password, confirmPassword }) => {
-    const res = await createNewPassword(password, confirmPassword, token);
+    const res = await resetPassword(password, confirmPassword, token);
 
     if (!res.success) {
       toast.error(res.error);
@@ -73,17 +73,17 @@ function VerifyCreatePasswordForm() {
       </div>
 
       <div>
-        <VerifyCreatePasswordNavigation
+        <ResetPasswordNavigation
           isShowPassword={isShowPassword}
           onShowPassword={handleShowPassword}
         />
       </div>
 
-      <SubmitButton isSubmitting={isSubmitting} pendingLable="Processing...">
+      <SubmitButton isSubmitting={isSubmitting} pendingLabel="Processing...">
         Create new password
       </SubmitButton>
     </form>
   );
 }
 
-export default VerifyCreatePasswordForm;
+export default ResetPasswordForm;

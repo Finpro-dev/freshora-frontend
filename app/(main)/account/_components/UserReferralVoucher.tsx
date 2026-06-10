@@ -10,7 +10,7 @@ function UserReferralVoucher({
   validUntil,
 }: UserReferralVoucherProps) {
   return (
-    <div className="px-5 py-5 w-full sm:w-[50%] border-2 border-dashed  border-brand-emerald-300 rounded-sm shadow-sm shadow-brand-mist-300">
+    <div className="px-5 py-5 w-full sm:w-[50%] border-2 border-dashed  border-brand-emerald-200 rounded-sm shadow-sm shadow-brand-mist-300">
       <div className="mb-5">
         <h3>Referral Coupon</h3>
         <p className="text-xs text-brand-mist-500">
