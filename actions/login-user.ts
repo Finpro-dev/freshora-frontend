@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { LoginInput } from "../app/login/_schemas/login-schema";
+import { LoginInput } from "../app/(auth)/login/_schemas/login-schema";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 
 export const loginUser = async ({ email, password }: LoginInput) => {

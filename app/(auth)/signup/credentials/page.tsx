@@ -9,7 +9,7 @@ function page() {
         <h1>Quick Signup</h1>
       </div>
 
-      <div className="flex flex-col gap-4 lg:w-[40%] md:w-[55%] sm:w-[65%] w-[80%]">
+      <div className="flex flex-col gap-4 md:w-[80%] sm:w-[65%] w-[80%]">
         <SignupForm />
         <Button btnType="secondary" href="/signup">
           Back to signup options
