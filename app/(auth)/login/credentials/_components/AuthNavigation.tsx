@@ -34,7 +34,7 @@ function AuthNavigation({
           Don&apos;t have an account?
         </p>
         <Link
-          href="/login"
+          href="/signup"
           className="text-xs cursor-pointer text-brand-emerald-700">
           Create.
         </Link>
