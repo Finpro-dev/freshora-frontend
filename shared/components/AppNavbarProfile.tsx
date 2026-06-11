@@ -8,7 +8,7 @@ import AppNavbarMenuDropdown from "./AppNavbarMenuDropdown";
 
 function AppNavbarProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { avatar } = useAuthStore((state) => state);
+  const avatar = useAuthStore((state) => state.avatar);
   const userAvatar = avatar || defaultUserProfile;
 
   const handleOpenModal = () => {
