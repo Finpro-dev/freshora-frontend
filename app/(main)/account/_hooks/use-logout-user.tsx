@@ -10,7 +10,11 @@ export function useLogoutUser() {
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await api.post(`${CORS_CREDENTIALS.API_BASE_URL}/auth/logout`);
+      await api.post(
+        `${CORS_CREDENTIALS.API_BASE_URL}/auth/logout`,
+        {},
+        { withCredentials: true },
+      );
     },
 
     // before hitting api
