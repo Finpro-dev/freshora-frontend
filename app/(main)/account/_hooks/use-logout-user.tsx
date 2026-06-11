@@ -2,6 +2,7 @@ import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { api } from "@/shared/lib/axios-instance";
 import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -10,11 +11,10 @@ export function useLogoutUser() {
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/auth/logout`,
-        {},
-        { withCredentials: true },
-      );
+      await axios(`${CORS_CREDENTIALS.API_BASE_URL}/auth/logout`, {
+        method: "post",
+        withCredentials: true,
+      });
     },
 
     // before hitting api
