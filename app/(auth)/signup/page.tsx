@@ -27,15 +27,15 @@ async function page() {
           Register with Email
         </Button>
 
-        <div className="flex gap-1">
-          <p className="text-xs text-brand-mist-700">
-            Already have an account?
-          </p>
-          <Link
+        <div className="flex gap-1 text-xs">
+          <p className="text-brand-mist-700">Already have an account?</p>
+          <Button
+            btnType="text"
             href="/login"
-            className="text-xs cursor-pointer text-brand-emerald-700">
+            textColor="text-brand-emerald-700"
+            hoverTextColor="text-brand-emerald-800">
             Login.
-          </Link>
+          </Button>
         </div>
       </div>
     </main>

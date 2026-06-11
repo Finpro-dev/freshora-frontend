@@ -1,5 +1,6 @@
 import { VerifyNavigationProps } from "@/shared/types/verify-navigation-props-type";
 import { useResendResetPasswordRequest } from "../_hooks/use-resend-reset-password-request";
+import Button from "@/shared/components/Button";
 
 function ResetPasswordNavigation({
   onShowPassword,
@@ -19,16 +20,18 @@ function ResetPasswordNavigation({
         </div>
       </div>
 
-      <div className="flex gap-1">
-        <p className="text-xs text-brand-mist-700">Link expired?</p>
+      <div className="flex gap-1 text-xs">
+        <p className="text-brand-mist-700">Link expired?</p>
 
-        <button
+        <Button
+          btnType="text"
           type="button"
           disabled={isPending}
           onClick={() => mutate(undefined)}
-          className="text-xs cursor-pointer disabled:cursor-not-allowed text-brand-emerald-700">
+          textColor="text-brand-emerald-700"
+          hoverTextColor="text-brand-emerald-800">
           Resend.
-        </button>
+        </Button>
       </div>
     </div>
   );

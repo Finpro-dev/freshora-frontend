@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useResendResetPasswordRequest } from "../../_hooks/use-resend-reset-password-request";
 import { EmailInput, emailSchema } from "../../_schema/reset-password-schema";
+import Button from "@/shared/components/Button";
 
 function ResetPassword() {
   const { mutateAsync, isPending } = useResendResetPasswordRequest();
@@ -36,12 +37,9 @@ function ResetPassword() {
           <p className="pt-2 text-xs text-red-700">{errors.email.message}</p>
         )}
       </div>
-      <button
-        disabled={isPending}
-        type="submit"
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer disabled:cursor-not-allowed">
+      <Button btnType="primary" disabled={isPending} type="submit">
         {isPending ? "Sending..." : "Send reset link"}
-      </button>
+      </Button>
     </form>
   );
 }

@@ -26,15 +26,17 @@ async function page() {
           Continue with Email
         </Button>
 
-        <div className="flex gap-1">
+        <div className="flex gap-1 text-xs">
           <p className="text-xs text-brand-mist-700">
             Don&apos;t have an account?
           </p>
-          <Link
+          <Button
+            btnType="text"
             href="/signup"
-            className="text-xs cursor-pointer text-brand-emerald-700">
+            textColor="text-brand-emerald-700"
+            hoverTextColor="text-brand-emerald-800">
             Create.
-          </Link>
+          </Button>
         </div>
       </div>
     </main>

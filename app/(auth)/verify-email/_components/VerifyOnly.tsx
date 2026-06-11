@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useVerifyEmailOnly } from "../_hooks/use-verify-email-only";
 import { useResendVerifyRequest } from "../_hooks/use-resend-verify-request";
+import Button from "@/shared/components/Button";
 
 function VerifyOnly() {
   const searhParams = useSearchParams();
@@ -12,23 +13,27 @@ function VerifyOnly() {
 
   return (
     <>
-      <button
+      <Button
+        btnType="primary"
         disabled={isPending}
-        onClick={() => verifyEmail(token)}
-        className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer">
+        onClick={() => verifyEmail(token)}>
         Yes, it&apos;s me
-      </button>
+      </Button>
 
-      <div className="flex justify-center gap-1">
-        <p className="text-xs text-brand-mist-700">Link expired?</p>
-        <button
+      <div className="flex justify-center gap-1 text-xs">
+        <p className="text-brand-mist-700">Link expired?</p>
+
+        <Button
+          btnType="text"
           type="button"
+          disabled={isPending}
           onClick={() =>
             resendVerify({ email: undefined, verifyType: "VERIFY_ONLY" })
           }
-          className="text-xs cursor-pointer text-brand-emerald-700">
+          textColor="text-brand-emerald-700"
+          hoverTextColor="text-brand-emerald-800">
           Resend.
-        </button>
+        </Button>
       </div>
     </>
   );

@@ -11,8 +11,11 @@ function layout({ children }: { children: React.ReactNode }) {
           alt="auth-banner-grocery-official"
           className="object-cover"
         />
+        <div className="absolute h-full w-full bg-linear-to-tr from-brand-emerald-800/60 to-brand-mist-200/10"></div>
       </div>
-      <div className="w-full md:w-[50%]">{children}</div>
+      <div className="w-full md:w-[50%] bg-linear-to-tl from-brand-emerald-800 to-brand-mist-200/20">
+        {children}
+      </div>
     </div>
   );
 }
