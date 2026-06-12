@@ -1,18 +1,20 @@
 "use client";
 
+import { logoutUser } from "@/actions/logout-user";
 import Button from "@/shared/components/Button";
-import { useLogoutUser } from "../_hooks/use-logout-user";
 
 function LogoutButton() {
-  const { mutate, isPending } = useLogoutUser();
+  const handleLogoutUser = async () => {
+    const res = await logoutUser();
+    console.log("Res", res);
+  };
+
   return (
-    <Button
-      pendingLabel="Logging out..."
-      disabled={isPending}
-      onClick={() => mutate()}
-      btnType="danger">
-      Logout
-    </Button>
+    <form action={handleLogoutUser}>
+      <Button pendingLabel="Logging out..." type="submit" btnType="danger">
+        Logout
+      </Button>
+    </form>
   );
 }
 

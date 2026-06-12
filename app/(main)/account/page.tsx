@@ -7,6 +7,7 @@ import ProfileOverviewSkeleton from "./_components/ProfileOverviewSkeleton";
 import UserConfigBar from "./_components/UserConfigBar";
 import LogoutButton from "./_components/LogoutButton";
 import { Metadata } from "next";
+import { logoutUser } from "@/actions/logout-user";
 
 export const metadata: Metadata = {
   title: "Customer area",
