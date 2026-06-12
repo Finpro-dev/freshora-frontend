@@ -19,27 +19,27 @@ async function ProfileOverview() {
     <div>
       {/* user details */}
       <UserDetails
-        firstName={user!.firstName}
-        lastName={user!.lastName || ""}
+        firstName={String(user?.firstName)}
+        lastName={user?.lastName || ""}
         avatar={avatar as string}
-        email={user!.email}
+        email={String(user?.email)}
         phone={user?.phone}
-        isVerified={user!.isVerified}
+        isVerified={user?.isVerified || false}
       />
 
       {/* verification alert */}
-      {!user?.isVerified && <VerificationAlert email={user!.email as string} />}
+      {!user?.isVerified && <VerificationAlert email={user?.email as string} />}
 
       {/* referral sections */}
       <div className="flex flex-col sm:flex-row gap-5 mt-5 ">
         {/* my referral code */}
-        <UserReferralCode myReferralCode={user!.myReferralCode} />
+        <UserReferralCode myReferralCode={String(user?.myReferralCode)} />
 
         {/* referral voucher */}
         {referralVoucher ? (
           <UserReferralVoucher
-            voucherCode={referralVoucher!.couponCode}
-            validUntil={referralVoucher!.validUntil}
+            voucherCode={String(referralVoucher?.couponCode)}
+            validUntil={String(referralVoucher?.validUntil)}
           />
         ) : null}
       </div>

@@ -2,11 +2,13 @@
 
 import { logoutUser } from "@/actions/logout-user";
 import Button from "@/shared/components/Button";
+import { redirect, useRouter } from "next/navigation";
 
 function LogoutButton() {
+  const router = useRouter();
   const handleLogoutUser = async () => {
-    const res = await logoutUser();
-    console.log("Res", res);
+    await logoutUser();
+    router.push("/login");
   };
 
   return (
