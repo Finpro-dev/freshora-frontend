@@ -1,4 +1,4 @@
-import { User } from "@/shared/types/user-type";
+import { Role } from "@/shared/types/user-type";
 import { createStore } from "zustand";
 
 export type AuthStates = {
@@ -6,7 +6,10 @@ export type AuthStates = {
   firstName: string;
   lastName: string;
   email: string;
-  avatar?: string;
+  avatar: string | null;
+  phone: string | null;
+  role: Role;
+  isVerified: boolean;
 };
 
 export type AuthActions = {
@@ -20,6 +23,9 @@ export const defaultAuthStoreState: AuthStates = {
   lastName: "",
   email: "",
   avatar: "",
+  phone: "",
+  role: "CUSTOMER",
+  isVerified: false,
 };
 
 export type AuthStoreType = AuthStates & AuthActions;

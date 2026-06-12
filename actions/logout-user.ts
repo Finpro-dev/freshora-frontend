@@ -3,9 +3,7 @@
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const logoutUser = async () => {
   const cookieStore = await cookies();
@@ -23,8 +21,6 @@ export const logoutUser = async () => {
         withCredentials: true,
       },
     );
-
-    console.log("RES", res);
 
     await forwardExpressCookie(res.headers["set-cookie"]);
   } catch (error: any) {

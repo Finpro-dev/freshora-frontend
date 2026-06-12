@@ -50,7 +50,6 @@ export async function withProtectedRoute(
     // ---> hit the refresh api
     if (!accessToken && refreshToken) {
       try {
-        console.log("REFRESHING");
         const res = await fetch(
           `${CORS_CREDENTIALS.API_BASE_URL}/auth/refresh`,
           {

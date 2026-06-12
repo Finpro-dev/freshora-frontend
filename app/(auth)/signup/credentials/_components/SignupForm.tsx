@@ -121,8 +121,10 @@ function SignupForm() {
             className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400"
           />
 
-          {errors.phone && (
-            <p className="pt-2 text-xs text-red-700">{errors.phone.message}</p>
+          {errors.usedReferralCode && (
+            <p className="pt-2 text-xs text-red-700">
+              {errors.usedReferralCode.message}
+            </p>
           )}
         </div>
       </section>
