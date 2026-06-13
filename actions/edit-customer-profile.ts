@@ -1,28 +1,31 @@
 "use server";
 
-import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export const logoutUser = async () => {
+export const editCustomerProfile = async (formData: FormData) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-  let res;
   try {
-    res = await axios.post(
-      `${CORS_CREDENTIALS.API_BASE_URL}/auth/logout`,
-      {},
+    const res = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      formData,
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken};`,
         },
+
         withCredentials: true,
       },
     );
-
     await forwardExpressCookie(res.headers["set-cookie"]);
+
+    revalidatePath("/account/edit");
+    return { success: true, data: res.data.data };
   } catch (error: any) {
     const errorMessage =
       error.response?.data?.message ||
