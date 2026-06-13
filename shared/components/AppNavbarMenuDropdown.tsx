@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { appNavbarMenuDropdown } from "../statics/app-navbar-menu-dropdown";
+import { appNavbarMenuDropdown } from "../statics/app-navbar-menu-dropdown-static";
 import { IoClose } from "react-icons/io5";
 
 interface AppNavbarMenuDropdownProps {

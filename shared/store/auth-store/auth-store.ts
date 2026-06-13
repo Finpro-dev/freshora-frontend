@@ -1,4 +1,4 @@
-import { Role } from "@/shared/types/user-type";
+import { Gender, Role } from "@/shared/types/user-type";
 import { createStore } from "zustand";
 
 export type AuthStates = {
@@ -10,6 +10,7 @@ export type AuthStates = {
   phone: string | null;
   role: Role;
   isVerified: boolean;
+  gender: Gender;
 };
 
 export type AuthActions = {
@@ -26,6 +27,7 @@ export const defaultAuthStoreState: AuthStates = {
   phone: "",
   role: "CUSTOMER",
   isVerified: false,
+  gender: "MALE",
 };
 
 export type AuthStoreType = AuthStates & AuthActions;

@@ -3,7 +3,7 @@ import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { AuthStates } from "@/shared/store/auth-store/auth-store";
 import StoreProviders from "@/shared/store/StoreProviders";
 import { ApiResponse } from "@/shared/types/api-type";
-import { Role, User } from "@/shared/types/user-type";
+import { Gender, Role, User } from "@/shared/types/user-type";
 import { cookies } from "next/headers";
 
 async function layout({ children }: { children: React.ReactNode }) {
@@ -23,6 +23,7 @@ async function layout({ children }: { children: React.ReactNode }) {
   }
 
   const data: ApiResponse<User> = await response?.json();
+
   const initialAuth: AuthStates = {
     userId: String(data?.data?.userId),
     firstName: String(data?.data?.firstName),
@@ -31,7 +32,8 @@ async function layout({ children }: { children: React.ReactNode }) {
     avatar: String(data?.data?.avatar),
     phone: String(data.data?.phone),
     role: data.data?.role as Role,
-    isVerified: false,
+    isVerified: data.data?.isVerified as boolean,
+    gender: data.data?.gender as Gender,
   };
 
   return (

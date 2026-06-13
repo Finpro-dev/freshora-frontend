@@ -1,27 +1,13 @@
+import {
+  AVATAR_IMAGE_TYPES,
+  MAX_AVATAR_IMAGE_SIZE,
+} from "@/shared/statics/file-upload-config-static";
 import { z } from "zod";
 
 const GenderEnum = z.enum(["MALE", "FEMALE"]);
 const phoneRegex = /^(?:\+62|62|08)[2-9]\d{7,11}$/;
-const MAX_UPLOAD_SIZE = 1024 * 1024;
-const ACCEPTED_FILE_TYPES = [
-  "image/png",
-  "image/jpg",
-  "image/jpeg",
-  "image/gif",
-];
 
 export const editCustomerProfileSchema = z.object({
-  avatar: z
-    .instanceof(File, { message: "Image is required." })
-    .refine((file) => file.size > 0, "Image cannot be empty.")
-    .refine((file) => file.size <= MAX_UPLOAD_SIZE, "Max image size is 1MB.")
-    .refine(
-      (file) => ACCEPTED_FILE_TYPES.includes(file.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported.",
-    )
-    .optional()
-    .nullable(),
-
   firstName: z
     .string()
     .min(1, "First name is required")
