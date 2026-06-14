@@ -1,4 +1,5 @@
 import AppNavbar from "@/shared/components/AppNavbar";
+import ScrollToTop from "@/shared/components/ScrollToTop";
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { AuthStates } from "@/shared/store/auth-store/auth-store";
 import StoreProviders from "@/shared/store/StoreProviders";
@@ -39,6 +40,7 @@ async function layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full min-h-full">
       <StoreProviders initialAuth={initialAuth}>
+        <ScrollToTop />
         <AppNavbar />
         {children}
       </StoreProviders>
