@@ -1,9 +1,10 @@
-import AddressCard from "./_components/AddressCard";
 import BackButton from "@/shared/components/BackButton";
 import { Metadata } from "next";
-import AddressList from "./_components/AddressList";
 import { Suspense } from "react";
+import AddressList from "./_components/AddressList";
 import AddressListSkeleton from "./_components/AddressListSkeleton";
+import Button from "@/shared/components/Button";
+import CreateAddressButton from "./_components/CreateAddressButton";
 
 export const metadata: Metadata = {
   title: "Customer area",
@@ -25,6 +26,10 @@ export default function page() {
               View your address list and select your primary address
             </p>
           </div>
+
+          <section>
+            <CreateAddressButton />
+          </section>
 
           {/* address list*/}
           <section>

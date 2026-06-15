@@ -4,7 +4,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type?: "submit" | "button";
   href?: string;
   btnType: "primary" | "secondary" | "danger" | "primaryRounded" | "text";
-  pendingLabel?: string;
+  pendingLabel?: string | React.ReactNode;
   disabled?: boolean;
   textColor?: string;
   hoverTextColor?: string;

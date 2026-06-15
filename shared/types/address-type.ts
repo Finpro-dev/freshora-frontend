@@ -15,3 +15,8 @@ export interface Address {
   provinceId: number;
   userId: string;
 }
+
+export type CreateAddress = Omit<
+  Address,
+  "addressId" | "addressStatus" | "userId"
+>;

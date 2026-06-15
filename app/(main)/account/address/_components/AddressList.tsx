@@ -1,11 +1,9 @@
 import { getUserAddresses } from "@/actions/user-addresses";
-import AddressCard from "./AddressCard";
-import { ApiResponse } from "@/shared/types/api-type";
 import { Address } from "@/shared/types/address-type";
+import AddressCard from "./AddressCard";
 
 async function AddressList() {
   const res = await getUserAddresses();
-  console.log("Address Res", res);
   const userAddresses: Address[] = res.data;
 
   return (

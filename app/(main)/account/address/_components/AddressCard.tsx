@@ -2,12 +2,16 @@
 
 import { setPrimaryAddress } from "@/actions/set-primary-address";
 import Button from "@/shared/components/Button";
+import SpinnerMini from "@/shared/components/SpinnerMini";
 import { Address } from "@/shared/types/address-type";
-import { TbBorderCornerSquare } from "react-icons/tb";
-import { TbMapPinCheck } from "react-icons/tb";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useActionState } from "react";
+import { TbBorderCornerSquare, TbMapPinCheck } from "react-icons/tb";
 import { toast } from "sonner";
 
 function AddressCard({ data }: { data: Address }) {
+  const router = useRouter();
   const isPrimary = data.addressStatus === "PRIMARY";
 
   const handleSelectAddress = async () => {
@@ -19,8 +23,15 @@ function AddressCard({ data }: { data: Address }) {
       toast.success(`New primary address set successfully`);
     }
   };
+
+  const [_state, formAction, isPending] = useActionState(
+    handleSelectAddress,
+    null,
+  );
+
   return (
     <div
+      onClick={() => router.push(`address/${data.addressId}`)}
       className={`relative w-full flex justify-between items-center gap-2 sm:gap-3 pr-5 pl-5 py-5 sm:pr-5 sm:pl-10 sm:py-5 rounded-sm shadow-sm shadow-brand-mist-300 border border-brand-mist-100 text-brand-mist-600 ${isPrimary ? "bg-brand-emerald-200/20 hover:bg-brand-emerald-200/30" : "hover:bg-brand-mist-100/50"} transition-all duration-300 cursor-pointer`}>
       {/* content */}
       <div>
@@ -47,9 +58,16 @@ function AddressCard({ data }: { data: Address }) {
         </div>
       ) : (
         <div>
-          <Button onClick={handleSelectAddress} btnType="primary">
-            Select
-          </Button>
+          <form action={formAction}>
+            <Button
+              type="submit"
+              onClick={(e) => e.stopPropagation()}
+              pendingLabel={<SpinnerMini />}
+              disabled={isPending}
+              btnType="primary">
+              Select
+            </Button>
+          </form>
         </div>
       )}
     </div>
