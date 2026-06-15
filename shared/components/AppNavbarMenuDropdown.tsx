@@ -29,7 +29,7 @@ function AppNavbarMenuDropdown({ onCloseModal }: AppNavbarMenuDropdownProps) {
 
         <div
           onClick={onCloseModal}
-          className="block md:hidden absolute text-brand-mist-500 hover:text-brand-emerald-500 -top-7 right-1 text-2xl cursor-pointer">
+          className="block md:hidden absolute text-brand-mist-500 hover:text-brand-emerald-500 -top-7 left-1 text-2xl cursor-pointer">
           <IoClose />
         </div>
       </div>
