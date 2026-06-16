@@ -23,6 +23,7 @@ import { AuthStates } from "@/shared/store/auth-store/auth-store";
 import { toast } from "sonner";
 import VerificationAlert from "../../_components/VerificationAlert";
 import { useRouter } from "next/navigation";
+import { capitalize } from "@/shared/utils/capitalize";
 
 function ProfileForm() {
   const {
@@ -80,8 +81,8 @@ function ProfileForm() {
 
       const initialAuth: AuthStates = {
         userId: String(updatedUserData?.userId),
-        firstName: String(updatedUserData?.firstName),
-        lastName: String(updatedUserData?.lastName),
+        firstName: capitalize(String(updatedUserData?.firstName)),
+        lastName: capitalize(String(updatedUserData?.lastName)),
         email: String(updatedUserData?.email),
         avatar: String(updatedUserData?.avatar),
         phone: String(updatedUserData?.phone),

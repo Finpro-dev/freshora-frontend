@@ -22,7 +22,6 @@ export const getUserAddresses = async () => {
 
     await forwardExpressCookie(res.headers["set-cookie"]);
 
-    // revalidatePath("/account/address");
     return { success: true, data: res.data.data };
   } catch (error: any) {
     const errorMessage =

@@ -4,7 +4,7 @@ import { setPrimaryAddress } from "@/actions/set-primary-address";
 import Button from "@/shared/components/Button";
 import SpinnerMini from "@/shared/components/SpinnerMini";
 import { Address } from "@/shared/types/address-type";
-import Link from "next/link";
+import { capitalize } from "@/shared/utils/capitalize";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import { TbBorderCornerSquare, TbMapPinCheck } from "react-icons/tb";
@@ -37,7 +37,7 @@ function AddressCard({ data }: { data: Address }) {
       <div>
         <div>
           <h4 className="text-lg sm:text-xl font-semibold mb-1">
-            {data.province}
+            {capitalize(data.province)}
           </h4>
           <div className="absolute top-0 left-0">
             <TbBorderCornerSquare className="text-brand-emerald-600 sm:text-4xl text-3xl" />
@@ -47,7 +47,8 @@ function AddressCard({ data }: { data: Address }) {
         <div className="sm:text-base text-sm">
           <p className="mb-1 text-brand-mist-700">{data.postalCode}</p>
           <p className="text-brand-mist-500">
-            {data.address}, {data.district}, {data.city}
+            {capitalize(data.address)}, {capitalize(data.district)},{" "}
+            {capitalize(data.city)}
           </p>
         </div>
       </div>

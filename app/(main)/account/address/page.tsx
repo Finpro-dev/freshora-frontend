@@ -27,8 +27,10 @@ export default function page() {
             </p>
           </div>
 
-          <section>
-            <CreateAddressButton />
+          <section className="block sm:flex justify-end mb-4">
+            <div>
+              <CreateAddressButton />
+            </div>
           </section>
 
           {/* address list*/}

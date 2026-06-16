@@ -14,12 +14,14 @@ import { createNewAddress } from "@/actions/create-new-address";
 import { getIdAndNameLocation } from "../_utils/get-id-and-name-location-util";
 import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 function CreateAddressForm() {
   const defaultValues = {
     province: "2%MALUKU",
     city: "11%AMBON",
-    district: null,
+    district: "119%BAGUALA",
     postalCode: "",
   };
 
@@ -33,17 +35,26 @@ function CreateAddressForm() {
     resolver: zodResolver(createAddressSchema),
   });
 
-  const { lat: latitude, lng: longitude } = useUserAddressStore(
-    (state) => state,
-  );
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const {
+    lat: latitude,
+    lng: longitude,
+    setCords,
+    setError,
+  } = useUserAddressStore((state) => state);
 
+  // get all province data
   const { data: provinces } = useGetProvinces();
   const watchedProvince = watch("province");
+
+  // get all cities based on selected province
   const { data: city } = useGetCity(String(watchedProvince));
   const watchedCity = watch("city");
+
+  // get all districts based on selected city
   const { data: district } = useGetDistrict(String(watchedCity));
 
-  // fixme ->> useme
   const handleCreateAddress = handleSubmit(async (data) => {
     const { id: provinceId, name: province } = getIdAndNameLocation(
       String(data.province),
@@ -66,13 +77,17 @@ function CreateAddressForm() {
       provinceId: parseInt(provinceId as string),
     };
 
-    const res = await createNewAddress(payload);
-
-    if (!res.success) {
-      toast.success("New address created successfully");
-    } else {
-      toast.error(res.error);
-    }
+    startTransition(async () => {
+      const res = await createNewAddress(payload);
+      if (!res?.success) {
+        toast.error(res.error);
+      } else {
+        toast.success("New address created successfully");
+        setError(null);
+        setCords({ lat: 43.21, lng: 0.123 });
+        router.push("/account/address");
+      }
+    });
   });
 
   return (
@@ -192,7 +207,11 @@ function CreateAddressForm() {
             </div>
           </section>
 
-          <Button type="submit" btnType="primary">
+          <Button
+            type="submit"
+            disabled={isPending}
+            btnType="primary"
+            pendingLabel="Creating...">
             Create new address
           </Button>
         </form>

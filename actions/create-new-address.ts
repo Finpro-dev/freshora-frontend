@@ -4,6 +4,7 @@ import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { CreateAddress } from "@/shared/types/address-type";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export const createNewAddress = async (data: CreateAddress) => {
@@ -22,7 +23,7 @@ export const createNewAddress = async (data: CreateAddress) => {
     );
 
     await forwardExpressCookie(res.headers["set-cookie"]);
-
+    revalidatePath("/account/address");
     return { data: res.data.data, success: true };
   } catch (error: any) {
     const errorMessage =
