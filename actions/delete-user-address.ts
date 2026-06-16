@@ -1,24 +1,19 @@
 "use server";
 
-import { EditAddressApiInput } from "@/app/(main)/account/address/[addressId]/_types/edit-address-input-type";
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export const editUserAddress = async (
-  data: EditAddressApiInput,
-  addressId: string,
-) => {
-  const allCookie = await cookies();
-  const accessToken = allCookie.get("accessToken")?.value;
-  const refreshToken = allCookie.get("refreshToken")?.value;
+export const deleteUserAddress = async (addressId: string) => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
 
   try {
-    const res = await axios.patch(
+    const res = await axios.delete(
       `${CORS_CREDENTIALS.API_BASE_URL}/addresses/${addressId}`,
-      data,
       {
         headers: {
           Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken};`,

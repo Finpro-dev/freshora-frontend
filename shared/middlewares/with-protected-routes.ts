@@ -74,8 +74,6 @@ export async function withProtectedRoute(
         // set also the cookie during error in case the error also set cookie
         if (error.response?.headers["set-cookie"])
           await forwardExpressCookie(error.response.headers["set-cookie"]);
-
-        console.log(errorMessage); // fixme
       }
     }
 

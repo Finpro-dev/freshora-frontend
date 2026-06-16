@@ -9,7 +9,6 @@ interface EditDetectClickProps {
 function EditDetectClick({ setCords }: EditDetectClickProps) {
   useMapEvents({
     click: (e: any) => {
-      //   console.log(e);
       setCords({
         lat: e.latlng.lat,
         lng: e.latlng.lng,

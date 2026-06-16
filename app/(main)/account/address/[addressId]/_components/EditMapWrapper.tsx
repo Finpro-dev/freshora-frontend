@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import SkeletonMap from "../../_components/MapSekeleton";
 
 function EditMapWrapper() {
   const MapWithNoSSR = dynamic(
@@ -8,7 +9,7 @@ function EditMapWrapper() {
       import("@/app/(main)/account/address/[addressId]/_components/EditMap"),
     {
       ssr: false,
-      loading: () => <p>Loading Map...</p>,
+      loading: () => <SkeletonMap />,
     },
   );
 

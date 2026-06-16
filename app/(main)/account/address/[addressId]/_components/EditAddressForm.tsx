@@ -1,24 +1,25 @@
 "use client";
 
+import { deleteUserAddress } from "@/actions/delete-user-address";
+import { editUserAddress } from "@/actions/edit-user-address";
 import Button from "@/shared/components/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { createNewAddress } from "@/actions/create-new-address";
+import SpinnerMini from "@/shared/components/SpinnerMini";
 import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
-import { toast } from "sonner";
+import { Address } from "@/shared/types/address-type";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useGetCity } from "../../_hooks/use-get-city";
+import { useGetDistrict } from "../../_hooks/use-get-district";
+import { useGetProvinces } from "../../_hooks/use-get-provinces";
+import { getIdAndNameLocation } from "../../_utils/get-id-and-name-location-util";
 import {
   EditAddressInput,
   editAddressSchema,
-} from "../_schemas/EditAddressSchema";
-import { useGetProvinces } from "../../_hooks/use-get-provinces";
-import { useGetCity } from "../../_hooks/use-get-city";
-import { useGetDistrict } from "../../_hooks/use-get-district";
-import { getIdAndNameLocation } from "../../_utils/get-id-and-name-location-util";
-import { editUserAddress } from "@/actions/edit-user-address";
-import { Address } from "@/shared/types/address-type";
-import SpinnerMini from "@/shared/components/SpinnerMini";
+} from "../_schemas/edit-address-schema";
+import Swal from "sweetalert2";
 
 interface EditAddressFormProps {
   address: Address;
@@ -26,11 +27,11 @@ interface EditAddressFormProps {
 
 function EditAddressForm({ address }: EditAddressFormProps) {
   const defaultValues = {
-    address: address?.address,
-    province: `${address?.provinceId}%${address?.province}`,
-    city: `${address?.cityId}%${address?.city}`,
-    district: `${address?.districtId}%${address?.district}`,
-    postalCode: address?.postalCode,
+    address: address?.address ?? "",
+    province: `${address?.provinceId ?? ""}%${address?.province ?? ""}`,
+    city: `${address?.cityId ?? ""}%${address?.city ?? ""}`,
+    district: `${address?.districtId ?? ""}%${address?.district ?? ""}`,
+    postalCode: address?.postalCode ?? "",
   };
 
   const {
@@ -39,7 +40,7 @@ function EditAddressForm({ address }: EditAddressFormProps) {
     handleSubmit,
     formState: { errors, dirtyFields },
   } = useForm<EditAddressInput>({
-    defaultValues,
+    values: defaultValues,
     resolver: zodResolver(editAddressSchema),
   });
 
@@ -99,6 +100,31 @@ function EditAddressForm({ address }: EditAddressFormProps) {
     });
   });
 
+  const handleDeleteAddress = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      theme: "auto",
+      text: "You won't be able to undo!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#009966",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteUserAddress(address.addressId);
+
+        if (!res?.success) {
+          toast.error(res?.error);
+        } else {
+          toast.success("Address deleted successfully");
+          setError(null);
+          router.push("/account/address");
+        }
+      }
+    });
+  };
+
   // detect if the user has touched the map
   useEffect(() => {
     if (latitude === address?.latitude && longitude === address?.longitude) {
@@ -115,6 +141,11 @@ function EditAddressForm({ address }: EditAddressFormProps) {
         <form onSubmit={handleCreateAddress} className="flex flex-col gap-4">
           {/* full address */}
           <section className="w-full">
+            <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+              <label>
+                Full Address <span className="text-red-500">*</span>
+              </label>
+            </div>
             <input
               {...register("address")}
               name="address"
@@ -133,6 +164,11 @@ function EditAddressForm({ address }: EditAddressFormProps) {
           {/* district and city */}
           <section className="w-full flex md:flex-row flex-col gap-4">
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  Province <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("province")}
                 name="province"
@@ -152,6 +188,11 @@ function EditAddressForm({ address }: EditAddressFormProps) {
               )}
             </div>
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  City <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("city")}
                 name="city"
@@ -181,6 +222,11 @@ function EditAddressForm({ address }: EditAddressFormProps) {
           {/* district and postal code */}
           <section className="w-full flex md:flex-row flex-col gap-4">
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  District <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("district")}
                 name="district"
@@ -206,6 +252,11 @@ function EditAddressForm({ address }: EditAddressFormProps) {
               )}
             </div>
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  Postal Code <span className="text-red-500">*</span>
+                </label>
+              </div>
               <input
                 {...register("postalCode")}
                 name="postalCode"
@@ -241,11 +292,10 @@ function EditAddressForm({ address }: EditAddressFormProps) {
           )}
         </form>
 
-        <form className="mt-2">
+        <form action={handleDeleteAddress} className="mt-2">
           <Button
             type="submit"
-            //   onClick={(e) => e.stopPropagation()}
-            //   pendingLabel={<SpinnerMini />}
+            pendingLabel={<SpinnerMini />}
             disabled={isPending}
             btnType="danger">
             Delete address

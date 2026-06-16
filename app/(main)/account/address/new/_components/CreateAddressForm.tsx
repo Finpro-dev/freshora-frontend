@@ -16,6 +16,7 @@ import { useTransition } from "react";
 import { useGetProvinces } from "../../_hooks/use-get-provinces";
 import { useGetCity } from "../../_hooks/use-get-city";
 import { useGetDistrict } from "../../_hooks/use-get-district";
+import Swal from "sweetalert2";
 
 function CreateAddressForm() {
   const defaultValues = {
@@ -29,7 +30,7 @@ function CreateAddressForm() {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<CreateAddressInput>({
     defaultValues,
     resolver: zodResolver(createAddressSchema),
@@ -42,6 +43,7 @@ function CreateAddressForm() {
     lng: longitude,
     setCords,
     setError,
+    error,
   } = useUserAddressStore((state) => state);
 
   // get all province data
@@ -90,6 +92,24 @@ function CreateAddressForm() {
     });
   });
 
+  const handleCancelCreateAddress = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      theme: "auto",
+      text: "You will lost your changes!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#009966",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+      cancelButtonText: "Take me back",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        router.push("/account/address");
+      }
+    });
+  };
+
   return (
     <>
       <div>
@@ -97,6 +117,11 @@ function CreateAddressForm() {
         <form onSubmit={handleCreateAddress} className="flex flex-col gap-4">
           {/* full address */}
           <section className="w-full">
+            <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+              <label>
+                Full Address <span className="text-red-500">*</span>
+              </label>
+            </div>
             <input
               {...register("address")}
               name="address"
@@ -115,6 +140,11 @@ function CreateAddressForm() {
           {/* district and city */}
           <section className="w-full flex md:flex-row flex-col gap-4">
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  Province <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("province")}
                 name="province"
@@ -135,6 +165,11 @@ function CreateAddressForm() {
               )}
             </div>
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  City <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("city")}
                 name="city"
@@ -165,6 +200,11 @@ function CreateAddressForm() {
           {/* district and postal code */}
           <section className="w-full flex md:flex-row flex-col gap-4">
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  District <span className="text-red-500">*</span>
+                </label>
+              </div>
               <select
                 {...register("district")}
                 name="district"
@@ -191,6 +231,11 @@ function CreateAddressForm() {
               )}
             </div>
             <div className="w-full">
+              <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+                <label>
+                  Postal Code <span className="text-red-500">*</span>
+                </label>
+              </div>
               <input
                 {...register("postalCode")}
                 name="postalCode"
@@ -207,14 +252,29 @@ function CreateAddressForm() {
             </div>
           </section>
 
-          <Button
-            type="submit"
-            disabled={isPending}
-            btnType="primary"
-            pendingLabel="Creating...">
-            Create new address
-          </Button>
+          {!Object.keys(dirtyFields).length || error !== null ? (
+            <Button
+              btnType="primary"
+              pendingLabel="Filling the form" // this will shows up in the UI before editing as disabled is always true
+              disabled={true}
+              type="button">
+              Start editing
+            </Button>
+          ) : (
+            <Button type="submit" btnType="primary" pendingLabel="Creating...">
+              Create new address
+            </Button>
+          )}
         </form>
+
+        <div className="mt-2">
+          <Button
+            onClick={handleCancelCreateAddress}
+            type="button"
+            btnType="secondary">
+            Cancel
+          </Button>
+        </div>
       </div>
     </>
   );

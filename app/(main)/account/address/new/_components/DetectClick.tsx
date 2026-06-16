@@ -9,7 +9,6 @@ interface DetectClickProps {
 function DetectClick({ setCords }: DetectClickProps) {
   useMapEvents({
     click: (e: any) => {
-      //   console.log(e);
       setCords({
         lat: e.latlng.lat,
         lng: e.latlng.lng,
