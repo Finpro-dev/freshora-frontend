@@ -9,7 +9,7 @@ import AppNavbarMenuDropdown from "./AppNavbarMenuDropdown";
 function AppNavbarProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const avatar = useAuthStore((state) => state.avatar);
-  const userAvatar = avatar || defaultUserProfile;
+  const userAvatar = avatar && avatar !== "null" && avatar !== "" ? avatar : defaultUserProfile;
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -27,7 +27,7 @@ function AppNavbarProfile() {
       <div className="relative w-8 sm:w-10 h-8 sm:h-10 border-2 rounded-full border-mist-200 ring-3 ring-brand-emerald-700 overflow-hidden">
         <Image
           src={userAvatar}
-          alt="Logo"
+          alt="User profile"
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
