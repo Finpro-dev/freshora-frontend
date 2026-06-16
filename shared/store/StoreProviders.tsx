@@ -1,16 +1,23 @@
 import { AuthStates } from "@/shared/store/auth-store/auth-store";
 import AuthStoreProvider from "@/shared/store/auth-store/AuthStoreProvider";
 import UserAddressStoreProvider from "./user-address-store/UserAddressProvider";
+import CartStoreProvider from "@/shared/store/cart-store/CartStoreProvider";
+import { CartStates } from "@/shared/store/cart-store/cart-store";
 
 interface ProviderProps {
   children: React.ReactNode;
   initialAuth: AuthStates;
+  initialCart: CartStates;
 }
 
-function StoreProviders({ initialAuth, children }: ProviderProps) {
+function StoreProviders({ initialAuth, initialCart, children }: ProviderProps) {
   return (
     <AuthStoreProvider initialAuth={initialAuth}>
-      <UserAddressStoreProvider>{children}</UserAddressStoreProvider>
+      <UserAddressStoreProvider>
+        <CartStoreProvider initialCart={initialCart}>
+          {children}
+        </CartStoreProvider>
+      </UserAddressStoreProvider>
     </AuthStoreProvider>
   );
 }
