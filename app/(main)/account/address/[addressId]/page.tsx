@@ -1,27 +1,29 @@
 "use client";
 
 import BackButton from "@/shared/components/BackButton";
-import MapWrapper from "../new/_components/MapWrapper";
-import { useGetAddressDetails } from "./_hooks/use-get-address-details";
-import { useParams } from "next/navigation";
-import { ApiResponse } from "@/shared/types/api-type";
-import { Address, AddressType } from "@/shared/types/address-type";
-import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
+import { Address } from "@/shared/types/address-type";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EditMapWrapper from "./_components/EditMapWrapper";
+import { useGetAddressDetails } from "./_hooks/use-get-address-details";
+import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
+import EditAddressForm from "./_components/EditAddressForm";
 
 function page() {
   const { addressId } = useParams<{ addressId: string }>();
-  const res = useGetAddressDetails(addressId);
-  const address: Address = res?.data?.data;
-  const [initCords, setInitCords] = useState<{ lat: number; lng: number }>({
-    lat: 40,
-    lng: 0,
-  });
+  const router = useRouter();
+  const { data: address, isPending } = useGetAddressDetails(addressId);
+  // const address: Address = data?.data;
+  const setCords = useUserAddressStore((state) => state.setCords);
+
+  const handleBack = () => {
+    router.push("/account/address");
+  };
 
   useEffect(() => {
-    if (address)
-      setInitCords({ lat: address.latitude, lng: address.longitude });
+    if (address) {
+      setCords({ lat: address.latitude, lng: address.longitude });
+    }
   }, [address]);
 
   return (
@@ -30,7 +32,7 @@ function page() {
         <section className="w-[95%] sm:w-[90%] md:w-[75%] lg:w-[60%]">
           <div className="pt-10 pb-5 sm:pb-15">
             <div className="flex">
-              <BackButton />
+              <BackButton onBack={handleBack} />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-brand-mist-600 py-2 sm:py-3">
               Edit your Address
@@ -45,8 +47,12 @@ function page() {
       {/* create address form */}
       <div className="flex justify-center">
         <section className="w-[95%] sm:w-[90%] md:w-[75%] lg:w-[60%] px-5 py-5 shadow-sm shadow-brand-mist-300 border border-brand-mist-100 rounded-xl">
-          <EditMapWrapper lat={initCords?.lat} lng={initCords?.lng} />
-          {/* <CreateAddressForm /> */}
+          <EditMapWrapper />
+          {isPending ? (
+            <p>Loading data...</p>
+          ) : (
+            <EditAddressForm address={address} />
+          )}
         </section>
       </div>
     </main>

@@ -10,7 +10,7 @@ export const useGetAddressDetails = (addressId: string) => {
         `${CORS_CREDENTIALS.API_BASE_URL}/addresses/${addressId}`,
       );
 
-      return data;
+      return data.data;
     },
   });
 

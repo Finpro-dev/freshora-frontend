@@ -3,40 +3,49 @@
 import Button from "@/shared/components/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  CreateAddressInput,
-  createAddressSchema,
-} from "../_schemas/create-address-schema";
 import { createNewAddress } from "@/actions/create-new-address";
-import { getIdAndNameLocation } from "../../_utils/get-id-and-name-location-util";
 import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import {
+  EditAddressInput,
+  editAddressSchema,
+} from "../_schemas/EditAddressSchema";
 import { useGetProvinces } from "../../_hooks/use-get-provinces";
 import { useGetCity } from "../../_hooks/use-get-city";
 import { useGetDistrict } from "../../_hooks/use-get-district";
+import { getIdAndNameLocation } from "../../_utils/get-id-and-name-location-util";
+import { editUserAddress } from "@/actions/edit-user-address";
+import { Address } from "@/shared/types/address-type";
+import SpinnerMini from "@/shared/components/SpinnerMini";
 
-function CreateAddressForm() {
+interface EditAddressFormProps {
+  address: Address;
+}
+
+function EditAddressForm({ address }: EditAddressFormProps) {
   const defaultValues = {
-    province: "2%MALUKU",
-    city: "11%AMBON",
-    district: "119%BAGUALA",
-    postalCode: "",
+    address: address?.address,
+    province: `${address?.provinceId}%${address?.province}`,
+    city: `${address?.cityId}%${address?.city}`,
+    district: `${address?.districtId}%${address?.district}`,
+    postalCode: address?.postalCode,
   };
 
   const {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
-  } = useForm<CreateAddressInput>({
+    formState: { errors, dirtyFields },
+  } = useForm<EditAddressInput>({
     defaultValues,
-    resolver: zodResolver(createAddressSchema),
+    resolver: zodResolver(editAddressSchema),
   });
 
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isMapTouched, setIsMapTouched] = useState(false);
   const {
     lat: latitude,
     lng: longitude,
@@ -78,17 +87,26 @@ function CreateAddressForm() {
     };
 
     startTransition(async () => {
-      const res = await createNewAddress(payload);
+      const res = await editUserAddress(payload, address.addressId);
       if (!res?.success) {
         toast.error(res.error);
       } else {
-        toast.success("New address created successfully");
+        toast.success("Address modified successfully");
         setError(null);
         setCords({ lat: 43.21, lng: 0.123 });
         router.push("/account/address");
       }
     });
   });
+
+  // detect if the user has touched the map
+  useEffect(() => {
+    if (latitude === address?.latitude && longitude === address?.longitude) {
+      setIsMapTouched(true);
+    } else {
+      setIsMapTouched(false);
+    }
+  }, [latitude, longitude]);
 
   return (
     <>
@@ -118,7 +136,6 @@ function CreateAddressForm() {
               <select
                 {...register("province")}
                 name="province"
-                defaultValue="Pick a color"
                 className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
                 <option disabled={true}>Province</option>
                 {provinces?.data?.map((province: any, i: number) => (
@@ -138,7 +155,6 @@ function CreateAddressForm() {
               <select
                 {...register("city")}
                 name="city"
-                defaultValue="Pick a color"
                 className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
                 {!city ? (
                   <option disabled={true}>Select province first</option>
@@ -168,7 +184,6 @@ function CreateAddressForm() {
               <select
                 {...register("district")}
                 name="district"
-                defaultValue="Pick a color"
                 className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
                 {!district ? (
                   <option disabled={true}>Select city first</option>
@@ -207,12 +222,33 @@ function CreateAddressForm() {
             </div>
           </section>
 
+          {!Object.keys(dirtyFields).length && isMapTouched ? (
+            <Button
+              btnType="primary"
+              pendingLabel="Start editing" // this will shows up in the UI before editing as disabled is always true
+              disabled={true}
+              type="button">
+              Start editing
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              disabled={isPending}
+              btnType="primary"
+              pendingLabel="Creating...">
+              Save information
+            </Button>
+          )}
+        </form>
+
+        <form className="mt-2">
           <Button
             type="submit"
+            //   onClick={(e) => e.stopPropagation()}
+            //   pendingLabel={<SpinnerMini />}
             disabled={isPending}
-            btnType="primary"
-            pendingLabel="Creating...">
-            Create new address
+            btnType="danger">
+            Delete address
           </Button>
         </form>
       </div>
@@ -220,4 +256,4 @@ function CreateAddressForm() {
   );
 }
 
-export default CreateAddressForm;
+export default EditAddressForm;

@@ -2,12 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-interface EditMapWrapperProps {
-  lat: number;
-  lng: number;
-}
-
-function EditMapWrapper({ lat, lng }: EditMapWrapperProps) {
+function EditMapWrapper() {
   const MapWithNoSSR = dynamic(
     () =>
       import("@/app/(main)/account/address/[addressId]/_components/EditMap"),
@@ -17,7 +12,7 @@ function EditMapWrapper({ lat, lng }: EditMapWrapperProps) {
     },
   );
 
-  return <MapWithNoSSR lat={lat} lng={lng} />;
+  return <MapWithNoSSR />;
 }
 
 export default EditMapWrapper;

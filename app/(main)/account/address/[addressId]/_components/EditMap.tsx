@@ -10,19 +10,11 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import EditChangeCenter from "./EditChangeCenter";
 import EditDetectClick from "./EditDetectClick";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
 
-interface EditMapProps {
-  lat: number;
-  lng: number;
-}
-
-function EditMap({ lat, lng }: EditMapProps) {
-  const [cords, setCords] = useState<{ lat: number; lng: number }>({
-    lat,
-    lng,
-  });
-
-  console.log("CORDS", cords);
+function EditMap() {
+  const { lat, lng, setCords } = useUserAddressStore((state) => state);
 
   const {
     isLoading: isLoadingPosition,
@@ -30,21 +22,17 @@ function EditMap({ lat, lng }: EditMapProps) {
     getPosition,
   } = useGeolocation();
 
-  // sync on the first mount
   useEffect(() => {
-    if (lat && lng) setCords({ lat, lng });
-  }, []);
-
-  useEffect(() => {
-    if (geolocationPosition)
+    if (geolocationPosition) {
       setCords({ lat: geolocationPosition.lat, lng: geolocationPosition.lng });
+    }
   }, [geolocationPosition]);
 
   return (
     <>
       <div className="w-full">
         <MapContainer
-          center={[cords.lat, cords.lng]}
+          center={[lat, lng]}
           zoom={13}
           scrollWheelZoom={true}
           className="h-60 sm:h-100 w-full z-10">
@@ -52,7 +40,7 @@ function EditMap({ lat, lng }: EditMapProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[cords.lat, cords.lng]} icon={freshoraIcon}>
+          <Marker position={[lat, lng]} icon={freshoraIcon}>
             <Popup>Your pinned location</Popup>
           </Marker>
 
@@ -60,7 +48,7 @@ function EditMap({ lat, lng }: EditMapProps) {
           <EditDetectClick setCords={setCords} />
 
           {/* move view to the center after clicking */}
-          <EditChangeCenter cords={{ lat: cords.lat, lng: cords.lng }} />
+          <EditChangeCenter cords={{ lat, lng }} />
         </MapContainer>
       </div>
 
