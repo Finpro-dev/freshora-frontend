@@ -7,20 +7,22 @@ import { useParams } from "next/navigation";
 import { ApiResponse } from "@/shared/types/api-type";
 import { Address, AddressType } from "@/shared/types/address-type";
 import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import EditMapWrapper from "./_components/EditMapWrapper";
 
 function page() {
   const { addressId } = useParams<{ addressId: string }>();
   const res = useGetAddressDetails(addressId);
   const address: Address = res?.data?.data;
-  console.log(address);
-
-  const setCords = useUserAddressStore((state) => state.setCords);
+  const [initCords, setInitCords] = useState<{ lat: number; lng: number }>({
+    lat: 40,
+    lng: 0,
+  });
 
   useEffect(() => {
-    if (address?.latitude && address?.longitude)
-      setCords({ lat: address?.latitude, lng: address?.longitude });
-  }, []);
+    if (address)
+      setInitCords({ lat: address.latitude, lng: address.longitude });
+  }, [address]);
 
   return (
     <main className="min-h-dvh">
@@ -43,7 +45,7 @@ function page() {
       {/* create address form */}
       <div className="flex justify-center">
         <section className="w-[95%] sm:w-[90%] md:w-[75%] lg:w-[60%] px-5 py-5 shadow-sm shadow-brand-mist-300 border border-brand-mist-100 rounded-xl">
-          <MapWrapper />
+          <EditMapWrapper lat={initCords?.lat} lng={initCords?.lng} />
           {/* <CreateAddressForm /> */}
         </section>
       </div>

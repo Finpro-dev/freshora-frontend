@@ -1,25 +1,28 @@
 "use client";
 
 import Button from "@/shared/components/Button";
+import { useGeolocation } from "@/shared/hooks/use-geolocation";
 import { freshoraIcon } from "@/shared/statics/leaflet-icon-static";
-import { useUserAddressStore } from "@/shared/store/user-address-store/UserAddressProvider";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { useGeolocation } from "../../../../../../shared/hooks/use-geolocation";
-import ChangeCenter from "./ChangeCenter";
-import DetectClick from "./DetectClick";
+import EditChangeCenter from "./EditChangeCenter";
+import EditDetectClick from "./EditDetectClick";
 
-function Map() {
-  const {
+interface EditMapProps {
+  lat: number;
+  lng: number;
+}
+
+function EditMap({ lat, lng }: EditMapProps) {
+  const [cords, setCords] = useState<{ lat: number; lng: number }>({
     lat,
     lng,
-    setCords,
-    setError,
-    error: latLngError,
-  } = useUserAddressStore((state) => state);
+  });
+
+  console.log("CORDS", cords);
 
   const {
     isLoading: isLoadingPosition,
@@ -27,17 +30,10 @@ function Map() {
     getPosition,
   } = useGeolocation();
 
-  useEffect(() => {
-    if (lat === 43.21 && lng === 0.123) {
-      setError("Please pin your location on map!");
-    } else {
-      setError(null);
-    }
-  }, [lat, lng]);
-
+  // sync on the first mount
   useEffect(() => {
     if (lat && lng) setCords({ lat, lng });
-  }, [lat, lng]);
+  }, []);
 
   useEffect(() => {
     if (geolocationPosition)
@@ -48,7 +44,7 @@ function Map() {
     <>
       <div className="w-full">
         <MapContainer
-          center={[lat, lng]}
+          center={[cords.lat, cords.lng]}
           zoom={13}
           scrollWheelZoom={true}
           className="h-60 sm:h-100 w-full z-10">
@@ -56,26 +52,19 @@ function Map() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[lat, lng]} icon={freshoraIcon}>
+          <Marker position={[cords.lat, cords.lng]} icon={freshoraIcon}>
             <Popup>Your pinned location</Popup>
           </Marker>
 
           {/* get lat lng */}
-          <DetectClick setCords={setCords} />
+          <EditDetectClick setCords={setCords} />
 
           {/* move view to the center after clicking */}
-          <ChangeCenter cords={{ lat, lng }} />
+          <EditChangeCenter cords={{ lat: cords.lat, lng: cords.lng }} />
         </MapContainer>
       </div>
 
-      <section className="flex flex-col gap-5 sm:flex-row justify-between my-5">
-        {/* error */}
-        {latLngError && (
-          <div>
-            <p className="pt-2 text-xs text-red-700">{latLngError}</p>
-          </div>
-        )}
-
+      <section className="flex flex-col sm:flex-row justify-end my-5">
         {/* button getLocation */}
         {!geolocationPosition && (
           <div className="flex w-full sm:w-50 justify-end">
@@ -95,4 +84,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default EditMap;
