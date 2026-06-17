@@ -1,15 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useSearchRecommendation } from "../hooks/use-search-recommendation";
-import { searchRecommendationSchema } from "../schemas/search-recommendation-schema";
-import SearchRecommendations from "./SearchRecommendations";
 import { formatSearch } from "../utils/format-search-util";
 import { showSearchbarChecker } from "../utils/show-searchbar-checker-util";
+import SearchRecommendations from "./SearchRecommendations";
 
 function AppSearchBar() {
   const currentPath = usePathname();
@@ -24,8 +21,8 @@ function AppSearchBar() {
   if (!isShowSearchBar) return null;
 
   return (
-    <div className="relative w-full">
-      <label className="input w-full border border-brand-mist-300 text-brand-mist-700 [outline:none] focus-within:[outline:none]">
+    <div className="relative w-full md:w-60 lg:w-100">
+      <label className="input w-full border border-brand-mist-300 rounded-full text-brand-mist-700 [outline:none] focus-within:[outline:none]">
         <svg
           className="h-[1.5em] sm:h-[2em] opacity-50 text-brand-mist-600"
           xmlns="http://www.w3.org/2000/svg"

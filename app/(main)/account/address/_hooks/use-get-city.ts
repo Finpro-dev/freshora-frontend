@@ -17,5 +17,8 @@ export const useGetCity = (province: string) => {
 
       return data;
     },
+
+    enabled: !!province,
+    staleTime: 5 * 60 * 1000,
   });
 };

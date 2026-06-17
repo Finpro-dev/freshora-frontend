@@ -9,7 +9,7 @@ import { Address } from "@/shared/types/address-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useGetCity } from "../../_hooks/use-get-city";
 import { useGetDistrict } from "../../_hooks/use-get-district";
@@ -20,27 +20,31 @@ import {
   editAddressSchema,
 } from "../_schemas/edit-address-schema";
 import Swal from "sweetalert2";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface EditAddressFormProps {
   address: Address;
 }
 
 function EditAddressForm({ address }: EditAddressFormProps) {
+  const queryClient = useQueryClient();
   const defaultValues = {
-    address: address?.address ?? "",
-    province: `${address?.provinceId ?? ""}%${address?.province ?? ""}`,
-    city: `${address?.cityId ?? ""}%${address?.city ?? ""}`,
-    district: `${address?.districtId ?? ""}%${address?.district ?? ""}`,
-    postalCode: address?.postalCode ?? "",
+    address: address?.address,
+    province: `${address?.provinceId}%${address?.province}`,
+    city: `${address?.cityId}%${address?.city}`,
+    district: `${address?.districtId}%${address?.district}`,
+    postalCode: address?.postalCode,
   };
 
   const {
+    control,
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors, dirtyFields },
   } = useForm<EditAddressInput>({
-    values: defaultValues,
+    defaultValues,
     resolver: zodResolver(editAddressSchema),
   });
 
@@ -55,15 +59,25 @@ function EditAddressForm({ address }: EditAddressFormProps) {
   } = useUserAddressStore((state) => state);
 
   // get all province data
-  const { data: provinces } = useGetProvinces();
+  const { data: provinces, isLoading: loadingProvince } = useGetProvinces();
   const watchedProvince = watch("province");
 
   // get all cities based on selected province
-  const { data: city } = useGetCity(String(watchedProvince));
+  const { data: city, isLoading: loadingCity } = useGetCity(
+    String(watchedProvince),
+  );
   const watchedCity = watch("city");
 
   // get all districts based on selected city
-  const { data: district } = useGetDistrict(String(watchedCity));
+  const { data: district, isLoading: loadingDistrict } = useGetDistrict(
+    String(watchedCity),
+  );
+
+  const handleChangeProvince = (value: string) => {
+    setValue("province", value);
+    setValue("city", "");
+    setValue("district", "");
+  };
 
   const handleCreateAddress = handleSubmit(async (data) => {
     const { id: provinceId, name: province } = getIdAndNameLocation(
@@ -95,6 +109,7 @@ function EditAddressForm({ address }: EditAddressFormProps) {
         toast.success("Address modified successfully");
         setError(null);
         setCords({ lat: 43.21, lng: 0.123 });
+        queryClient.invalidateQueries({ queryKey: ["address-details"] });
         router.push("/account/address");
       }
     });
@@ -169,17 +184,25 @@ function EditAddressForm({ address }: EditAddressFormProps) {
                   Province <span className="text-red-500">*</span>
                 </label>
               </div>
-              <select
-                {...register("province")}
+              <Controller
                 name="province"
-                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
-                <option disabled={true}>Province</option>
-                {provinces?.data?.map((province: any, i: number) => (
-                  <option key={i} value={`${province.id}%${province.name}`}>
-                    {province.name}
-                  </option>
-                ))}
-              </select>
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <select
+                    id="province"
+                    onChange={(e) => handleChangeProvince(e.target.value)}
+                    onBlur={onBlur}
+                    value={value as string}
+                    className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
+                    <option disabled={true}>Province</option>
+                    {provinces?.data?.map((province: any, i: number) => (
+                      <option key={i} value={`${province.id}%${province.name}`}>
+                        {province.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
 
               {errors.province && (
                 <p className="pt-2 text-xs text-red-700">
@@ -193,23 +216,32 @@ function EditAddressForm({ address }: EditAddressFormProps) {
                   City <span className="text-red-500">*</span>
                 </label>
               </div>
-              <select
-                {...register("city")}
-                name="city"
-                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
-                {!city ? (
-                  <option disabled={true}>Select province first</option>
-                ) : (
-                  <option disabled={true}>City</option>
-                )}
 
-                {city?.data &&
-                  city?.data?.map((city: any, i: number) => (
-                    <option key={i} value={`${city.id}%${city.name}`}>
-                      {city.name}
-                    </option>
-                  ))}
-              </select>
+              <Controller
+                name="city"
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <select
+                    id={city}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value as string}
+                    className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
+                    {!city ? (
+                      <option disabled={true}>Select province first</option>
+                    ) : (
+                      <option disabled={true}>City</option>
+                    )}
+
+                    {city?.data &&
+                      city?.data?.map((city: any, i: number) => (
+                        <option key={i} value={`${city.id}%${city.name}`}>
+                          {city.name}
+                        </option>
+                      ))}
+                  </select>
+                )}
+              />
 
               {errors.city && (
                 <p className="pt-2 text-xs text-red-700">
@@ -220,6 +252,7 @@ function EditAddressForm({ address }: EditAddressFormProps) {
           </section>
 
           {/* district and postal code */}
+
           <section className="w-full flex md:flex-row flex-col gap-4">
             <div className="w-full">
               <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
@@ -227,23 +260,34 @@ function EditAddressForm({ address }: EditAddressFormProps) {
                   District <span className="text-red-500">*</span>
                 </label>
               </div>
-              <select
-                {...register("district")}
-                name="district"
-                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
-                {!district ? (
-                  <option disabled={true}>Select city first</option>
-                ) : (
-                  <option disabled={true}>District</option>
-                )}
 
-                {district?.data &&
-                  district?.data?.map((district: any, i: number) => (
-                    <option key={i} value={`${district.id}%${district.name}`}>
-                      {district.name}
-                    </option>
-                  ))}
-              </select>
+              <Controller
+                name="district"
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <select
+                    id="district"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value as string}
+                    className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
+                    {!district ? (
+                      <option disabled={true}>Select city first</option>
+                    ) : (
+                      <option disabled={true}>District</option>
+                    )}
+
+                    {district?.data &&
+                      district?.data?.map((district: any, i: number) => (
+                        <option
+                          key={i}
+                          value={`${district.id}%${district.name}`}>
+                          {district.name}
+                        </option>
+                      ))}
+                  </select>
+                )}
+              />
 
               {errors.district && (
                 <p className="pt-2 text-xs text-red-700">
@@ -291,16 +335,21 @@ function EditAddressForm({ address }: EditAddressFormProps) {
             </Button>
           )}
         </form>
-
-        <form action={handleDeleteAddress} className="mt-2">
-          <Button
-            type="submit"
-            pendingLabel={<SpinnerMini />}
-            disabled={isPending}
-            btnType="danger">
-            Delete address
-          </Button>
-        </form>
+        {address.addressStatus === "PRIMARY" ? (
+          <div className="cursor-help my-4 text-brand-mist-400 flex items-center justify-center text-sm">
+            <p>You are unable to delete primary address </p>
+          </div>
+        ) : (
+          <form action={handleDeleteAddress} className="mt-2">
+            <Button
+              type="submit"
+              pendingLabel={<SpinnerMini />}
+              disabled={isPending}
+              btnType="danger">
+              Delete address
+            </Button>
+          </form>
+        )}
       </div>
     </>
   );

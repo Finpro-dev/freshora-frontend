@@ -13,7 +13,6 @@ function page() {
   const { addressId } = useParams<{ addressId: string }>();
   const router = useRouter();
   const { data: address, isPending } = useGetAddressDetails(addressId);
-  // const address: Address = data?.data;
   const setCords = useUserAddressStore((state) => state.setCords);
 
   const handleBack = () => {

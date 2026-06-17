@@ -16,5 +16,8 @@ export const useGetDistrict = (city: string) => {
 
       return data;
     },
+
+    enabled: !!city,
+    staleTime: 5 * 60 * 1000,
   });
 };

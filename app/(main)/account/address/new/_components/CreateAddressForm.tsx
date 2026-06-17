@@ -20,9 +20,9 @@ import Swal from "sweetalert2";
 
 function CreateAddressForm() {
   const defaultValues = {
-    province: "2%MALUKU",
-    city: "11%AMBON",
-    district: "119%BAGUALA",
+    province: "",
+    city: "",
+    district: "",
     postalCode: "",
   };
 

@@ -11,6 +11,7 @@ export const editUserAddress = async (
   data: EditAddressApiInput,
   addressId: string,
 ) => {
+  console.log(data);
   const allCookie = await cookies();
   const accessToken = allCookie.get("accessToken")?.value;
   const refreshToken = allCookie.get("refreshToken")?.value;
@@ -28,6 +29,7 @@ export const editUserAddress = async (
 
     await forwardExpressCookie(res.headers["set-cookie"]);
     revalidatePath("/account/address");
+    revalidatePath(`/account/address/${addressId}`);
     return { data: res.data.data, success: true };
   } catch (error: any) {
     const errorMessage =
