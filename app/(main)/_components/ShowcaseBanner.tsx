@@ -8,7 +8,7 @@ function ShowcaseBanner() {
         src={heroBanner}
         alt="hom-hero-banner"
         fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        sizes="100vw"
         className="object-cover"
       />
       <div className="absolute h-full w-full bg-linear-to-t sm:bg-linear-to-r from-brand-emerald-800 to-brand-mist-200/10 flex flex-col gap-10 items-center sm:items-start justify-center px-5 sm:px-15">
