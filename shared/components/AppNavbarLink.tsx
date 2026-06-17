@@ -27,7 +27,7 @@ function AppNavbarLink({ children }: AppNavbarLinkProps) {
 
   return (
     <div
-      className={`${!isShowSearchBar && "w-full justify-between"} sm:w-auto flex justify gap-5 sm:gap-10 md:gap-12 items-center`}>
+      className={`${!isShowSearchBar && "w-full justify-end sm:justify-between"} sm:w-auto flex justify gap-8 lg:gap-12 items-center`}>
       {appNavbarStaticMenus?.map((link) => {
         if (link.name === "cart") {
           return (
@@ -38,7 +38,7 @@ function AppNavbarLink({ children }: AppNavbarLinkProps) {
               aria-label={`Shopping cart with ${totalQuantity} items`}>
               {link.logo}
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 flex items-center justify-center bg-brand-emerald-600 text-brand-mist-200 text-xs font-semibold rounded-full px-1.5 shadow-sm animate-in zoom-in-50 duration-200">
+                <span className="absolute -top-1 -right-1 min-w-5 h-5 flex items-center justify-center bg-brand-emerald-600 text-brand-mist-200 text-xs font-semibold rounded-full px-1.5 shadow-sm animate-in zoom-in-50 duration-200">
                   {totalQuantity > 99 ? "99+" : totalQuantity}
                 </span>
               )}
