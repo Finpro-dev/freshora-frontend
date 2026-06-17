@@ -5,6 +5,7 @@ import UserDetails from "./UserDetails";
 import UserReferralCode from "./UserReferralCode";
 import UserReferralVoucher from "./UserReferralVoucher";
 import VerificationAlert from "./VerificationAlert";
+import { capitalize } from "@/shared/utils/capitalize";
 
 async function ProfileOverview() {
   const [userData, userReferralVoucher] = await Promise.all([
@@ -19,8 +20,8 @@ async function ProfileOverview() {
     <div>
       {/* user details */}
       <UserDetails
-        firstName={String(user?.firstName)}
-        lastName={user?.lastName || ""}
+        firstName={capitalize(String(user?.firstName))}
+        lastName={capitalize(String(user?.lastName)) || ""}
         avatar={avatar as string}
         email={String(user?.email)}
         phone={user?.phone}

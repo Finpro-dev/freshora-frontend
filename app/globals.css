@@ -107,7 +107,7 @@ body {
     width: 20px;
     aspect-ratio: 1;
     border-radius: 50%;
-    border: 2px solid #007a55;
+    border: 2px solid #fefefe;
     border-right-color: transparent;
     animation: rotate 1s infinite linear;
   }
@@ -117,4 +117,14 @@ body {
       transform: rotate(1turn);
     }
   }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
