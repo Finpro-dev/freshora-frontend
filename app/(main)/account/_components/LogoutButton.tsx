@@ -10,13 +10,12 @@ function LogoutButton() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleLogoutUser = async () => {
-    const toasterId = toast.loading("Logging out..");
     startTransition(async () => {
+      const toasterId = toast.loading("Logging out..");
       await logoutUser();
       router.push("/login");
+      toast.success("Logout successful, see ya soon!", { id: toasterId });
     });
-
-    toast.success("Logout successful, see ya soon!", { id: toasterId });
   };
 
   return (
