@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* @import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css"; */
 
 @plugin "daisyui" {
   themes:
@@ -127,4 +129,27 @@ body {
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
+}
+
+/* REACT SLICK */
+/* button */
+.slick-prev {
+  left: -50px !important;
+}
+
+/* button */
+.slick-next {
+  right: -50px !important;
+}
+
+/* the slides */
+.slick-list {
+  margin: 0 -10px;
+  height: auto;
+  transition: height 0.3s ease-in-out;
+}
+
+.slick-slide > div {
+  padding: 0 10px;
+  border-radius: 100px;
 }

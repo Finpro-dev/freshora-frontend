@@ -7,6 +7,7 @@ import { ApiResponse } from "@/shared/types/api-type";
 import { Gender, Role, User } from "@/shared/types/user-type";
 import { CartStates } from "@/shared/store/cart-store/cart-store";
 import { cookies } from "next/headers";
+import AppFooter from "@/shared/components/AppFooter";
 
 async function layout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
@@ -67,6 +68,7 @@ async function layout({ children }: { children: React.ReactNode }) {
         <ScrollToTop />
         <AppNavbar />
         {children}
+        <AppFooter />
       </StoreProviders>
     </div>
   );
