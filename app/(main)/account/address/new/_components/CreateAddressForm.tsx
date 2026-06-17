@@ -271,6 +271,7 @@ function CreateAddressForm() {
           <Button
             onClick={handleCancelCreateAddress}
             type="button"
+            disabled={isPending}
             btnType="secondary">
             Cancel
           </Button>

@@ -2,18 +2,30 @@
 
 import { logoutUser } from "@/actions/logout-user";
 import Button from "@/shared/components/Button";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 function LogoutButton() {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const handleLogoutUser = async () => {
-    await logoutUser();
-    router.push("/login");
+    const toasterId = toast.loading("Logging out..");
+    startTransition(async () => {
+      await logoutUser();
+      router.push("/login");
+    });
+
+    toast.success("Logout successful, see ya soon!", { id: toasterId });
   };
 
   return (
     <form action={handleLogoutUser}>
-      <Button pendingLabel="Logging out..." type="submit" btnType="danger">
+      <Button
+        disabled={isPending}
+        pendingLabel="Logging out..."
+        type="submit"
+        btnType="danger">
         Logout
       </Button>
     </form>
