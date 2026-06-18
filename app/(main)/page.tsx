@@ -6,6 +6,7 @@ import TextDivider from "./_components/TextDivider";
 import BrowseProductCta from "./_components/BrowseProductCta";
 import ProductGrid from "./_components/ProductGrid";
 import ShowcaseBanner from "./_components/ShowcaseBanner";
+import ProductLayout from "./_components/ProductLayout";
 
 export default function Page() {
   return (
@@ -15,14 +16,11 @@ export default function Page() {
         <Services />
         <TextDivider>Our Products</TextDivider>
 
-        <section>
+        <ProductLayout>
           <ProductSliderWrapper />
           <BrowseProductCta />
-        </section>
-
-        <section>
           <ProductGrid />
-        </section>
+        </ProductLayout>
 
         <TextDivider>Food Wisdom</TextDivider>
         <ShowcaseBanner />
