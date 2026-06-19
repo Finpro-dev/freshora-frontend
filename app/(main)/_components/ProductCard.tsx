@@ -1,4 +1,4 @@
-import { Product } from "@/shared/types/product-type";
+import Button from "@/shared/components/Button";
 import { capitalize } from "@/shared/utils/capitalize";
 import Image from "next/image";
 import {
@@ -6,13 +6,15 @@ import {
   calculateTotalPrice,
 } from "../_utils/carousel-product-util";
 import DiscountTag from "./DiscountTag";
-import Button from "@/shared/components/Button";
+import { Product } from "@/shared/types/product-type";
+import defaultProductThumbnail from "@/public/product/default-product-image.jpeg";
 
 interface ProductCardProps {
   product: Product;
+  quantity: number;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, quantity }: ProductCardProps) {
   const {
     productPhotos,
     name,
@@ -21,12 +23,14 @@ function ProductCard({ product }: ProductCardProps) {
     weightPerGram,
     grade,
     discount,
-    stocks: { quantity },
   } = product;
 
-  const price = discount?.discountAmount
-    ? calculateTotalPrice(productPrice, discount?.discountAmount)
+  const price = Number(discount?.[0]?.discountAmount)
+    ? calculateTotalPrice(productPrice, Number(discount?.[0]?.discountAmount))
     : productPrice;
+
+  const productThumbnail =
+    productPhotos?.[0]?.photoUrl || defaultProductThumbnail;
 
   return (
     <div
@@ -34,14 +38,14 @@ function ProductCard({ product }: ProductCardProps) {
       {/* image */}
       <div className="relative w-full h-50 sm:h-50 md:h-60 lg:h-65">
         <Image
-          src={String(productPhotos?.[0]?.photoUrl)}
+          src={productThumbnail}
           alt="slug"
           fill
           className="object-cover object-center"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
         />
-        {discount?.discountAmount ? (
-          <DiscountTag discountAmount={discount?.discountAmount} />
+        {Number(discount?.[0]?.discountAmount) ? (
+          <DiscountTag discountAmount={Number(discount?.[0]?.discountAmount)} />
         ) : null}
       </div>
 
@@ -60,17 +64,17 @@ function ProductCard({ product }: ProductCardProps) {
           <div className="pt-3 flex items-center gap-4">
             <p className="text-orange-900 text-lg font-semibold">
               Rp{" "}
-              {discount?.discountAmount
+              {Number(discount?.[0]?.discountAmount)
                 ? price.toLocaleString("id-ID")
                 : productPrice.toLocaleString("id-ID")}
             </p>
 
-            {discount?.discountAmount ? (
+            {Number(discount?.[0]?.discountAmount) ? (
               <p className="text-brand-mist-400 text-sm line-through">
                 Rp.{" "}
                 {calculateDiscount(
                   productPrice,
-                  discount?.discountAmount,
+                  Number(discount?.[0]?.discountAmount),
                 ).toLocaleString("id-ID")}
               </p>
             ) : null}

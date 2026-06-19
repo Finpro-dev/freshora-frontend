@@ -1,3 +1,5 @@
+import { Discount } from "./discount-type";
+
 export enum DietType {
   VEGAN = "VEGAN",
   VEGETARIAN = "VEGETARIAN",
@@ -35,10 +37,5 @@ export interface Product {
   storageInstructions: string;
   grade: ProductGrade;
   dietType: DietType;
-  discount: {
-    discountAmount: number | null;
-  };
-  stocks: {
-    quantity: number;
-  };
+  discount: Discount[];
 }

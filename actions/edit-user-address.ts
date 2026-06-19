@@ -11,7 +11,6 @@ export const editUserAddress = async (
   data: EditAddressApiInput,
   addressId: string,
 ) => {
-  console.log(data);
   const allCookie = await cookies();
   const accessToken = allCookie.get("accessToken")?.value;
   const refreshToken = allCookie.get("refreshToken")?.value;

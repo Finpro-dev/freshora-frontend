@@ -1,12 +1,11 @@
+import BrowseProductCta from "./_components/BrowseProductCta";
 import HeroBanner from "./_components/HeroBanner";
-import ProductSlider from "./_components/CarouselProductSlider";
+import ProductGrid from "./_components/ProductGrid";
+import ProductLayout from "./_components/ProductLayout";
 import ProductSliderWrapper from "./_components/ProductSliderWrapper";
 import Services from "./_components/Services";
-import TextDivider from "./_components/TextDivider";
-import BrowseProductCta from "./_components/BrowseProductCta";
-import ProductGrid from "./_components/ProductGrid";
 import ShowcaseBanner from "./_components/ShowcaseBanner";
-import ProductLayout from "./_components/ProductLayout";
+import TextDivider from "./_components/TextDivider";
 
 export default function Page() {
   return (
