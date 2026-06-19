@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "@/shared/components/Button";
 import { capitalize } from "@/shared/utils/capitalize";
 import Image from "next/image";
@@ -8,13 +10,53 @@ import {
 import DiscountTag from "./DiscountTag";
 import { Product } from "@/shared/types/product-type";
 import defaultProductThumbnail from "@/public/product/default-product-image.jpeg";
+import { useAddToCart } from "@/shared/hooks/use-cart";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
+import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
   quantity: number;
+  storeId?: string;
 }
 
-function ProductCard({ product, quantity }: ProductCardProps) {
+function ProductCard({ product, quantity, storeId }: ProductCardProps) {
+  const router = useRouter();
+  const userId = useAuthStore((state) => state.userId);
+  const isVerified = useAuthStore((state) => state.isVerified);
+  const nearestStoreId = useUserCoordinatesStore((state) => state.nearestStoreId);
+  const addToCart = useAddToCart();
+
+  const effectiveStoreId = storeId || nearestStoreId;
+  const isAuth = Boolean(userId && isVerified);
+  const isOutOfStock = !quantity;
+  const isAddingToCart = addToCart.isPending;
+
+  const handleAddToCart = async () => {
+    if (!isAuth) {
+      toast.error("Please log in to add items to your cart");
+      router.push("/login");
+      return;
+    }
+    if (isOutOfStock) return;
+    if (!effectiveStoreId) {
+      toast.error("Unable to determine your nearest store. Please allow location access.");
+      return;
+    }
+
+    try {
+      await addToCart.mutateAsync({
+        productId: product.productId,
+        storeId: effectiveStoreId,
+        quantity: 1,
+      });
+    } catch {
+      // Error is handled by useAddToCart's onError (toast already shown)
+    }
+  };
+
   const {
     productPhotos,
     name,
@@ -94,7 +136,13 @@ function ProductCard({ product, quantity }: ProductCardProps) {
 
         {/* button */}
         <div className="pt-4">
-          <Button btnType="primary">Add to cart</Button>
+          <Button
+            btnType="primary"
+            disabled={isOutOfStock || isAddingToCart}
+            onClick={handleAddToCart}
+          >
+            {isAddingToCart ? "Adding..." : isOutOfStock ? "Out of stock" : "Add to cart"}
+          </Button>
         </div>
       </div>
     </div>

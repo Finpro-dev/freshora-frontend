@@ -29,6 +29,7 @@ function ProductGrid() {
             key={i}
             product={product?.product}
             quantity={product.quantity}
+            storeId={storeId}
           />
         ))
       )}
