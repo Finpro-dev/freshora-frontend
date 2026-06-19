@@ -5,6 +5,7 @@ import { RiMoneyPoundCircleLine } from "react-icons/ri";
 import { RiMailSendLine } from "react-icons/ri";
 import { SlPeople } from "react-icons/sl";
 import { GrNotes } from "react-icons/gr";
+import { BiStore } from "react-icons/bi";
 
 export const sidebarDashboardMenu = [
   {
@@ -48,5 +49,11 @@ export const sidebarDashboardMenu = [
     logo: <GrNotes />,
     name: "Inventory",
     href: "/dashboard/inventory",
+  },
+  {
+    id: 8,
+    logo: <BiStore />,
+    name: "Store",
+    href: "/dashboard/store",
   },
 ];
