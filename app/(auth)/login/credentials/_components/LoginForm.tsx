@@ -1,24 +1,19 @@
 "use client";
 
 import { loginUser } from "@/actions/login-user";
-import SubmitButton from "@/shared/components/SubmitButton";
+import Button from "@/shared/components/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { LoginInput, loginSchema } from "../../_schemas/login-schema";
 import AuthNavigation from "./AuthNavigation";
-import { Router } from "next/router";
-import { useRouter, useSearchParams } from "next/navigation";
-import Button from "@/shared/components/Button";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isShowPassword, setIsShowPassword] = useState(false);
-
-  // fixme ->> role base redirect
-  const callbackUrl = searchParams.get("callback") || "/";
 
   const handleShowPassword = () => {
     setIsShowPassword((show) => !show);
@@ -34,6 +29,11 @@ function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await loginUser(data);
+    const user = res.data?.data;
+
+    // redirect based on role
+    const roleCallbackUrl = user?.role === "CUSTOMER" ? "/" : "/dashboard";
+    const callbackUrl = searchParams.get("callback") || roleCallbackUrl;
 
     if (!res.success) {
       toast.error(res.error);
