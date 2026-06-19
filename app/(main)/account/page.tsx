@@ -1,13 +1,12 @@
 import BackButton from "@/shared/components/BackButton";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { ImAddressBook } from "react-icons/im";
 import { MdEditSquare } from "react-icons/md";
+import LogoutButton from "./_components/LogoutButton";
 import ProfileOverview from "./_components/ProfileOverview";
 import ProfileOverviewSkeleton from "./_components/ProfileOverviewSkeleton";
 import UserConfigBar from "./_components/UserConfigBar";
-import LogoutButton from "./_components/LogoutButton";
-import { Metadata } from "next";
-import { logoutUser } from "@/actions/logout-user";
 
 export const metadata: Metadata = {
   title: "Customer area",
