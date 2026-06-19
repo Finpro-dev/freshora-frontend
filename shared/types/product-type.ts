@@ -37,5 +37,5 @@ export interface Product {
   storageInstructions: string;
   grade: ProductGrade;
   dietType: DietType;
-  discount: Discount[];
+  discounts: Discount[];
 }

@@ -32,14 +32,6 @@ function ProductGrid() {
           />
         ))
       )}
-
-      {/* {product?.map((product, i: number) => (
-        <ProductCard
-          key={i}
-          product={product?.product}
-          quantity={product.quantity}
-        />
-      ))} */}
     </div>
   );
 }

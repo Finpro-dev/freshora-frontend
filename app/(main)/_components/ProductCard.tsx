@@ -22,21 +22,21 @@ function ProductCard({ product, quantity }: ProductCardProps) {
     unit,
     weightPerGram,
     grade,
-    discount,
+    discounts,
   } = product;
 
-  const price = Number(discount?.[0]?.discountAmount)
-    ? calculateTotalPrice(productPrice, Number(discount?.[0]?.discountAmount))
-    : productPrice;
+  const price = Number(discounts?.[0]?.discountAmount)
+    ? calculateTotalPrice(productPrice, Number(discounts?.[0]?.discountAmount))
+    : Number(productPrice);
 
   const productThumbnail =
     productPhotos?.[0]?.photoUrl || defaultProductThumbnail;
 
   return (
     <div
-      className={`mb-8 h-auto min-h-110 md:min-h-120 lg:min-h-100 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}>
+      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}>
       {/* image */}
-      <div className="relative w-full h-50 sm:h-50 md:h-60 lg:h-65">
+      <div className="relative w-full h-70 md:h-65 lg:h-100">
         <Image
           src={productThumbnail}
           alt="slug"
@@ -44,12 +44,14 @@ function ProductCard({ product, quantity }: ProductCardProps) {
           className="object-cover object-center"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
         />
-        {Number(discount?.[0]?.discountAmount) ? (
-          <DiscountTag discountAmount={Number(discount?.[0]?.discountAmount)} />
+        {Number(discounts?.[0]?.discountAmount) ? (
+          <DiscountTag
+            discountAmount={Number(discounts?.[0]?.discountAmount)}
+          />
         ) : null}
       </div>
 
-      <div className="flex flex-col justify-between px-5 py-3">
+      <div className="h-80 flex flex-col justify-between px-5 py-3">
         <div>
           <div>
             <h4 className="text-brand-mist-600 text-xl font-semibold">
@@ -64,17 +66,17 @@ function ProductCard({ product, quantity }: ProductCardProps) {
           <div className="pt-3 flex items-center gap-4">
             <p className="text-orange-900 text-lg font-semibold">
               Rp{" "}
-              {Number(discount?.[0]?.discountAmount)
+              {Number(discounts?.[0]?.discountAmount)
                 ? price.toLocaleString("id-ID")
-                : productPrice.toLocaleString("id-ID")}
+                : Number(productPrice).toLocaleString("id-ID")}
             </p>
 
-            {Number(discount?.[0]?.discountAmount) ? (
+            {Number(discounts?.[0]?.discountAmount) ? (
               <p className="text-brand-mist-400 text-sm line-through">
                 Rp.{" "}
                 {calculateDiscount(
                   productPrice,
-                  Number(discount?.[0]?.discountAmount),
+                  Number(discounts?.[0]?.discountAmount),
                 ).toLocaleString("id-ID")}
               </p>
             ) : null}
