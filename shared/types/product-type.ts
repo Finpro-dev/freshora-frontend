@@ -25,6 +25,7 @@ export interface ProductPhotos {
 }
 
 export interface Product {
+  productId: string;
   serialNumber: string;
   name: string;
   slug: string;
