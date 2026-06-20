@@ -17,38 +17,37 @@ interface DashboardLayout {
   children: React.ReactNode;
 }
 
-const cookieStore = await cookies();
-const accessToken = cookieStore.get("accessToken")?.value;
-const refreshToken = cookieStore.get("refreshToken")?.value;
-let response = null;
+async function layout({ children }: DashboardLayout) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+  let response = null;
 
-if (accessToken || refreshToken) {
-  response = await fetch(`${CORS_CREDENTIALS.API_BASE_URL}/users/me`, {
-    method: "GET",
-    headers: {
-      Cookie: cookieStore.toString(),
-      "Content-Type": "application/json",
-    },
-  });
-}
+  if (accessToken || refreshToken) {
+    response = await fetch(`${CORS_CREDENTIALS.API_BASE_URL}/users/me`, {
+      method: "GET",
+      headers: {
+        Cookie: cookieStore.toString(),
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
-const data: ApiResponse<User> | undefined = response
-  ? await response.json()
-  : undefined;
+  const data: ApiResponse<User> | undefined = response
+    ? await response.json()
+    : undefined;
 
-const initialAuth: AuthStates = {
-  userId: String(data?.data?.userId || ""),
-  firstName: String(data?.data?.firstName || ""),
-  lastName: String(data?.data?.lastName || ""),
-  email: String(data?.data?.email || ""),
-  avatar: String(data?.data?.avatar || ""),
-  phone: String(data?.data?.phone || ""),
-  role: data?.data?.role as Role,
-  isVerified: Boolean(data?.data?.isVerified),
-  gender: data?.data?.gender as Gender,
-};
-
-function layout({ children }: DashboardLayout) {
+  const initialAuth: AuthStates = {
+    userId: String(data?.data?.userId || ""),
+    firstName: String(data?.data?.firstName || ""),
+    lastName: String(data?.data?.lastName || ""),
+    email: String(data?.data?.email || ""),
+    avatar: String(data?.data?.avatar || ""),
+    phone: String(data?.data?.phone || ""),
+    role: data?.data?.role as Role,
+    isVerified: Boolean(data?.data?.isVerified),
+    gender: data?.data?.gender as Gender,
+  };
   return (
     <div className="min-h-dvh w-full">
       <DashboardStoreProviders initialAuth={initialAuth}>
