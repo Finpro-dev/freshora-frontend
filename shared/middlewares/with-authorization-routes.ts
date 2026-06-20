@@ -1,7 +1,5 @@
-import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
-import { TOKEN_CREDENTIALS } from "../config/dotenv-config";
-import { TokenPayload } from "./types";
+import { getRoleFromCookie } from "./decoded-token";
 
 export async function withAuthorizationRoutes(
   request: NextRequest,
@@ -11,52 +9,24 @@ export async function withAuthorizationRoutes(
     nextUrl: { pathname },
   } = request;
 
-  /*
-    if the user enter bypassUrl, we need to continue to avoid any infinite loop caused by :
-    if (!isMatch) {
-         return NextResponse.redirect(new URL("/unauthorized", request.url));
-    }
-    user will always go to login as indeed there's no access/refresh token
-  */
-
-  const bypassUrl = ["/", "/login", "/signup"];
-  const isRequiredLogin = bypassUrl.some((path) => {
-    if (path === "/") return pathname === "/";
-    return pathname.startsWith(path);
-  });
-  if (isRequiredLogin) return null;
-
-  const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
-  const customerPrefixes = [
-    "/account",
-    "/order",
-    "/cart",
-    "/products",
-    "/unauthorized",
+  const ROLE_ROUTES = [
+    { prefix: "/dashboard", allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"] },
+    { prefix: "/cart", allowedRoles: ["CUSTOMER"] },
+    { prefix: "/account", allowedRoles: ["CUSTOMER"] },
+    { prefix: "/order", allowedRoles: ["CUSTOMER"] },
   ];
 
-  const adminPrefixes = ["/dashboard", "/unauthorized"];
+  const matchedRoute = ROLE_ROUTES?.find((route) => {
+    if (pathname === "/" && pathname === route.prefix) return route;
+    return pathname.startsWith(route.prefix);
+  });
 
-  const token = accessToken || refreshToken;
-  const jwtSecret =
-    token === accessToken
-      ? TOKEN_CREDENTIALS.JWT_ACCESS_SECRET
-      : TOKEN_CREDENTIALS.JWT_REFRESH_SECRET;
+  if (!matchedRoute) return null;
 
-  if (!accessToken) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  const accessToken = request.cookies.get("accessToken")?.value;
+  const userRole = await getRoleFromCookie(accessToken);
 
-  const secret = new TextEncoder().encode(jwtSecret);
-  const { payload } = await jwtVerify(token as string, secret);
-  const tokenPayload = payload as TokenPayload;
-  const userRole = tokenPayload.role;
-
-  const prefixes = userRole === "CUSTOMER" ? customerPrefixes : adminPrefixes;
-  const isMatch = prefixes.some((prefix) => pathname.startsWith(prefix));
-
-  if (!isMatch) {
+  if (!userRole || !matchedRoute.allowedRoles?.includes(String(userRole))) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 

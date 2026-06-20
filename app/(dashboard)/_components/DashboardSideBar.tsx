@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { RiMenu3Fill } from "react-icons/ri";
-import { sidebarDashboardMenu } from "../_statics/sidebar-menu-static";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import FreshoraLogoNoText from "./FreshoraLogoNoText";
+import SideBarOpenMenuList from "./SideBarOpenMenuList";
 
 function DashboardSideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -13,39 +12,32 @@ function DashboardSideBar() {
     setIsSidebarOpen((open) => !open);
   };
 
-  const pathName = usePathname();
-
-  console.log(pathName);
-
-  return isSidebarOpen ? (
-    <div className="flex flex-col gap-10 w-85 h-dvh border-r border-brand-mist-300">
-      <div className="flex gap-2 justify-between items-start p-5">
-        <div>
-          <h1 className="text-2xl font-semibold">Store Manager</h1>
-          <h1>Freshora</h1>
-        </div>
-        <div onClick={handleToggleSideBar}>
+  return (
+    <div
+      className={`hidden sm:flex flex-col gap-10 ${isSidebarOpen ? "md:w-85" : "md:w-auto"} w-auto h-dvh border-r border-brand-mist-300`}>
+      <section className="flex gap-2 justify-between items-start p-5">
+        {isSidebarOpen && (
+          <div className="hidden md:block">
+            <h1 className="text-2xl font-semibold">Store Manager</h1>
+            <h1>Freshora</h1>
+          </div>
+        )}
+        <div
+          onClick={handleToggleSideBar}
+          className="cursor-pointer hidden md:block">
           <RiMenu3Fill className="text-2xl text-brand-mist-500" />
         </div>
-      </div>
+
+        <div className="relative w-8 h-8 block md:hidden">
+          <FreshoraLogoNoText />
+        </div>
+      </section>
 
       {/* Menu */}
-      <nav className="flex flex-col px-2">
-        {sidebarDashboardMenu?.map((menu, index) => (
-          <Link
-            href={menu.href}
-            key={index}
-            className={`${pathName === menu.href && "bg-brand-emerald-200/20 rounded-lg text-brand-emerald-700"} flex gap-3 py-2 px-5 hover:bg-brand-emerald-200/30 hover:text-brand-emerald-700 hover:rounded-lg transition-all duration-150`}>
-            <div className="text-xl">{menu.logo}</div>
-            <div className="text-base">
-              <p>{menu.name}</p>
-            </div>
-          </Link>
-        ))}
-      </nav>
+      <section>
+        <SideBarOpenMenuList isSidebarOpen={isSidebarOpen} />
+      </section>
     </div>
-  ) : (
-    <p onClick={handleToggleSideBar}>closing</p>
   );
 }
 
