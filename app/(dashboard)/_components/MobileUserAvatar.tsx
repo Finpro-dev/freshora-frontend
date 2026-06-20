@@ -15,7 +15,7 @@ function MobileUserAvatar({
     <div
       className={`relative h-${height} w-${width} border-2 rounded-full border-mist-200 ring-3 ring-brand-emerald-700 overflow-hidden`}>
       <Image
-        src={avatar ?? defaultProfileImage}
+        src={avatar || defaultProfileImage}
         alt="User profile"
         fill
         className="object-cover"

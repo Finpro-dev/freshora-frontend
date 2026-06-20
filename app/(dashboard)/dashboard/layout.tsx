@@ -36,7 +36,7 @@ async function layout({ children }: DashboardLayout) {
   const data: ApiResponse<User> | undefined = response
     ? await response.json()
     : undefined;
-
+  console.log(data);
   const initialAuth: AuthStates = {
     userId: String(data?.data?.userId || ""),
     firstName: String(data?.data?.firstName || ""),
@@ -48,14 +48,17 @@ async function layout({ children }: DashboardLayout) {
     isVerified: Boolean(data?.data?.isVerified),
     gender: data?.data?.gender as Gender,
   };
+
   return (
     <div className="min-h-dvh w-full">
       <DashboardStoreProviders initialAuth={initialAuth}>
         <ScrollToTop />
         <MobileDashboardNavbar />
-        <div className="flex min-h-dvh">
+        <div className="flex h-dvh">
           <DashboardSideBar />
-          <div className="w-full h-full">{children}</div>
+          <div className="w-full h-full overflow-hidden sm:overflow-auto">
+            {children}
+          </div>
         </div>
       </DashboardStoreProviders>
     </div>

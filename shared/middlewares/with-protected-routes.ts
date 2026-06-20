@@ -34,7 +34,7 @@ export async function withProtectedRoute(
     case the user needs to log in or refresh their access
     token. */
 
-  const prefixes = ["/account", "/cart", "/order"];
+  const prefixes = ["/account", "/cart", "/order", "/dashboard"];
   const isMatch = prefixes.some((prefix) => pathname.startsWith(prefix));
 
   if (isMatch || pathname === "/") {

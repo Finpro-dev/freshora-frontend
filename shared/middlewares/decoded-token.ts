@@ -4,15 +4,14 @@ import { TOKEN_CREDENTIALS } from "../config/dotenv-config";
 import { Role } from "../types/user-type";
 
 export async function getRoleFromCookie(
-  accessToken: string | undefined,
+  token: string | undefined,
+  tokenSecret: string,
 ): Promise<Role | null> {
-  if (!accessToken) return null;
+  if (!token) return null;
 
   try {
-    const secret = new TextEncoder().encode(
-      TOKEN_CREDENTIALS.JWT_ACCESS_SECRET,
-    );
-    const { payload } = await jwtVerify(accessToken, secret);
+    const secret = new TextEncoder().encode(tokenSecret);
+    const { payload } = await jwtVerify(token, secret);
     return (payload.role as Role) || null;
   } catch (error) {
     // return null if invalid or expired

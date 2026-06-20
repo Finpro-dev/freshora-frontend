@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRoleFromCookie } from "./decoded-token";
+import { TOKEN_CREDENTIALS } from "../config/dotenv-config";
 
 export async function withAuthorizationRoutes(
   request: NextRequest,
@@ -24,7 +25,14 @@ export async function withAuthorizationRoutes(
   if (!matchedRoute) return null;
 
   const accessToken = request.cookies.get("accessToken")?.value;
-  const userRole = await getRoleFromCookie(accessToken);
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+  const token = accessToken || refreshToken;
+  const tokenSecret =
+    token === accessToken
+      ? TOKEN_CREDENTIALS.JWT_ACCESS_SECRET
+      : TOKEN_CREDENTIALS.JWT_REFRESH_SECRET;
+
+  const userRole = await getRoleFromCookie(token, tokenSecret as string);
 
   if (!userRole || !matchedRoute.allowedRoles?.includes(String(userRole))) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
