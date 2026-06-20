@@ -45,7 +45,7 @@ function page() {
           </UserConfigBar>
 
           <div className="mt-5">
-            <LogoutButton />
+            <LogoutButton>Logout</LogoutButton>
           </div>
         </section>
       </div>

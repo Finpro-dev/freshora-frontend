@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-function LogoutButton() {
+interface LogoutButtonProps {
+  children: React.ReactNode;
+}
+
+function LogoutButton({ children }: LogoutButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleLogoutUser = async () => {
@@ -25,7 +29,7 @@ function LogoutButton() {
         pendingLabel="Logging out..."
         type="submit"
         btnType="danger">
-        Logout
+        {children}
       </Button>
     </form>
   );

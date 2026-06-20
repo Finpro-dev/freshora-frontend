@@ -1,10 +1,18 @@
 "use client";
 
 import Button from "@/shared/components/Button";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { useRouter } from "next/navigation";
 
 export default function page() {
   const router = useRouter();
+  const { role } = useAuthStore((state) => state);
+  let callbackUrl = "";
+  if (!role || role === "CUSTOMER") {
+    callbackUrl = "/";
+  } else if (role === "STORE_ADMIN" || role === "SUPER_ADMIN") {
+    callbackUrl = "/dashboard";
+  }
 
   return (
     <main className="grid min-h-screen place-items-center px-6 py-24 sm:py-32 lg:px-8">
@@ -23,8 +31,8 @@ export default function page() {
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button btnType="primary" onClick={() => router.back()}>
-            Go back previous
+          <Button btnType="primary" onClick={() => router.replace(callbackUrl)}>
+            Back to main page
           </Button>
         </div>
       </div>

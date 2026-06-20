@@ -10,6 +10,7 @@ import { capitalize } from "@/shared/utils/capitalize";
 import { ROLE_MAPPING } from "../_utils/role-mapping-util";
 import Button from "@/shared/components/Button";
 import { MdOutlineLogout } from "react-icons/md";
+import LogoutButton from "@/app/(main)/account/_components/LogoutButton";
 
 interface SideBarOpenMenuListProps {
   isSidebarOpen: boolean;
@@ -66,11 +67,9 @@ function SideBarOpenMenuList({ isSidebarOpen }: SideBarOpenMenuListProps) {
             </div>
           ) : null}
         </div>
-        {/* // fixme ->> adding logout functionality */}
-        <form className="px-5">
-          <Button
-            btnType="danger"
-            className="px-1 py-1 flex gap-2 items-center justify-center w-full bg-red-300/60 rounded-md hover:bg-red-900 hover:text-brand-mist-200 cursor-pointer transition-all duration-300">
+
+        <div className="px-5">
+          <LogoutButton>
             <span className={`pr-2 text-base`}>
               <MdOutlineLogout />
             </span>
@@ -78,8 +77,8 @@ function SideBarOpenMenuList({ isSidebarOpen }: SideBarOpenMenuListProps) {
               className={`${!isSidebarOpen ? "hidden" : "hidden md:block"}`}>
               Logout
             </span>
-          </Button>
-        </form>
+          </LogoutButton>
+        </div>
       </section>
     </>
   );
