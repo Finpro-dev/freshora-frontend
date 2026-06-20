@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 function page() {
   return (
     <main className="min-h-dvh flex items-center justify-center">
