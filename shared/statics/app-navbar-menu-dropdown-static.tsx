@@ -14,7 +14,7 @@ export const appNavbarMenuDropdown = [
     id: 2,
     logo: <GiFruitBowl />,
     name: "Products",
-    href: "/products",
+    href: "/product",
   },
   {
     id: 3,

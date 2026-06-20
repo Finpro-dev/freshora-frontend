@@ -34,7 +34,7 @@ function DashboardSideBar() {
       </section>
 
       {/* Menu */}
-      <section>
+      <section className="h-dvh flex flex-col justify-between gap-10">
         <SideBarOpenMenuList isSidebarOpen={isSidebarOpen} />
       </section>
     </div>

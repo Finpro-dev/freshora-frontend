@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { TOKEN_CREDENTIALS } from "../config/dotenv-config";
 import { jwtVerify } from "jose";
 import { TokenPayload } from "./types";
+import { getRoleFromCookie } from "./decoded-token";
 
 export async function withAuthRoutes(
   request: NextRequest,
@@ -15,27 +16,17 @@ export async function withAuthRoutes(
 
   const isMatch = prefixes.some((prefix) => pathname.startsWith(prefix));
   const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
-
-  const token = accessToken || refreshToken;
-  const jwtSecret =
-    token === accessToken
-      ? TOKEN_CREDENTIALS.JWT_ACCESS_SECRET
-      : TOKEN_CREDENTIALS.JWT_REFRESH_SECRET;
 
   if (isMatch && !accessToken) {
     return null;
-    // return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const secret = new TextEncoder().encode(jwtSecret);
-  const { payload } = await jwtVerify(token as string, secret);
-  const tokenPayload = payload as TokenPayload;
-  const userRole = tokenPayload.role;
-  const callbackUrl = userRole === "CUSTOMER" ? "/" : "/dashboard";
+  const role = await getRoleFromCookie(accessToken);
+  // const userRole = tokenPayload.role;
+  const callbackUrl = role === "CUSTOMER" ? "/" : "/dashboard";
 
   if (isMatch) {
-    if (accessToken || refreshToken) {
+    if (accessToken) {
       return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
   }

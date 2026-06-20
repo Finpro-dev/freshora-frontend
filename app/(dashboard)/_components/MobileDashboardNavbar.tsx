@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import FreshoraLogoNoText from "./FreshoraLogoNoText";
 import { useEffect, useRef, useState } from "react";
 import NavbarOpenMenuList from "./NavbarOpenMenuList";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 
 function MobileDashboardNavbar() {
   const [isNavbarMenuOpen, setIsNavbarMenuOpen] = useState(false);
@@ -13,6 +14,8 @@ function MobileDashboardNavbar() {
   const handleOpenNavbarMenu = () => {
     setIsNavbarMenuOpen((open) => !open);
   };
+
+  const { avatar, firstName, lastName } = useAuthStore((state) => state);
 
   const handleCloseModal = (e: MouseEvent): void => {
     console.log(e.target);

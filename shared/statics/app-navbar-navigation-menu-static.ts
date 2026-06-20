@@ -7,6 +7,6 @@ export const appNavbarNavigationMenu = [
   {
     id: 2,
     name: "Products",
-    link: "/products",
+    link: "/product",
   },
 ];

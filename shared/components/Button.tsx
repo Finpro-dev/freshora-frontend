@@ -34,7 +34,7 @@ function Button({
       " border border-brand-mist-300 text-foreground bg-brand-mist-100 hover:bg-brand-mist-300 disabled:bg-brand-mist-500 disabled:cursor-not-allowed",
     danger:
       basedStyle +
-      " bg-red-200/50 border border-red-300 text-foreground hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-brand-mist-500 disabled:border-brand-mist-500 disabled:text-brand-mist-100",
+      " bg-red-200/50 border border-red-300 text-foreground hover:bg-red-900 hover:text-mist-100 disabled:cursor-not-allowed disabled:bg-brand-mist-500 disabled:border-brand-mist-500 disabled:text-brand-mist-100",
     primaryRounded:
       basedStyle +
       " rounded-md bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 cursor-pointer disabled:bg-brand-mist-500 disabled:cursor-not-allowed",
