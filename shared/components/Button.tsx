@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  type?: "submit" | "button";
+  type?: "submit" | "button" | "reset";
   href?: string;
   btnType: "primary" | "secondary" | "danger" | "primaryRounded" | "text";
   pendingLabel?: string | React.ReactNode;

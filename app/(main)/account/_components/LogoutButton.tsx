@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-interface LogoutButtonProps {
+interface LogoutButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-function LogoutButton({ children }: LogoutButtonProps) {
+function LogoutButton({ children, ...props }: LogoutButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleLogoutUser = async () => {
@@ -28,7 +28,8 @@ function LogoutButton({ children }: LogoutButtonProps) {
         disabled={isPending}
         pendingLabel="Logging out..."
         type="submit"
-        btnType="danger">
+        btnType="danger"
+        {...props}>
         {children}
       </Button>
     </form>

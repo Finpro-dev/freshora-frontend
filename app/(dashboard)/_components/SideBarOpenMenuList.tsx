@@ -1,16 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { sidebarDashboardMenu } from "../_statics/sidebar-menu-static";
-import { usePathname } from "next/navigation";
-import Tooltip from "@mui/material/Tooltip";
-import DashboardProfile from "./UserAvatar";
+import LogoutButton from "@/app/(main)/account/_components/LogoutButton";
 import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { capitalize } from "@/shared/utils/capitalize";
-import { ROLE_MAPPING } from "../_utils/role-mapping-util";
-import Button from "@/shared/components/Button";
+import Tooltip from "@mui/material/Tooltip";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MdOutlineLogout } from "react-icons/md";
-import LogoutButton from "@/app/(main)/account/_components/LogoutButton";
+import { sidebarDashboardMenu } from "../_statics/sidebar-menu-static";
+import { ROLE_MAPPING } from "../_utils/role-mapping-util";
+import UserAvatar from "./UserAvatar";
 
 interface SideBarOpenMenuListProps {
   isSidebarOpen: boolean;
@@ -55,7 +54,7 @@ function SideBarOpenMenuList({ isSidebarOpen }: SideBarOpenMenuListProps) {
 
       <section className="py-5 flex flex-col gap-5">
         <div className={`flex justify-start items-center px-7 gap-3`}>
-          <DashboardProfile avatar={avatar} isSideBarOpen={isSidebarOpen} />
+          <UserAvatar avatar={avatar} isSideBarOpen={isSidebarOpen} />
           {isSidebarOpen ? (
             <div className="hidden md:block">
               <p>
@@ -68,8 +67,9 @@ function SideBarOpenMenuList({ isSidebarOpen }: SideBarOpenMenuListProps) {
           ) : null}
         </div>
 
+        {/* logout button */}
         <div className="px-5">
-          <LogoutButton>
+          <LogoutButton className="px-1 py-1 flex gap-2 items-center justify-center w-full bg-red-300/60 rounded-md hover:bg-red-900 hover:text-brand-mist-200 cursor-pointer transition-all duration-300">
             <span className={`pr-2 text-base`}>
               <MdOutlineLogout />
             </span>
