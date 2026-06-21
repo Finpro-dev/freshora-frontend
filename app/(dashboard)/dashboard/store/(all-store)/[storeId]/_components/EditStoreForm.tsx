@@ -26,6 +26,8 @@ import { editStoreDetails } from "@/actions/edit-store-details";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import { deleteStore } from "@/actions/delete-store";
 
 interface EditStoreFormProps {
   store: StoreType;
@@ -189,6 +191,31 @@ function EditStoreForm({ store }: EditStoreFormProps) {
       setCords({ lat: store.latitude, lng: store.longitude });
     }
   }, [store]);
+
+  const handleDeleteAddress = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      theme: "auto",
+      text: "You won't be able to undo!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#009966",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteStore(store.storeId);
+
+        if (!res?.success) {
+          toast.error(res?.error);
+        } else {
+          toast.success("Store deleted successfully");
+          setError({});
+          router.push("/dashboard/store");
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -488,7 +515,7 @@ function EditStoreForm({ store }: EditStoreFormProps) {
           </div>
         ) : (
           // fixme ->> add functionality
-          <form className="mt-2">
+          <form action={handleDeleteAddress} className="mt-2">
             <Button
               type="submit"
               pendingLabel={<SpinnerMini />}

@@ -13,7 +13,7 @@ export const deleteStore = async (storeId: string) => {
 
   try {
     const res = await axios.delete(
-      `${CORS_CREDENTIALS.API_BASE_URL}/store/${storeId}`,
+      `${CORS_CREDENTIALS.API_BASE_URL}/stores/${storeId}`,
       {
         headers: {
           Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken};`,
