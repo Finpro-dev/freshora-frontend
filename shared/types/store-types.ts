@@ -14,7 +14,13 @@ export interface StoreType {
   provinceId: number;
   storeId: string;
   storeStatus: StoreStatus;
-  user: { avatar: string | null; firstName: string; lastName: string };
+  user: {
+    userId: string;
+    avatar: string | null;
+    firstName: string;
+    lastName: string;
+    isVerified: boolean;
+  };
   userId: string;
 }
 

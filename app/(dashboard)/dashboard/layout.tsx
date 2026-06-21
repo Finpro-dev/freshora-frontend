@@ -56,9 +56,7 @@ async function layout({ children }: DashboardLayout) {
         <MobileDashboardNavbar />
         <div className="flex h-dvh">
           <DashboardSideBar />
-          <div className="h-full w-full overflow-hidden sm:overflow-auto">
-            {children}
-          </div>
+          <div className="min-h-screen w-full overflow-y-auto">{children}</div>
         </div>
       </DashboardStoreProviders>
     </div>

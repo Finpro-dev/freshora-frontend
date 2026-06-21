@@ -1,7 +1,7 @@
 "use client";
 
-import SkeletonMap from "@/app/(main)/account/address/_components/MapSekeleton";
 import dynamic from "next/dynamic";
+import StoreMapSkeleton from "./StoreMapSkeleton";
 
 function StoreMapWrapper() {
   const MapWithNoSSR = dynamic(
@@ -9,11 +9,15 @@ function StoreMapWrapper() {
       import("@/app/(dashboard)/dashboard/store/(all-store)/[storeId]/_components/StoreMap"),
     {
       ssr: false,
-      loading: () => <SkeletonMap />,
+      loading: () => <StoreMapSkeleton />,
     },
   );
 
-  return <MapWithNoSSR />;
+  return (
+    <div className="h-full w-full">
+      <MapWithNoSSR />
+    </div>
+  );
 }
 
 export default StoreMapWrapper;

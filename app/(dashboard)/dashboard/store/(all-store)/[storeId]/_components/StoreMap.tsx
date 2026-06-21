@@ -11,15 +11,14 @@ import StoreDetectClick from "./StoreDetectClick";
 
 function StoreMap() {
   const { lat, lng, setCords } = useStoreAddressStore((state) => state);
-  console.log(lat, lng);
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <MapContainer
         center={[lat, lng]}
         zoom={13}
         scrollWheelZoom={true}
-        className="h-60 md:h-75 lg:h-dvh w-full z-0">
+        className="h-full w-full z-0 rounded-md">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

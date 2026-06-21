@@ -6,7 +6,7 @@ import StoreCard from "./StoreCard";
 interface PageProps {
   currentPage: number;
 }
-const LIMIT = 1;
+const LIMIT = 10;
 
 async function StoreList({ currentPage }: PageProps) {
   const res = await getAllStore(currentPage, LIMIT);
