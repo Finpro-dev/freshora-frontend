@@ -1,0 +1,51 @@
+import { getUserProfile } from "@/actions/profile-user";
+import { getUserReferralVoucher } from "@/actions/referral-voucher-user";
+import defaultUserProfile from "@/public/user/default-user-profile.png";
+import UserDetails from "./UserDetails";
+import UserReferralCode from "./UserReferralCode";
+import UserReferralVoucher from "./UserReferralVoucher";
+import VerificationAlert from "./VerificationAlert";
+import { capitalize } from "@/shared/utils/capitalize";
+
+async function ProfileOverview() {
+  const [userData, userReferralVoucher] = await Promise.all([
+    getUserProfile(),
+    getUserReferralVoucher(),
+  ]);
+  const user = userData?.data;
+  const referralVoucher = userReferralVoucher.data;
+  const avatar = userData.data?.avatar || defaultUserProfile;
+
+  return (
+    <div>
+      {/* user details */}
+      <UserDetails
+        firstName={capitalize(String(user?.firstName))}
+        lastName={capitalize(String(user?.lastName)) || ""}
+        avatar={avatar as string}
+        email={String(user?.email)}
+        phone={user?.phone}
+        isVerified={user?.isVerified || false}
+      />
+
+      {/* verification alert */}
+      {!user?.isVerified && <VerificationAlert email={user?.email as string} />}
+
+      {/* referral sections */}
+      <div className="flex flex-col sm:flex-row gap-5 mt-5 ">
+        {/* my referral code */}
+        <UserReferralCode myReferralCode={String(user?.myReferralCode)} />
+
+        {/* referral voucher */}
+        {referralVoucher ? (
+          <UserReferralVoucher
+            voucherCode={String(referralVoucher?.couponCode)}
+            validUntil={String(referralVoucher?.validUntil)}
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export default ProfileOverview;

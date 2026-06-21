@@ -2,18 +2,6 @@ import Button from "@/shared/components/Button";
 import Link from "next/link";
 
 export default function NotFound() {
-  // Menyamakan layouting tombol menggunakan style dasar dari komponen Button lo
-  const basedButtonStyle =
-    "h-10 flex items-center justify-center px-4 font-medium transition-colors duration-200 text-sm";
-
-  const primaryBtnStyle =
-    basedButtonStyle +
-    " bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800";
-
-  const secondaryBtnStyle =
-    basedButtonStyle +
-    " border border-brand-mist-300 text-brand-mist-700 hover:bg-brand-mist-200";
-
   return (
     <main className="grid min-h-screen place-items-center px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">

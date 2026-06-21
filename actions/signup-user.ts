@@ -1,6 +1,6 @@
 "use server";
 
-import { SignupInput } from "@/app/signup/_schemas/signup-schema";
+import { SignupInput } from "@/app/(auth)/signup/_schemas/signup-schema";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 

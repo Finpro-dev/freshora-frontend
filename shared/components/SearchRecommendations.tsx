@@ -45,9 +45,9 @@ function SearchRecommendations({
     isSearchRecommendationOpen && (
       <div
         ref={wrapper}
-        className="absolute top-12 z-100 h-50 w-full bg-brand-mist-300 px-2 py-2 text-brand-mist-600 rounded-sm">
+        className="absolute top-12 z-100 h-50 w-full bg-brand-mist-100 border border-brand-mist-400 px-2 py-2 text-brand-mist-600 rounded-sm">
         {data?.length ? (
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 text-xs sm:text-base">
             {data?.map((data, index: number) => (
               <Link
                 onClick={handleClickRecommendation}

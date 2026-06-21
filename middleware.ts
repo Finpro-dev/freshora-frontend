@@ -6,10 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./shared/middlewares/types";
 import { withProtectedRoute } from "./shared/middlewares/with-protected-routes";
 import { withAuthRoutes } from "./shared/middlewares/with-auth-routes";
+import { withAuthorizationRoutes } from "./shared/middlewares/with-authorization-routes";
 
 export const middlewares: MiddlewareFactory[] = [
   withProtectedRoute,
   withAuthRoutes,
+  withAuthorizationRoutes,
 ];
 
 export async function middleware(request: NextRequest) {

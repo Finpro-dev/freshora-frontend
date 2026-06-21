@@ -34,7 +34,7 @@ export async function withProtectedRoute(
     case the user needs to log in or refresh their access
     token. */
 
-  const prefixes = ["/account", "cart"];
+  const prefixes = ["/account", "/cart", "/order", "/dashboard"];
   const isMatch = prefixes.some((prefix) => pathname.startsWith(prefix));
 
   if (isMatch || pathname === "/") {
@@ -50,7 +50,6 @@ export async function withProtectedRoute(
     // ---> hit the refresh api
     if (!accessToken && refreshToken) {
       try {
-        console.log("REFRESHING");
         const res = await fetch(
           `${CORS_CREDENTIALS.API_BASE_URL}/auth/refresh`,
           {
@@ -75,8 +74,6 @@ export async function withProtectedRoute(
         // set also the cookie during error in case the error also set cookie
         if (error.response?.headers["set-cookie"])
           await forwardExpressCookie(error.response.headers["set-cookie"]);
-
-        console.log(errorMessage); // fixme
       }
     }
 

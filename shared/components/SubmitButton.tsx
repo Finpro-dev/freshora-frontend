@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 interface SubmitButtonProps {
   pendingLabel: string;
   children?: React.ReactNode;
@@ -10,12 +12,13 @@ function SubmitButton({
   children,
 }: SubmitButtonProps) {
   return (
-    <button
+    <Button
+      btnType="primary"
       disabled={isSubmitting}
-      type="submit"
-      className="w-full h-10 flex items-center justify-center bg-brand-emerald-700 text-brand-mist-200 hover:bg-brand-emerald-800 disabled:bg-brand-mist-500 cursor-pointer disabled:cursor-not-allowed">
+      pendingLabel="Submitting..."
+      type="submit">
       {isSubmitting ? pendingLabel : children}
-    </button>
+    </Button>
   );
 }
 

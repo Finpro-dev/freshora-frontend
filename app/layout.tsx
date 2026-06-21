@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import "./globals.css";
 import Script from "next/script";
+import { Toaster } from "sonner";
+import "./globals.css";
 import Providers from "./providers";
-import { toast, Toaster } from "sonner";
-import AppNavbar from "@/shared/components/AppNavbar";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -27,11 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${dmSans.className} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <Providers>
-          <AppNavbar />
-          {children}
-        </Providers>
+      <body className="min-h-full flex flex-col bg-brand-mist-100/50">
+        <Providers>{children}</Providers>
         <Toaster
           position="top-center"
           toastOptions={{

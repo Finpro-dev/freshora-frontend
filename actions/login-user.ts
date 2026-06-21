@@ -1,8 +1,10 @@
 "use server";
 
 import axios from "axios";
-import { LoginInput } from "../app/login/_schemas/login-schema";
+import { LoginInput } from "../app/(auth)/login/_schemas/login-schema";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
+import { ApiResponse } from "@/shared/types/api-type";
+import { User } from "@/shared/types/user-type";
 
 export const loginUser = async ({ email, password }: LoginInput) => {
   let res;
@@ -18,9 +20,11 @@ export const loginUser = async ({ email, password }: LoginInput) => {
       },
     );
 
+    const data: ApiResponse<User> = res.data;
+
     await forwardExpressCookie(res.headers["set-cookie"]);
 
-    return { data: res.data.data, success: true };
+    return { data, success: true };
   } catch (error: any) {
     const errorMessage =
       error.response?.data?.message ||
