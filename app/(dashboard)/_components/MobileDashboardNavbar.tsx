@@ -39,7 +39,7 @@ function MobileDashboardNavbar() {
   }, [handleCloseModal, navbarMenuWrapRef]);
 
   return (
-    <div className="sticky top-0 ">
+    <div className="sticky top-0 z-20 bg-white dark:bg-black">
       <nav className="relative flex px-8 justify-between items-center py-2 sm:hidden h-18 w-full border-b border-brand-mist-300">
         <FreshoraLogoNoText />
         <div onClick={handleOpenNavbarMenu} className="cursor-pointer">
