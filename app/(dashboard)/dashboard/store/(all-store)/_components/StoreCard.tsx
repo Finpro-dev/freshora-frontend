@@ -1,8 +1,11 @@
+"use client";
+
 import { StoreType } from "@/shared/types/store-types";
 import defaultStoreAvatar from "@/public/store/default-store-avatar-1.jpeg";
 import defaultStoreAdminAvatar from "@/public/user/default-store-admin-avatar.jpeg";
 import Image from "next/image";
 import { capitalize } from "@/shared/utils/capitalize";
+import { useRouter } from "next/navigation";
 
 interface StoreCardProps {
   store: StoreType;
@@ -11,9 +14,16 @@ interface StoreCardProps {
 function StoreCard({ store }: StoreCardProps) {
   const storeAvatar = store.avatar || defaultStoreAvatar;
   const storeAdminAvatar = store.user.avatar || defaultStoreAdminAvatar;
+  const router = useRouter();
+
+  const handleGetStoreDetails = () => {
+    router.push(`/dashboard/store/${store.storeId}`);
+  };
 
   return (
-    <div className="group w-full flex flex-col sm:flex-row gap-6 p-5 rounded-md border border-brand-mist-100 bg-brand-mist-100/10  shadow-sm shadow-brand-mist-300/60 transition-all duration-200 hover:shadow-md hover:border-brand-mist-200">
+    <div
+      onClick={handleGetStoreDetails}
+      className="group w-full flex flex-col sm:flex-row gap-6 p-5 rounded-md border border-brand-mist-100 bg-brand-mist-100/10  shadow-sm shadow-brand-mist-300/60 transition-all duration-200 hover:shadow-md hover:border-brand-mist-200">
       {/* store-avatar */}
       <div className="relative w-full sm:w-40 h-40 shrink-0 rounded-md overflow-hidden bg-brand-mist-50 border border-brand-mist-100">
         <Image

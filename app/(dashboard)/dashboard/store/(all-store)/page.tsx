@@ -12,7 +12,7 @@ async function page({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-dvh w-full px-5 mt-25 sm:mt-10 flex flex-col">
-      {/* fixme ->> suspense loader */}
+      {/* fixme ->> suspense using skeleton */}
       <Suspense key={page} fallback={<Spinner />}>
         <StoreList currentPage={currentPage} />
       </Suspense>
