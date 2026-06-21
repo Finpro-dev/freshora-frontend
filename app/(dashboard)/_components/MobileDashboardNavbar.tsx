@@ -23,7 +23,6 @@ function MobileDashboardNavbar() {
   const { avatar, firstName, lastName, role } = useAuthStore((state) => state);
 
   const handleCloseModal = (e: MouseEvent): void => {
-    console.log(e.target);
     if (
       navbarMenuWrapRef.current &&
       !navbarMenuWrapRef.current?.contains(e.target as Node)

@@ -36,7 +36,7 @@ async function layout({ children }: DashboardLayout) {
   const data: ApiResponse<User> | undefined = response
     ? await response.json()
     : undefined;
-  console.log(data);
+
   const initialAuth: AuthStates = {
     userId: String(data?.data?.userId || ""),
     firstName: String(data?.data?.firstName || ""),
