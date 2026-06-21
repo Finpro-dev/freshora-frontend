@@ -36,7 +36,7 @@ async function layout({ children }: DashboardLayout) {
   const data: ApiResponse<User> | undefined = response
     ? await response.json()
     : undefined;
-  console.log(data);
+
   const initialAuth: AuthStates = {
     userId: String(data?.data?.userId || ""),
     firstName: String(data?.data?.firstName || ""),
@@ -56,9 +56,7 @@ async function layout({ children }: DashboardLayout) {
         <MobileDashboardNavbar />
         <div className="flex h-dvh">
           <DashboardSideBar />
-          <div className="w-full h-full overflow-hidden sm:overflow-auto">
-            {children}
-          </div>
+          <div className="min-h-screen w-full overflow-y-auto">{children}</div>
         </div>
       </DashboardStoreProviders>
     </div>

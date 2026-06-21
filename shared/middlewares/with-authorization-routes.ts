@@ -11,10 +11,11 @@ export async function withAuthorizationRoutes(
   } = request;
 
   const ROLE_ROUTES = [
-    { prefix: "/dashboard", allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"] },
     { prefix: "/cart", allowedRoles: ["CUSTOMER"] },
     { prefix: "/account", allowedRoles: ["CUSTOMER"] },
     { prefix: "/order", allowedRoles: ["CUSTOMER"] },
+    { prefix: "/dashboard/store", allowedRoles: ["SUPER_ADMIN"] },
+    { prefix: "/dashboard", allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"] },
   ];
 
   const matchedRoute = ROLE_ROUTES?.find((route) => {
