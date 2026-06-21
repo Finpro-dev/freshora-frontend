@@ -1,0 +1,32 @@
+"use client";
+
+import { StoreType } from "@/shared/types/store-types";
+import { useParams } from "next/navigation";
+import EditStoreForm from "./_components/EditStoreForm";
+import StoreMapWrapper from "./_components/StoreMapWrapper";
+import { useGetStoreDetails } from "./hooks/use-get-store-details";
+
+function page() {
+  const { storeId } = useParams<Record<string, string>>();
+  const { data, isLoading } = useGetStoreDetails(storeId);
+  const storeData: StoreType = data;
+
+  return (
+    <main className="px-5 pt-25 sm:pt-10 flex flex-col min-h-screen w-full bg-slate-50">
+      <div className="w-full flex flex-col lg:flex-row gap-5">
+        <section className="w-full lg:w-[50%] h-112.5 lg:h-175 flex flex-col px-2 py-2 border border-brand-mist-300 rounded-md shadow-md shadow-brand-mist-300/30">
+          <StoreMapWrapper />
+        </section>
+        {isLoading ? (
+          <p>Loading ...</p>
+        ) : (
+          <section className="w-full lg:w-[50%] px-2 py-2 ">
+            <EditStoreForm store={storeData} />
+          </section>
+        )}
+      </div>
+    </main>
+  );
+}
+
+export default page;

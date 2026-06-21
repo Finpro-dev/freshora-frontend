@@ -1,5 +1,6 @@
 import { AuthStates } from "@/shared/store/auth-store/auth-store";
 import AuthStoreProvider from "@/shared/store/auth-store/AuthStoreProvider";
+import StoreAddressStoreProvider from "./store-address-store/StoreAddressProvider";
 
 interface DashboardStoreProvidersProps {
   children: React.ReactNode;
@@ -11,7 +12,9 @@ function DashboardStoreProviders({
   children,
 }: DashboardStoreProvidersProps) {
   return (
-    <AuthStoreProvider initialAuth={initialAuth}>{children}</AuthStoreProvider>
+    <AuthStoreProvider initialAuth={initialAuth}>
+      <StoreAddressStoreProvider>{children}</StoreAddressStoreProvider>
+    </AuthStoreProvider>
   );
 }
 
