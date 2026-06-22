@@ -6,13 +6,25 @@ import {
   useAddProduct,
   useGetCategoriesMaster,
 } from "../_hooks/use-product-mutation";
-import { ArrowLeft, PackagePlus, Loader2 } from "lucide-react";
+// Ditambahkan icon RefreshCw dan ExternalLink
+import {
+  ArrowLeft,
+  PackagePlus,
+  Loader2,
+  RefreshCw,
+  ExternalLink,
+} from "lucide-react";
 
 export default function AddProductPage() {
   const router = useRouter();
   const { mutate: addProduct, isPending } = useAddProduct();
-  const { data: categoriesData, isLoading: isLoadingCategories } =
-    useGetCategoriesMaster();
+
+  // Menambahkan destructuring 'refetch' dengan alias 'refetchCategories'
+  const {
+    data: categoriesData,
+    isLoading: isLoadingCategories,
+    refetch: refetchCategories,
+  } = useGetCategoriesMaster();
 
   // 1. FIXED: dietType diubah default-nya ke "HALAL" (karena "DEFAULT" tidak ada di Prisma)
   const [formData, setFormData] = useState({
@@ -168,31 +180,58 @@ export default function AddProductPage() {
                 className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
               />
             </div>
+
+            {/* Bagian Kategori yang Di-update */}
             <div>
-              <label className="block text-sm font-medium text-brand-mist-700 mb-1.5">
-                Category
-              </label>
-              <select
-                name="productCategoryId"
-                value={formData.productCategoryId}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
-              >
-                <option value="">Select a category</option>
-                {isLoadingCategories ? (
-                  <option disabled>Loading categories...</option>
-                ) : (
-                  categories.map((cat: any) => (
-                    <option
-                      key={cat.productCategoryId}
-                      value={cat.productCategoryId}
-                    >
-                      {cat.category || cat.name}
-                    </option>
-                  ))
-                )}
-              </select>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-medium text-brand-mist-700">
+                  Category
+                </label>
+                {/* Link Shortcut ke Tab Baru */}
+                <a
+                  href="/dashboard/category"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-brand-emerald-600 hover:text-brand-emerald-700 font-medium flex items-center gap-0.5"
+                >
+                  Manage Categories
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+
+              <div className="flex gap-2">
+                <select
+                  name="productCategoryId"
+                  value={formData.productCategoryId}
+                  onChange={handleChange}
+                  required
+                  className="flex-1 px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+                >
+                  <option value="">Select a category</option>
+                  {isLoadingCategories ? (
+                    <option disabled>Loading categories...</option>
+                  ) : (
+                    categories.map((cat: any) => (
+                      <option
+                        key={cat.productCategoryId}
+                        value={cat.productCategoryId}
+                      >
+                        {cat.category || cat.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+
+                {/* Tombol Refresh Dropdown */}
+                <button
+                  type="button"
+                  onClick={() => refetchCategories()}
+                  className="px-3 py-2 border border-brand-mist-300 rounded-lg bg-white hover:bg-brand-mist-50 text-brand-mist-500 transition-colors flex items-center justify-center flex-shrink-0"
+                  title="Refresh categories list"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -212,7 +251,6 @@ export default function AddProductPage() {
                 className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
               />
             </div>
-            {/* 3. FIXED: Dropdown Diet Type disesuaikan penuh dengan isi Enum Prisma kamu */}
             <div>
               <label className="block text-sm font-medium text-brand-mist-700 mb-1.5">
                 Diet Type

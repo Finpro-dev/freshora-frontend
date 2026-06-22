@@ -14,6 +14,9 @@ import {
   ChevronDown,
   Image as ImageIcon,
   Loader2,
+  Layers,
+  RefreshCw,
+  ExternalLink, // <-- Ditambahkan icon ExternalLink untuk efek hover premium
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDeleteProduct } from "./_hooks/use-delete-product";
@@ -48,15 +51,20 @@ export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const { mutate: deleteProduct } = useDeleteProduct();
+
   const handleProductDetail = (productId: string) => {
     return router.push(`/dashboard/product/${productId}/detail`);
   };
   const handleAddProduct = () => {
     return router.push(`/dashboard/product/add-product`);
   };
+  const handleManageCategories = () => {
+    return router.push(`/dashboard/category`);
+  };
   const handleUpdateProduct = (productId: string) => {
     return router.push(`/dashboard/product/${productId}`);
   };
+
   const handleDeleteProduct = async (userId: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -73,10 +81,12 @@ export default function ProductPage() {
       }
     });
   };
+
   const {
     data: apiResponse,
     isLoading,
     isError,
+    refetch,
   } = useGetAllProducts({
     page: currentPage,
     limit: 10,
@@ -89,7 +99,6 @@ export default function ProductPage() {
   const totalProducts = pagination?.totalItems || 0;
   const outOfStockCount = apiResponse?.stats?.totalOutOfStock || 0;
 
-  // Memetakan kategori dari master backend dengan tipe explicit 'any' untuk menghindari error TS
   const categories = (apiResponse?.categories || []).map((cat: any) => ({
     id: cat.productCategoryId as string,
     name: cat.category as string,
@@ -127,16 +136,30 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold text-brand-mist-800">Products</h1>
           <p className="text-brand-mist-500">Manage your product catalog</p>
         </div>
-        <button
-          className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium"
-          onClick={handleAddProduct}
-        >
-          <Plus className="w-4 h-4" />
-          Add Product
-        </button>
+        <div className="flex items-center gap-2 self-end md:self-auto">
+          {/* 🆕 TOMBOL MANAGE CATEGORIES DENGAN EFEK HOVER PREMIUM & MICRO-INTERACTION */}
+          <button
+            type="button"
+            className="group flex items-center gap-2 px-4 py-2 border border-brand-mist-300 text-brand-mist-700 bg-white rounded-lg hover:text-brand-emerald-700 hover:border-brand-emerald-300 hover:bg-brand-mist-25 transition-all duration-200 text-sm font-medium shadow-sm"
+            onClick={handleManageCategories}
+          >
+            <Layers className="w-4 h-4 text-brand-mist-500 group-hover:text-brand-emerald-600 transition-colors duration-200" />
+            <span>Manage Categories</span>
+            <ExternalLink className="w-3.5 h-3.5 text-brand-mist-400 group-hover:text-brand-emerald-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </button>
+
+          <button
+            type="button"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium"
+            onClick={handleAddProduct}
+          >
+            <Plus className="w-4 h-4" />
+            Add Product
+          </button>
+        </div>
       </div>
 
-      {/* Stats Cards (2 Kolom Bersih) */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
           <div className="flex items-center justify-between mb-2">
@@ -158,7 +181,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filters + Tombol Refresh */}
       <div className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm mb-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
@@ -174,8 +197,9 @@ export default function ProductPage() {
               className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 focus:border-transparent text-sm"
             />
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="relative">
+
+          <div className="flex flex-row gap-2 items-center w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
               <select
                 value={categoryFilter}
                 onChange={(e) => {
@@ -193,6 +217,15 @@ export default function ProductPage() {
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-mist-500 pointer-events-none" />
             </div>
+
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="p-2.5 border border-brand-mist-300 rounded-lg bg-white hover:bg-brand-mist-50 text-brand-mist-500 transition-colors flex items-center justify-center"
+              title="Refresh Categories & Products"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
@@ -393,15 +426,24 @@ export default function ProductPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2 pt-3 border-t border-brand-mist-200">
-                <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-brand-emerald-50 text-brand-emerald-600 text-xs font-medium hover:bg-brand-emerald-100 transition-colors">
+                <button
+                  onClick={() => handleProductDetail(product.productId)}
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-brand-emerald-50 text-brand-emerald-600 text-xs font-medium hover:bg-brand-emerald-100 transition-colors"
+                >
                   <Eye className="w-3 h-3" />
                   View
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium hover:bg-blue-100 transition-colors">
+                <button
+                  onClick={() => handleUpdateProduct(product.productId)}
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium hover:bg-blue-100 transition-colors"
+                >
                   <Edit className="w-3 h-3" />
                   Edit
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-medium hover:bg-red-100 transition-colors">
+                <button
+                  onClick={() => handleDeleteProduct(product.productId)}
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-medium hover:bg-red-100 transition-colors"
+                >
                   <Trash2 className="w-3 h-3" />
                   Delete
                 </button>
