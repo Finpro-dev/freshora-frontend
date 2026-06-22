@@ -27,7 +27,7 @@ export const createStoreSchema = z.object({
 
   district: z
     .string()
-    .min(2, "District name is too short")
+    .min(1, "District name is too short")
     .max(50, "District cannot exceed 50 characters")
     .optional(),
 

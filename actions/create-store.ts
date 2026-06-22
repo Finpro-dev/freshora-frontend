@@ -12,7 +12,7 @@ export const createNewStore = async (formData: FormData) => {
   const refreshToken = allCookie.get("refreshToken")?.value;
   try {
     const res = await axios.post(
-      `${CORS_CREDENTIALS.API_BASE_URL}/addresses/`,
+      `${CORS_CREDENTIALS.API_BASE_URL}/stores`,
       formData,
       {
         headers: {

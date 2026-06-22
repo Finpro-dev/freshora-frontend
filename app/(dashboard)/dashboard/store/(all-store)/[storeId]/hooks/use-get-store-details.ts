@@ -9,6 +9,9 @@ export const useGetStoreDetails = (storeId: string) => {
 
       return data.data;
     },
+    enabled: !!storeId,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   return getStoreDetailsQuery;
