@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useGetAllProducts } from "./_hooks/use-get-products";
+import Swal from "sweetalert2";
 
 import {
   Search,
@@ -14,6 +15,8 @@ import {
   Image as ImageIcon,
   Loader2,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useDeleteProduct } from "./_hooks/use-delete-product";
 
 function getGradeColor(grade: string) {
   switch (grade?.toUpperCase()) {
@@ -43,7 +46,33 @@ export default function ProductPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const router = useRouter();
+  const { mutate: deleteProduct } = useDeleteProduct();
+  const handleProductDetail = (productId: string) => {
+    return router.push(`/dashboard/product/${productId}/detail`);
+  };
+  const handleAddProduct = () => {
+    return router.push(`/dashboard/product/add-product`);
+  };
+  const handleUpdateProduct = (productId: string) => {
+    return router.push(`/dashboard/product/${productId}`);
+  };
+  const handleDeleteProduct = async (userId: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      theme: "auto",
+      text: "You won't be able to undo!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#009966",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = deleteProduct(userId);
+      }
+    });
+  };
   const {
     data: apiResponse,
     isLoading,
@@ -98,7 +127,10 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold text-brand-mist-800">Products</h1>
           <p className="text-brand-mist-500">Manage your product catalog</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium">
+        <button
+          className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium"
+          onClick={handleAddProduct}
+        >
           <Plus className="w-4 h-4" />
           Add Product
         </button>
@@ -113,9 +145,6 @@ export default function ProductPage() {
           </div>
           <p className="text-2xl font-bold text-brand-mist-800">
             {totalProducts}
-          </p>
-          <p className="text-xs text-brand-mist-500 mt-1">
-            In backend database
           </p>
         </div>
 
@@ -265,13 +294,22 @@ export default function ProductPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="p-1.5 rounded-lg hover:bg-brand-emerald-100 text-brand-emerald-600 transition-colors">
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-emerald-100 text-brand-emerald-600 transition-colors"
+                        onClick={() => handleProductDetail(product.productId)}
+                      >
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors">
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
+                        onClick={() => handleUpdateProduct(product.productId)}
+                      >
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 rounded-lg hover:bg-red-100 text-red-600 transition-colors">
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-red-100 text-red-600 transition-colors"
+                        onClick={() => handleDeleteProduct(product.productId)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
