@@ -1,433 +1,349 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useGetStocks, useGetStoresPaginated } from "./_hooks/use-stock";
 import {
+  Plus,
+  Loader2,
+  Store,
+  X,
   Search,
-  Filter,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
   Package,
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  MoreVertical,
-  Edit,
-  Eye,
-  Trash2,
-  ChevronDown,
+  History, // 👈 Menambahkan icon History untuk Jurnal
 } from "lucide-react";
+import { toast } from "sonner";
 
-const INVENTORY = [
-  {
-    id: "INV-001",
-    name: "Organic Tomatoes",
-    category: "Vegetables",
-    stock: 156,
-    minStock: 50,
-    unit: "KG",
-    price: 25000,
-    status: "In Stock",
-    lastUpdated: "2024-01-15",
-  },
-  {
-    id: "INV-002",
-    name: "Fresh Milk",
-    category: "Dairy",
-    stock: 23,
-    minStock: 30,
-    unit: "L",
-    price: 18000,
-    status: "Low Stock",
-    lastUpdated: "2024-01-15",
-  },
-  {
-    id: "INV-003",
-    name: "Whole Wheat Bread",
-    category: "Bakery",
-    stock: 0,
-    minStock: 20,
-    unit: "PCS",
-    price: 15000,
-    status: "Out of Stock",
-    lastUpdated: "2024-01-14",
-  },
-  {
-    id: "INV-004",
-    name: "Chicken Breast",
-    category: "Meat",
-    stock: 89,
-    minStock: 40,
-    unit: "KG",
-    price: 85000,
-    status: "In Stock",
-    lastUpdated: "2024-01-14",
-  },
-  {
-    id: "INV-005",
-    name: "Red Apples",
-    category: "Fruits",
-    stock: 12,
-    minStock: 25,
-    unit: "KG",
-    price: 35000,
-    status: "Low Stock",
-    lastUpdated: "2024-01-13",
-  },
-  {
-    id: "INV-006",
-    name: "Basmati Rice",
-    category: "Grains",
-    stock: 340,
-    minStock: 100,
-    unit: "KG",
-    price: 65000,
-    status: "In Stock",
-    lastUpdated: "2024-01-13",
-  },
-];
+export default function StockOverviewPage() {
+  const router = useRouter();
 
-function getStatusColor(status: string) {
-  switch (status) {
-    case "In Stock":
-      return "bg-brand-emerald-100 text-brand-emerald-700";
-    case "Low Stock":
-      return "bg-amber-100 text-amber-700";
-    case "Out of Stock":
-      return "bg-red-100 text-red-700";
-    default:
-      return "bg-brand-mist-200 text-brand-mist-700";
-  }
-}
+  // Active user session simulation
+  const user = {
+    role: "SUPER_ADMIN" as "SUPER_ADMIN" | "STORE_ADMIN",
+    storeId: "",
+  };
 
-export default function InventoryPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [categoryFilter, setCategoryFilter] = useState("all");
+  // --- MODAL & FILTER STATES ---
+  const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
+  const [storeSearch, setStoreSearch] = useState("");
+  const [storePage, setStorePage] = useState(1);
+  const [selectedStore, setSelectedStore] = useState<any | null>(null);
 
-  const filteredInventory = INVENTORY.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" ||
-      item.status.toLowerCase().replace(" ", "_") === statusFilter;
-    const matchesCategory =
-      categoryFilter === "all" ||
-      item.category.toLowerCase() === categoryFilter;
-    return matchesSearch && matchesStatus && matchesCategory;
-  });
+  // 1. Fetch live stock ledger entries based on store filter selection
+  const {
+    data: stocks,
+    isLoading,
+    isError,
+  } = useGetStocks(selectedStore?.storeId || selectedStore?.id || "");
 
-  const categories = Array.from(
-    new Set(INVENTORY.map((item) => item.category)),
-  );
-  const totalItems = INVENTORY.length;
-  const lowStockCount = INVENTORY.filter(
-    (item) => item.status === "Low Stock",
-  ).length;
-  const outOfStockCount = INVENTORY.filter(
-    (item) => item.status === "Out of Stock",
-  ).length;
-  const totalValue = INVENTORY.reduce(
-    (sum, item) => sum + item.stock * item.price,
-    0,
-  );
+  // 2. Fetch paginated store records for the global selection pop-up modal
+  const { data: storeResponse, isLoading: isStoresLoading } =
+    useGetStoresPaginated(
+      { page: storePage, limit: 5, search: storeSearch },
+      user.role === "SUPER_ADMIN",
+    );
+
+  // Master data extraction mapping
+  const storeList = storeResponse?.data?.stores || storeResponse?.data || [];
+  const totalStorePages = storeResponse?.data?.totalPage || 1;
 
   return (
-    <div className="min-h-dvh p-4 md:p-6 lg:p-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-brand-mist-800">Inventory</h1>
-          <p className="text-brand-mist-500">
-            Track and manage product stock levels
+    <div className="min-h-screen bg-brand-mist-50/50 p-4 md:p-8 space-y-6 relative">
+      {/* Top Ledger Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-brand-mist-200 pb-5">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold text-brand-mist-800">
+            Inventory Stock Ledger
+          </h1>
+          <p className="text-sm text-brand-mist-500">
+            Real-time unit levels and master catalog distribution control grid.
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium">
-          <Package className="w-4 h-4" />
-          Add Product
-        </button>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-brand-mist-500">Total Products</span>
-            <Package className="w-5 h-5 text-brand-emerald-600" />
-          </div>
-          <p className="text-2xl font-bold text-brand-mist-800">{totalItems}</p>
-          <p className="text-xs text-brand-mist-500 mt-1">Active inventory</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-brand-mist-500">Low Stock</span>
-            <AlertTriangle className="w-5 h-5 text-amber-600" />
-          </div>
-          <p className="text-2xl font-bold text-amber-600">{lowStockCount}</p>
-          <p className="text-xs text-amber-600 mt-1">Needs restock</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-brand-mist-500">Out of Stock</span>
-            <TrendingDown className="w-5 h-5 text-red-600" />
-          </div>
-          <p className="text-2xl font-bold text-red-600">{outOfStockCount}</p>
-          <p className="text-xs text-red-600 mt-1">Urgent restock</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-brand-mist-500">Total Value</span>
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-          </div>
-          <p className="text-2xl font-bold text-brand-mist-800">
-            Rp {(totalValue / 1000000).toFixed(1)}M
-          </p>
-          <p className="text-xs text-brand-mist-500 mt-1">Inventory worth</p>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-mist-500" />
-            <input
-              type="text"
-              placeholder="Search by product name or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 focus:border-transparent text-sm"
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="relative">
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full sm:w-auto appearance-none px-4 py-2.5 pr-10 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
-              >
-                <option value="all">All Categories</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat.toLowerCase()}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-mist-500 pointer-events-none" />
-            </div>
-            <div className="relative">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full sm:w-auto appearance-none px-4 py-2.5 pr-10 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
-              >
-                <option value="all">All Status</option>
-                <option value="in_stock">In Stock</option>
-                <option value="low_stock">Low Stock</option>
-                <option value="out_of_stock">Out of Stock</option>
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-mist-500 pointer-events-none" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Inventory Table - Desktop */}
-      <div className="hidden lg:block bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-brand-mist-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Product
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Category
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Stock
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Price
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider hidden xl:table-cell">
-                Last Updated
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-brand-mist-200">
-            {filteredInventory.map((item) => (
-              <tr
-                key={item.id}
-                className="hover:bg-brand-mist-50 transition-colors"
-              >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-brand-emerald-100 flex items-center justify-center">
-                      <Package className="w-5 h-5 text-brand-emerald-700" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-brand-mist-800">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-brand-mist-500">{item.id}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-brand-mist-600">
-                  {item.category}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`font-medium ${item.stock <= item.minStock ? "text-red-600" : "text-brand-mist-800"}`}
-                    >
-                      {item.stock} {item.unit}
-                    </span>
-                    {item.stock <= item.minStock && item.stock > 0 && (
-                      <span className="text-xs text-amber-600">(Low)</span>
-                    )}
-                    {item.stock === 0 && (
-                      <span className="text-xs text-red-600">(Out)</span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap font-medium text-brand-mist-800">
-                  Rp {item.price.toLocaleString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}
-                  >
-                    {item.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-brand-mist-500 hidden xl:table-cell">
-                  {item.lastUpdated}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex items-center justify-end gap-2">
-                    <button className="p-1.5 rounded-lg hover:bg-brand-emerald-100 text-brand-emerald-600 transition-colors">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                    <button className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors">
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-100 text-red-600 transition-colors">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Inventory Cards - Mobile */}
-      <div className="lg:hidden space-y-4">
-        {filteredInventory.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm"
+        {/* Action Buttons Container */}
+        <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
+          {/* 1. BUTTON KE STOCK JOURNAL */}
+          <button
+            onClick={() => router.push("/dashboard/inventory/journals")}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-brand-mist-300 text-brand-mist-700 hover:bg-brand-mist-50 text-sm font-bold rounded-xl shadow-sm transition-all group flex-1 sm:flex-initial"
           >
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-brand-emerald-100 flex items-center justify-center">
-                  <Package className="w-5 h-5 text-brand-emerald-700" />
-                </div>
-                <div>
-                  <p className="font-medium text-brand-mist-800">{item.name}</p>
-                  <p className="text-xs text-brand-mist-500">{item.id}</p>
-                </div>
-              </div>
-              <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}
-              >
-                {item.status}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-sm mb-3">
-              <span className="text-brand-mist-600">{item.category}</span>
-              <span className="font-medium text-brand-mist-800">
-                Rp {item.price.toLocaleString()}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-xs text-brand-mist-500 mb-3">
-              <span>
-                Stock:{" "}
-                <span
-                  className={
-                    item.stock <= item.minStock
-                      ? "text-red-600 font-medium"
-                      : ""
-                  }
-                >
-                  {item.stock} {item.unit}
-                </span>
-              </span>
-              <span>Updated: {item.lastUpdated}</span>
-            </div>
-            <div className="flex items-center gap-2 pt-3 border-t border-brand-mist-200">
-              <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-brand-emerald-50 text-brand-emerald-600 text-xs font-medium hover:bg-brand-emerald-100 transition-colors">
-                <Eye className="w-3 h-3" />
-                View
-              </button>
-              <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium hover:bg-blue-100 transition-colors">
-                <Edit className="w-3 h-3" />
-                Edit
-              </button>
-              <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-medium hover:bg-red-100 transition-colors">
-                <Trash2 className="w-3 h-3" />
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+            <History className="w-4 h-4 text-brand-mist-500 group-hover:rotate-[-15deg] transition-transform" />
+            Stock Journals
+          </button>
+
+          {/* 2. BUTTON INITIALIZE NEW STOCK */}
+          <button
+            onClick={() => router.push("/dashboard/inventory/add-stock")}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-emerald-700 text-white text-sm font-bold rounded-xl hover:bg-brand-emerald-800 shadow-md transition-all group flex-1 sm:flex-initial"
+          >
+            <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            Initialize New Stock
+          </button>
+        </div>
       </div>
 
-      {filteredInventory.length === 0 && (
-        <div className="bg-white rounded-xl p-8 text-center border border-brand-mist-200 shadow-sm">
-          <p className="text-brand-mist-500">
-            No inventory items found matching your criteria.
-          </p>
+      {/* --- PREMIUM FILTER PANEL CONTROL --- */}
+      {user.role === "SUPER_ADMIN" && (
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-white px-4 py-2.5 rounded-xl border border-brand-mist-300 flex items-center gap-3 shadow-inner min-w-[260px] max-w-xs h-[44px]">
+            <Store className="w-4 h-4 text-brand-mist-400 shrink-0" />
+            <span className="text-sm text-brand-mist-800 font-semibold truncate flex-1">
+              {selectedStore ? selectedStore.name : "All Store Locations"}
+            </span>
+
+            {/* Clear Filter Micro-interaction */}
+            {selectedStore && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedStore(null);
+                  toast.success(
+                    "Filter cleared. Displaying all warehouse grids.",
+                  );
+                }}
+                className="text-brand-mist-400 hover:text-brand-mist-600 p-0.5 rounded-md hover:bg-brand-mist-100 transition"
+                title="Clear Filter Location"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsStoreModalOpen(true)}
+            className="px-5 py-2.5 bg-brand-mist-800 text-white hover:bg-brand-mist-900 text-sm font-bold rounded-xl shadow-lg transition-all h-[44px]"
+          >
+            Browse & Filter Store
+          </button>
         </div>
       )}
 
-      {/* Pagination */}
-      <div className="px-4 md:px-6 py-4 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <p className="text-sm text-brand-mist-500">
-          Showing <span className="font-medium text-brand-mist-700">1</span> to{" "}
-          <span className="font-medium text-brand-mist-700">
-            {filteredInventory.length}
-          </span>{" "}
-          of{" "}
-          <span className="font-medium text-brand-mist-700">
-            {INVENTORY.length}
-          </span>{" "}
-          results
-        </p>
-        <div className="flex items-center gap-2">
-          <button
-            className="px-3 py-1.5 rounded-lg border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200 transition-colors text-sm disabled:opacity-50"
-            disabled
-          >
-            Previous
-          </button>
-          <button className="px-3 py-1.5 rounded-lg bg-brand-emerald-700 text-white text-sm">
-            1
-          </button>
-          <button className="px-3 py-1.5 rounded-lg border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200 transition-colors text-sm">
-            2
-          </button>
-          <button className="px-3 py-1.5 rounded-lg border border-brand-mist-300 text-brand-mist-600 hover:bg-brand-mist-200 transition-colors text-sm">
-            Next
-          </button>
+      {/* Data Presentation Table View Grid */}
+      {isLoading ? (
+        <div className="h-64 flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-brand-mist-200 shadow-sm">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-emerald-700" />
+          <p className="text-sm font-medium text-brand-mist-500">
+            Syncing corporate inventory balance sheets...
+          </p>
         </div>
-      </div>
+      ) : isError ? (
+        <div className="h-64 flex flex-col items-center justify-center gap-2 bg-white rounded-2xl border border-brand-mist-200 shadow-sm text-center p-6">
+          <AlertCircle className="w-8 h-8 text-red-500" />
+          <p className="text-sm font-bold text-brand-mist-800">
+            Data Synchronization Failed
+          </p>
+          <p className="text-xs text-brand-mist-400">
+            Please verify secure network handshakes or data gateway status.
+          </p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-sm overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-brand-mist-50/70 border-b border-brand-mist-200 text-xs font-bold text-brand-mist-500 uppercase tracking-wider">
+                <th className="p-4">SKU / Product Name</th>
+                <th className="p-4">Store Location</th>
+                <th className="p-4 text-right">Available Qty</th>
+                <th className="p-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm divide-y divide-brand-mist-100 text-brand-mist-700">
+              {stocks && stocks.length > 0 ? (
+                stocks.map((stock) => (
+                  <tr
+                    key={stock.stockId}
+                    className="hover:bg-brand-mist-50/40 transition-colors"
+                  >
+                    <td className="p-4 font-medium text-brand-mist-900">
+                      <div className="flex items-center gap-2.5">
+                        <Package className="w-4 h-4 text-brand-emerald-600" />
+                        <div>
+                          <p className="font-bold text-brand-mist-800">
+                            {stock.product.name}
+                          </p>
+                          <p className="text-xs text-brand-mist-400 font-mono mt-0.5">
+                            SN: {stock.product.serialNumber}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="p-4 font-semibold text-brand-mist-700">
+                      {stock.store?.name || "Unknown Distributed Facility"}
+                    </td>
+
+                    <td className="p-4 text-right font-bold text-brand-mist-900">
+                      <span
+                        className={
+                          stock.quantity === 0
+                            ? "text-red-600"
+                            : "text-brand-mist-900"
+                        }
+                      >
+                        {stock.quantity} Units
+                      </span>
+                    </td>
+                    <td className="p-4 text-center">
+                      <button
+                        onClick={() =>
+                          router.push(`/dashboard/inventory/${stock.stockId}`)
+                        }
+                        className="text-xs font-bold text-brand-emerald-700 hover:text-white hover:bg-brand-emerald-700 bg-brand-emerald-50 px-3 py-2 rounded-xl transition-all"
+                      >
+                        Adjust Stock
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="p-12 text-center text-sm text-brand-mist-400 font-medium"
+                  >
+                    No active inventory levels recorded matching current
+                    facility parameters.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* --- POP-UP MODAL SELECTION (MATCHES ADD-STOCK THEME) --- */}
+      {isStoreModalOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-xl w-full flex flex-col max-h-[80vh] shadow-2xl border border-brand-mist-200 overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-brand-mist-100 flex justify-between items-center bg-brand-mist-50">
+              <div>
+                <h2 className="font-bold text-brand-mist-800 text-md flex items-center gap-2">
+                  Browse Store
+                </h2>
+                <p className="text-xs text-brand-mist-400">
+                  Search and map distributed enterprise retail store units.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsStoreModalOpen(false)}
+                className="text-brand-mist-500 hover:bg-brand-mist-200 p-1.5 rounded-lg transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Filter Input Panel */}
+            <div className="p-4 border-b border-brand-mist-100 bg-white">
+              <div className="relative flex items-center">
+                <Search className="w-4 h-4 text-brand-mist-400 absolute left-3" />
+                <input
+                  type="text"
+                  placeholder="Filter store location name..."
+                  value={storeSearch}
+                  onChange={(e) => {
+                    setStoreSearch(e.target.value);
+                    setStorePage(1);
+                  }}
+                  className="w-full pl-9 pr-4 py-2.5 border border-brand-mist-300 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800"
+                />
+              </div>
+            </div>
+
+            {/* Modal Dynamic Records Content Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-white">
+              {isStoresLoading ? (
+                <div className="h-48 flex flex-col items-center justify-center gap-2">
+                  <Loader2 className="w-6 h-6 animate-spin text-brand-emerald-700" />
+                  <p className="text-xs text-brand-mist-400">
+                    Analyzing organization master ledgers...
+                  </p>
+                </div>
+              ) : storeList.length === 0 ? (
+                <div className="h-48 flex items-center justify-center text-center text-sm text-brand-mist-400">
+                  No active store footprints registered under criteria.
+                </div>
+              ) : (
+                <div className="border border-brand-mist-200 rounded-xl overflow-hidden text-xs shadow-sm">
+                  <table className="w-full border-collapse text-left bg-white">
+                    <thead>
+                      <tr className="bg-brand-mist-50 font-bold border-b border-brand-mist-200 text-brand-mist-500 uppercase tracking-wider">
+                        <th className="p-3">Distribution Facility Name</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-brand-mist-100 text-brand-mist-700">
+                      {storeList.map((store: any) => (
+                        <tr
+                          key={store.storeId || store.id}
+                          className="hover:bg-brand-mist-50/50 transition-colors"
+                        >
+                          <td className="p-3">
+                            <p className="font-semibold text-brand-mist-900">
+                              {store.name}
+                            </p>
+                            <p className="text-[10px] text-brand-mist-400 font-mono mt-0.5">
+                              UUID: {store.storeId || store.id}
+                            </p>
+                          </td>
+                          <td className="p-3 text-center">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedStore(store);
+                                setIsStoreModalOpen(false);
+                                toast.success(
+                                  `Active view filter updated to: ${store.name}`,
+                                );
+                              }}
+                              className="px-3 py-1.5 bg-brand-emerald-50 hover:bg-brand-emerald-700 text-brand-emerald-700 hover:text-white font-bold rounded-lg transition-all"
+                            >
+                              Select
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Dynamic Pagination Interface Sync */}
+            {storeResponse && totalStorePages > 1 && (
+              <div className="p-3 border-t border-brand-mist-100 bg-brand-mist-50 flex items-center justify-between text-xs font-semibold text-brand-mist-500">
+                <span>
+                  Page {storePage} of {totalStorePages}
+                </span>
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    disabled={storePage === 1}
+                    onClick={() =>
+                      setStorePage((prev) => Math.max(1, prev - 1))
+                    }
+                    className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Prev
+                  </button>
+                  <button
+                    type="button"
+                    disabled={storePage >= totalStorePages}
+                    onClick={() => setStorePage((prev) => prev + 1)}
+                    className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                  >
+                    Next <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
