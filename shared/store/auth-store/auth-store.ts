@@ -11,6 +11,7 @@ export type AuthStates = {
   role: Role;
   isVerified: boolean;
   gender: Gender;
+  storeId: string | null;
 };
 
 export type AuthActions = {
@@ -28,6 +29,7 @@ export const defaultAuthStoreState: AuthStates = {
   role: "CUSTOMER",
   isVerified: false,
   gender: "MALE",
+  storeId: null,
 };
 
 export type AuthStoreType = AuthStates & AuthActions;

@@ -13,4 +13,6 @@ export interface User {
   role: Role;
   usedReferralCode: string | null;
   userId: string;
+
+  storeId?: string | null;
 }

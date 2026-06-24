@@ -35,6 +35,7 @@ function ProfileForm() {
     gender,
     setAuth,
     isVerified,
+    storeId,
   } = useAuthStore((state) => state);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [error, setError] = useState<Record<string, string>>({});
@@ -89,6 +90,7 @@ function ProfileForm() {
         role: updatedUserData?.role as Role,
         isVerified: updatedUserData?.isVerified,
         gender: updatedUserData?.gender as Gender,
+        storeId: updatedUserData?.storeId || storeId,
       };
 
       setAuth(initialAuth); // update navbar ui
@@ -140,7 +142,8 @@ function ProfileForm() {
               onClick={() => imageInputRef.current?.click()}
               onMouseEnter={() => setHoverImage(true)}
               onMouseLeave={() => setHoverImage(false)}
-              className="relative w-30 h-30 md:w-40 md:h-40 border-2 rounded-full border-brand-mist-200 ring-3 ring-brand-emerald-700 overflow-hidden cursor-pointer">
+              className="relative w-30 h-30 md:w-40 md:h-40 border-2 rounded-full border-brand-mist-200 ring-3 ring-brand-emerald-700 overflow-hidden cursor-pointer"
+            >
               <Image
                 src={avatarPreview || avatar || defaultUserProfile}
                 alt={`${firstName}-profile-picture`}
@@ -248,7 +251,8 @@ function ProfileForm() {
                 {...register("gender")}
                 name="gender"
                 defaultValue="Pick a color"
-                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400">
+                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400"
+              >
                 <option disabled={true}>Gender</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
@@ -268,7 +272,8 @@ function ProfileForm() {
             btnType="primary"
             pendingLabel="Start editing" // this will shows up in the UI as disabled is always true
             disabled={true}
-            type="button">
+            type="button"
+          >
             Start editing
           </Button>
         ) : (
@@ -276,7 +281,8 @@ function ProfileForm() {
             btnType="primary"
             disabled={isSubmitting}
             pendingLabel="Submitting..."
-            type="submit">
+            type="submit"
+          >
             Save your profile information
           </Button>
         )}
