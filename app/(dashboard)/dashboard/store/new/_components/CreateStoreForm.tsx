@@ -19,21 +19,25 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { IoCameraReverse } from "react-icons/io5";
-import { EditStoreInput, editStoreSchema } from "../_schemas/edit-store-schema";
-import { useGetUnassignedStoreAdmin } from "../hooks/use-get-unassigned-store-admin";
-import UserSelectDropdown from "./UserSelectDropdown";
 import { editStoreDetails } from "@/actions/edit-store-details";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { deleteStore } from "@/actions/delete-store";
+import {
+  CreateStoreInput,
+  createStoreSchema,
+} from "../_schemas/create-store-schema";
+import { useGetUnassignedStoreAdmin } from "../../(all-store)/[storeId]/hooks/use-get-unassigned-store-admin";
+import { createNewStore } from "@/actions/create-store";
+import UserSelectDropdown from "../../(all-store)/[storeId]/_components/UserSelectDropdown";
 
-interface EditStoreFormProps {
+interface CreateStoreFormProps {
   store: StoreType;
 }
 
-function EditStoreForm({ store }: EditStoreFormProps) {
+function CreateStoreForm() {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -48,19 +52,18 @@ function EditStoreForm({ store }: EditStoreFormProps) {
     lng: longitude,
     setCords,
   } = useStoreAddressStore((state) => state);
-  const assignedStoreAdmin = store?.user;
 
   const defaultValues = {
-    address: store?.address,
-    city: `${store?.cityId}%${store?.city}`,
-    district: `${store?.districtId}%${store?.district}`,
-    province: `${store?.provinceId}%${store?.province}`,
-    latitude: store?.latitude,
-    longitude: store?.longitude,
-    name: store?.name,
-    phone: store?.phone || "",
-    postalCode: store?.postalCode,
-    userId: store?.userId || "",
+    address: "",
+    city: "",
+    district: "",
+    province: "",
+    latitude: null,
+    longitude: null,
+    name: "",
+    phone: "",
+    postalCode: "",
+    userId: "",
   };
 
   const {
@@ -70,9 +73,9 @@ function EditStoreForm({ store }: EditStoreFormProps) {
     watch,
     setValue,
     formState: { errors, dirtyFields },
-  } = useForm<EditStoreInput>({
+  } = useForm<CreateStoreInput>({
     defaultValues,
-    resolver: zodResolver(editStoreSchema),
+    resolver: zodResolver(createStoreSchema),
   });
 
   // handle select file & catching upload preview
@@ -138,40 +141,28 @@ function EditStoreForm({ store }: EditStoreFormProps) {
     const formData = new FormData();
 
     if (avatarFile) formData.append("avatar", avatarFile as File);
-    if (store.name !== data.name) formData.append("name", String(data.name));
-    if (store.address !== data.address)
-      formData.append("address", String(data.address));
-    if (store.cityId !== Number(cityId))
-      formData.append("cityId", String(cityId));
-    if (store.city !== city) formData.append("city", String(city));
-    if (store.districtId !== Number(districtId))
-      formData.append("districtId", String(districtId));
-    if (store.district !== district)
-      formData.append("district", String(district));
-    if (store.provinceId !== Number(provinceId))
-      formData.append("provinceId", String(provinceId));
-    if (store.province !== province)
-      formData.append("province", String(province));
-    if (store.latitude !== latitude)
-      formData.append("latitude", String(latitude));
-    if (store.longitude !== longitude)
-      formData.append("longitude", String(longitude));
-    if (store?.user?.userId !== data.userId)
-      formData.append("userId", String(data.userId));
-    if (store.phone !== data.phone)
-      formData.append("phone", String(data.phone));
-    if (store.postalCode !== data.postalCode)
-      formData.append("postalCode", String(data.postalCode));
+    if (data.name) formData.append("name", String(data.name));
+    if (data.address) formData.append("address", String(data.address));
+    if (Number(cityId)) formData.append("cityId", String(cityId));
+    if (city) formData.append("city", String(city));
+    if (Number(districtId)) formData.append("districtId", String(districtId));
+    if (district) formData.append("district", String(district));
+    if (Number(provinceId)) formData.append("provinceId", String(provinceId));
+    if (province) formData.append("province", String(province));
+    if (latitude) formData.append("latitude", String(latitude));
+    if (longitude) formData.append("longitude", String(longitude));
+    if (data.userId) formData.append("userId", String(data.userId));
+    if (data.phone) formData.append("phone", String(data.phone));
+    if (data.postalCode) formData.append("postalCode", String(data.postalCode));
 
     startTransition(async () => {
-      const res = await editStoreDetails(formData, store.storeId);
+      const res = await createNewStore(formData);
       if (!res?.success) {
         toast.error(res.error);
       } else {
-        toast.success("Store modified successfully");
+        toast.success("Store created successfully");
         setError({});
         setCords({ lat: 43.21, lng: 0.123 });
-        queryClient.invalidateQueries({ queryKey: ["store-details"] });
         router.push("/dashboard/store");
       }
     });
@@ -179,20 +170,14 @@ function EditStoreForm({ store }: EditStoreFormProps) {
 
   // detect if the user has touched the map
   useEffect(() => {
-    if (latitude === store?.latitude && longitude === store?.longitude) {
+    if (latitude !== 43.21 && longitude !== 0.123) {
       setIsMapTouched(true);
     } else {
       setIsMapTouched(false);
     }
   }, [latitude, longitude]);
 
-  useEffect(() => {
-    if (store) {
-      setCords({ lat: store.latitude, lng: store.longitude });
-    }
-  }, [store]);
-
-  const handleDeleteAddress = async () => {
+  const handleCancelCreateStore = async () => {
     Swal.fire({
       title: "Are you sure?",
       theme: "auto",
@@ -201,18 +186,11 @@ function EditStoreForm({ store }: EditStoreFormProps) {
       showCancelButton: true,
       confirmButtonColor: "#009966",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, cancel it!",
+      cancelButtonText: "No, take me back!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteStore(store.storeId);
-
-        if (!res?.success) {
-          toast.error(res?.error);
-        } else {
-          toast.success("Store deleted successfully");
-          setError({});
-          router.push("/dashboard/store");
-        }
+        router.push("/dashboard/store");
       }
     });
   };
@@ -228,8 +206,8 @@ function EditStoreForm({ store }: EditStoreFormProps) {
             onMouseLeave={() => setHoverImage(false)}
             className="relative w-30 h-30 md:w-40 md:h-40 border-4 rounded-full border-brand-mist-200 ring-3 ring-brand-mist-200 overflow-hidden cursor-pointer">
             <Image
-              src={avatarPreview || store?.avatar || defaultStoreAvatar}
-              alt={`${store?.name}-avatar`}
+              src={avatarPreview || defaultStoreAvatar}
+              alt={`preview-avatar`}
               fill
               className={`object-cover ${hoverImage && "opacity-50 transition-all duration-300"}`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -480,7 +458,7 @@ function EditStoreForm({ store }: EditStoreFormProps) {
             <UserSelectDropdown
               control={control}
               usersData={storeAdmins}
-              assignedStoreAdmin={assignedStoreAdmin}
+              assignedStoreAdmin={null}
             />
           </section>
         </div>
@@ -491,43 +469,35 @@ function EditStoreForm({ store }: EditStoreFormProps) {
           !avatarPreview ? (
             <Button
               btnType="primary"
-              pendingLabel="Start editing" // this will shows up in the UI before editing as disabled is always true
+              pendingLabel="Start creating" // this will shows up in the UI before editing as disabled is always true
               disabled={true}
               type="button">
-              Start editing
+              Start creating
             </Button>
           ) : (
             <Button
               type="submit"
               disabled={isPending}
               btnType="primary"
-              pendingLabel="Editing...">
-              Save information
+              pendingLabel="Submitting...">
+              Create Store
             </Button>
           )}
         </div>
       </form>
 
       <div>
-        {store?.storeStatus === "PRIMARY" ? (
-          <div className="cursor-help my-4 text-brand-mist-400 flex items-center justify-center text-sm">
-            <p>You are unable to delete primary store </p>
-          </div>
-        ) : (
-          // fixme ->> add functionality
-          <form action={handleDeleteAddress} className="mt-2">
-            <Button
-              type="submit"
-              pendingLabel={<SpinnerMini />}
-              //   disabled={isPending}
-              btnType="danger">
-              Delete address
-            </Button>
-          </form>
-        )}
+        <form action={handleCancelCreateStore} className="mt-2">
+          <Button
+            type="submit"
+            pendingLabel={<SpinnerMini />}
+            btnType="secondary">
+            Cancel Creating
+          </Button>
+        </form>
       </div>
     </>
   );
 }
 
-export default EditStoreForm;
+export default CreateStoreForm;

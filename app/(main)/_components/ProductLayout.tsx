@@ -1,32 +1,21 @@
 "use client";
 
-import { useGeolocation } from "@/shared/hooks/use-geolocation";
-import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
-import { useEffect } from "react";
-import { useGetNearestStore } from "../_hooks/use-get-nearest-store";
+import React from "react";
+import { useInitializeUserLocation } from "./use-get-intitial-user-location";
 
 interface ProductLayoutProps {
   children: React.ReactNode;
 }
+
 function ProductLayout({ children }: ProductLayoutProps) {
-  const { lat, lng, setCords, nearestStoreId } = useUserCoordinatesStore(
-    (state) => state,
+  const { nearestStoreId } = useInitializeUserLocation();
+
+  console.log(nearestStoreId);
+  return (
+    <section className="w-full min-h-screen bg-color-background text-color-foreground antialiased">
+      {children}
+    </section>
   );
-  const { position, getPosition } = useGeolocation();
-
-  useEffect(() => {
-    getPosition();
-  }, []);
-
-  useEffect(() => {
-    if (position) {
-      setCords({ lat: position.lat, lng: position.lng });
-    }
-  }, [position]);
-
-  useGetNearestStore(lat, lng);
-
-  return <section>{children}</section>;
 }
 
 export default ProductLayout;
