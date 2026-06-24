@@ -1,13 +1,13 @@
+import AppFooter from "@/shared/components/AppFooter";
 import AppNavbar from "@/shared/components/AppNavbar";
 import ScrollToTop from "@/shared/components/ScrollToTop";
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { AuthStates } from "@/shared/store/auth-store/auth-store";
+import { CartStates } from "@/shared/store/cart-store/cart-store";
 import StoreProviders from "@/shared/store/StoreProviders";
 import { ApiResponse } from "@/shared/types/api-type";
 import { Gender, Role, User } from "@/shared/types/user-type";
-import { CartStates } from "@/shared/store/cart-store/cart-store";
 import { cookies } from "next/headers";
-import AppFooter from "@/shared/components/AppFooter";
 
 async function layout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
@@ -17,6 +17,7 @@ async function layout({ children }: { children: React.ReactNode }) {
   let cartCountResponse = null;
 
   if (accessToken || refreshToken) {
+    ("use server");
     response = await fetch(`${CORS_CREDENTIALS.API_BASE_URL}/users/me`, {
       method: "GET",
       headers: {

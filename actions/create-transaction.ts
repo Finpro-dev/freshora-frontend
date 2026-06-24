@@ -1,19 +1,20 @@
 "use server";
 
+import { CreateTransaction } from "@/app/(main)/transaction/_types/create-transaction";
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 import { forwardExpressCookie } from "@/shared/utils/cookie-forwarder-util";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export const deleteStore = async (storeId: string) => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
-
+export const createTransaction = async (data: CreateTransaction) => {
+  const allCookie = await cookies();
+  const accessToken = allCookie.get("accessToken")?.value;
+  const refreshToken = allCookie.get("refreshToken")?.value;
   try {
-    const res = await axios.delete(
-      `${CORS_CREDENTIALS.API_BASE_URL}/stores/${storeId}`,
+    const res = await axios.post(
+      `${CORS_CREDENTIALS.API_BASE_URL}/transactions`,
+      { ...data },
       {
         headers: {
           Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken};`,
@@ -22,7 +23,6 @@ export const deleteStore = async (storeId: string) => {
     );
 
     await forwardExpressCookie(res.headers["set-cookie"]);
-    revalidatePath("/dashboard/store");
     return { data: res.data.data, success: true };
   } catch (error: any) {
     const errorMessage =

@@ -7,11 +7,10 @@ export const useGetStoreDetails = (storeId: string) => {
     queryFn: async () => {
       const { data } = await api.get(`/stores/${storeId}`);
 
-      return data.data;
+      return data;
     },
+
     enabled: !!storeId,
-    staleTime: 0,
-    gcTime: 0,
   });
 
   return getStoreDetailsQuery;
