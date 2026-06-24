@@ -20,7 +20,7 @@ function StoreProviders({ initialAuth, initialCart, children }: ProviderProps) {
       <UserAddressStoreProvider>
         <CartStoreProvider initialCart={initialCart}>
           <UserCoordinatesStoreProvider>
-            <AppWrapper>{children}</AppWrapper>
+            {children}
           </UserCoordinatesStoreProvider>
         </CartStoreProvider>
       </UserAddressStoreProvider>

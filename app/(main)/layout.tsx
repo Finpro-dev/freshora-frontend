@@ -8,6 +8,7 @@ import StoreProviders from "@/shared/store/StoreProviders";
 import { ApiResponse } from "@/shared/types/api-type";
 import { Gender, Role, User } from "@/shared/types/user-type";
 import { cookies } from "next/headers";
+import AppWrapper from "./_components/AppWrapper";
 
 async function layout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
@@ -67,8 +68,10 @@ async function layout({ children }: { children: React.ReactNode }) {
     <div className="w-full min-h-full">
       <StoreProviders initialAuth={initialAuth} initialCart={initialCart}>
         <ScrollToTop />
-        <AppNavbar />
-        {children}
+        <AppWrapper>
+          <AppNavbar />
+          {children}
+        </AppWrapper>
         <AppFooter />
       </StoreProviders>
     </div>

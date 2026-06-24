@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
 import { useGeolocation } from "@/shared/hooks/use-geolocation";
 import { useGetNearestStore } from "../_hooks/use-get-nearest-store";
@@ -16,6 +16,7 @@ export const useInitializeUserLocation = () => {
 
   const { position, getPosition, error: geoError } = useGeolocation();
 
+  const [isLocating, setIsLocating] = useState<boolean>(true);
   const isLocationInitialized = useRef(false);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export const useInitializeUserLocation = () => {
         setCords({ lat: position.lat, lng: position.lng });
       } else if (geoError) {
         console.log("User rejected to use GPS");
+        setIsLocating(false);
       }
 
       isLocationInitialized.current = true;
@@ -38,12 +40,16 @@ export const useInitializeUserLocation = () => {
 
   const storeId = useGetNearestStore(lat, lng);
 
-  const isLocating = isStoreLoading || !nearestStoreId;
+  useEffect(() => {
+    if (nearestStoreId || storeId) {
+      setIsLocating(false);
+    }
+  }, [nearestStoreId, storeId]);
 
   return {
     isLocating,
     geoError,
     coordinates: { lat, lng },
-    nearestStoreId: storeId || nearestStoreId,
+    nearestStoreId: nearestStoreId || storeId,
   };
 };
