@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   useUpdateStock,
   useGetStoresPaginated,
   useGetProducts,
 } from "../_hooks/use-stock";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider"; // Tambah import
 import {
   Loader2,
   ArrowLeft,
@@ -23,18 +24,19 @@ import { toast } from "sonner";
 export default function AddStockPage() {
   const router = useRouter();
 
-  // Simulated authenticated user context
-  const user = {
-    role: "SUPER_ADMIN" as "SUPER_ADMIN" | "STORE_ADMIN",
-    storeId: "store-uuid-authorized",
-  };
+  // PERBAIKAN: Gunakan auth store yang sebenarnya
+  const role = useAuthStore((state) => state.role);
+  const storeId = useAuthStore((state) => state.storeId);
+
+  // Cek apakah user adalah SUPER_ADMIN
+  const isSuperAdmin = role === "SUPER_ADMIN";
 
   // --- FORM STATES ---
   const [selectedStore, setSelectedStore] = useState<any | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [initialQty, setInitialQty] = useState<number>(0);
 
-  // --- STORE MODAL & FILTER STATES ---
+  // --- STORE MODAL & FILTER STATES (hanya untuk SUPER_ADMIN) ---
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
   const [storeSearch, setStoreSearch] = useState("");
   const [storePage, setStorePage] = useState(1);
@@ -46,12 +48,15 @@ export default function AddStockPage() {
   const [productPage, setProductPage] = useState(1);
 
   // --- FETCH DATA HOOKS ---
+  // PERBAIKAN: Endpoint ini hanya dipanggil untuk SUPER_ADMIN
   const { data: storeResponse, isLoading: isLoadingStores } =
     useGetStoresPaginated(
       { page: storePage, limit: 5, search: storeSearch },
-      user.role === "SUPER_ADMIN",
+      isSuperAdmin, // Hanya SUPER_ADMIN yang bisa fetch store list
     );
 
+  // PERBAIKAN: Untuk STORE_ADMIN, gunakan endpoint /admin/inventory untuk produk di toko mereka
+  // Untuk SUPER_ADMIN, gunakan /products untuk semua produk
   const { data: productResponse, isLoading: isLoadingProducts } =
     useGetProducts({
       page: productPage,
@@ -76,19 +81,27 @@ export default function AddStockPage() {
     name: cat.category as string,
   }));
 
-  const targetStoreId =
-    user.role === "STORE_ADMIN"
-      ? user.storeId
-      : selectedStore?.storeId || selectedStore?.id || "";
+  // PERBAIKAN: Target store ID berdasarkan role
+  const targetStoreId = isSuperAdmin
+    ? selectedStore?.storeId || selectedStore?.id || ""
+    : storeId || ""; // STORE_ADMIN gunakan storeId dari auth
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!targetStoreId)
+
+    // PERBAIKAN: Validasi lebih ketat
+    if (isSuperAdmin && !selectedStore) {
       return toast.error("Please select a target store location");
-    if (!selectedProduct)
+    }
+    if (!targetStoreId) {
+      return toast.error("Store ID not available");
+    }
+    if (!selectedProduct) {
       return toast.error("Please select a product from the catalog");
-    if (initialQty <= 0)
+    }
+    if (initialQty <= 0) {
       return toast.error("Initial quantity must be greater than zero");
+    }
 
     try {
       await createStockMutation.mutateAsync({
@@ -106,6 +119,31 @@ export default function AddStockPage() {
       );
     }
   };
+
+  // PERBAIKAN: Validasi apakah STORE_ADMIN memiliki storeId
+  if (role === "STORE_ADMIN" && !storeId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-mist-50/50">
+        <div className="flex flex-col items-center gap-3 max-w-sm text-center">
+          <Store className="w-12 h-12 text-red-500" />
+          <h2 className="text-lg font-bold text-brand-mist-800">
+            Store Assignment Required
+          </h2>
+          <p className="text-sm text-brand-mist-500">
+            Your account is not yet assigned to any store. Please contact
+            SUPER_ADMIN to assign your store location.
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard")}
+            className="mt-4 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg text-sm font-medium hover:bg-brand-emerald-800 transition"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-brand-mist-50/50 p-4 md:p-8">
@@ -132,8 +170,8 @@ export default function AddStockPage() {
           onSubmit={handleFormSubmit}
           className="bg-white border border-brand-mist-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6"
         >
-          {/* STORE SELECTION */}
-          {user.role === "SUPER_ADMIN" ? (
+          {/* STORE SELECTION - HANYA UNTUK SUPER_ADMIN */}
+          {isSuperAdmin ? (
             <div className="space-y-2">
               <label className="text-sm font-bold text-brand-mist-800">
                 Target Distribution Store
@@ -170,17 +208,18 @@ export default function AddStockPage() {
               )}
             </div>
           ) : (
+            // PERBAIKAN: Tampilan untuk STORE_ADMIN - locked to their store
             <div className="bg-brand-mist-50 rounded-xl p-4 border border-brand-mist-100">
               <label className="text-[11px] uppercase tracking-wider font-bold text-brand-mist-400 block mb-1">
                 Authorized Location
               </label>
               <p className="text-sm font-semibold text-brand-mist-700">
-                Locked to Store ID: {user.storeId}
+                Locked to Your Store: {storeId}
               </p>
             </div>
           )}
 
-          {/* PRODUCT SELECTION */}
+          {/* PRODUCT SELECTION - SAMA UNTUK SEMUA ROLE */}
           <div className="space-y-2">
             <label className="text-sm font-bold text-brand-mist-800">
               Select Product
@@ -276,8 +315,8 @@ export default function AddStockPage() {
         </form>
       </div>
 
-      {/* STORES MODAL */}
-      {isStoreModalOpen && (
+      {/* STORES MODAL - HANYA UNTUK SUPER_ADMIN */}
+      {isSuperAdmin && isStoreModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
             <div className="p-4 border-b border-brand-mist-100 flex items-center justify-between bg-brand-mist-50">
@@ -377,7 +416,7 @@ export default function AddStockPage() {
         </div>
       )}
 
-      {/* PRODUCTS MODAL */}
+      {/* PRODUCTS MODAL - SAMA UNTUK SEMUA ROLE */}
       {isProductModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">

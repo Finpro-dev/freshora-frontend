@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useGetAllProducts } from "./_hooks/use-get-products";
 import Swal from "sweetalert2";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 
 import {
   Search,
@@ -16,7 +17,7 @@ import {
   Loader2,
   Layers,
   RefreshCw,
-  ExternalLink, // <-- Ditambahkan icon ExternalLink untuk efek hover premium
+  ExternalLink,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDeleteProduct } from "./_hooks/use-delete-product";
@@ -52,20 +53,36 @@ export default function ProductPage() {
   const router = useRouter();
   const { mutate: deleteProduct } = useDeleteProduct();
 
+  // Dapatkan role dari auth store
+  const role = useAuthStore((state) => state.role);
+  const isSuperAdmin = role === "SUPER_ADMIN";
+
   const handleProductDetail = (productId: string) => {
     return router.push(`/dashboard/product/${productId}/detail`);
   };
+
+  // Sembunyikan tombol ini untuk STORE_ADMIN
   const handleAddProduct = () => {
+    if (!isSuperAdmin) return; // Safety check
     return router.push(`/dashboard/product/add-product`);
   };
+
+  // Sembunyikan tombol ini untuk STORE_ADMIN
   const handleManageCategories = () => {
+    if (!isSuperAdmin) return; // Safety check
     return router.push(`/dashboard/category`);
   };
+
+  // Sembunyikan tombol ini untuk STORE_ADMIN
   const handleUpdateProduct = (productId: string) => {
+    if (!isSuperAdmin) return; // Safety check
     return router.push(`/dashboard/product/${productId}`);
   };
 
-  const handleDeleteProduct = async (userId: string) => {
+  const handleDeleteProduct = async (productId: string) => {
+    // Sembunyikan fitur ini untuk STORE_ADMIN
+    if (!isSuperAdmin) return;
+
     Swal.fire({
       title: "Are you sure?",
       theme: "auto",
@@ -77,7 +94,7 @@ export default function ProductPage() {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = deleteProduct(userId);
+        const res = deleteProduct(productId);
       }
     });
   };
@@ -130,33 +147,34 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-dvh p-4 md:p-6 lg:p-8">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-brand-mist-800">Products</h1>
           <p className="text-brand-mist-500">Manage your product catalog</p>
         </div>
-        <div className="flex items-center gap-2 self-end md:self-auto">
-          {/* 🆕 TOMBOL MANAGE CATEGORIES DENGAN EFEK HOVER PREMIUM & MICRO-INTERACTION */}
-          <button
-            type="button"
-            className="group flex items-center gap-2 px-4 py-2 border border-brand-mist-300 text-brand-mist-700 bg-white rounded-lg hover:text-brand-emerald-700 hover:border-brand-emerald-300 hover:bg-brand-mist-25 transition-all duration-200 text-sm font-medium shadow-sm"
-            onClick={handleManageCategories}
-          >
-            <Layers className="w-4 h-4 text-brand-mist-500 group-hover:text-brand-emerald-600 transition-colors duration-200" />
-            <span>Manage Categories</span>
-            <ExternalLink className="w-3.5 h-3.5 text-brand-mist-400 group-hover:text-brand-emerald-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
 
-          <button
-            type="button"
-            className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium"
-            onClick={handleAddProduct}
-          >
-            <Plus className="w-4 h-4" />
-            Add Product
-          </button>
-        </div>
+        {isSuperAdmin && (
+          <div className="flex items-center gap-2 self-end md:self-auto">
+            <button
+              type="button"
+              className="group flex items-center gap-2 px-4 py-2 border border-brand-mist-300 text-brand-mist-700 bg-white rounded-lg hover:text-brand-emerald-700 hover:border-brand-emerald-300 hover:bg-brand-mist-25 transition-all duration-200 text-sm font-medium shadow-sm"
+              onClick={handleManageCategories}
+            >
+              <Layers className="w-4 h-4 text-brand-mist-500 group-hover:text-brand-emerald-600 transition-colors duration-200" />
+              <span>Manage Categories</span>
+              <ExternalLink className="w-3.5 h-3.5 text-brand-mist-400 group-hover:text-brand-emerald-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </button>
+
+            <button
+              type="button"
+              className="flex items-center gap-2 px-4 py-2 bg-brand-emerald-700 text-white rounded-lg hover:bg-brand-emerald-800 transition-colors text-sm font-medium"
+              onClick={handleAddProduct}
+            >
+              <Plus className="w-4 h-4" />
+              Add Product
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Stats Cards */}
@@ -181,7 +199,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Filters + Tombol Refresh */}
+      {/* Filters */}
       <div className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm mb-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
@@ -230,7 +248,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Table Desktop */}
       <div className="hidden lg:block bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
         <table className="w-full">
           <thead className="bg-brand-mist-50">
@@ -256,9 +273,11 @@ export default function ProductPage() {
               <th className="px-6 py-3 text-left text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
-                Actions
-              </th>
+              {isSuperAdmin && (
+                <th className="px-6 py-3 text-right text-xs font-medium text-brand-mist-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-mist-200">
@@ -325,28 +344,30 @@ export default function ProductPage() {
                       {status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-emerald-100 text-brand-emerald-600 transition-colors"
-                        onClick={() => handleProductDetail(product.productId)}
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
-                        onClick={() => handleUpdateProduct(product.productId)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-red-100 text-red-600 transition-colors"
-                        onClick={() => handleDeleteProduct(product.productId)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
+                  {isSuperAdmin && (
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-emerald-100 text-brand-emerald-600 transition-colors"
+                          onClick={() => handleProductDetail(product.productId)}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
+                          onClick={() => handleUpdateProduct(product.productId)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-red-100 text-red-600 transition-colors"
+                          onClick={() => handleDeleteProduct(product.productId)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -354,7 +375,6 @@ export default function ProductPage() {
         </table>
       </div>
 
-      {/* Cards Mobile */}
       <div className="lg:hidden space-y-4">
         {products.map((product: any) => {
           const stock = product.stocks?.[0]?.quantity ?? 0;
@@ -425,29 +445,31 @@ export default function ProductPage() {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 pt-3 border-t border-brand-mist-200">
-                <button
-                  onClick={() => handleProductDetail(product.productId)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-brand-emerald-50 text-brand-emerald-600 text-xs font-medium hover:bg-brand-emerald-100 transition-colors"
-                >
-                  <Eye className="w-3 h-3" />
-                  View
-                </button>
-                <button
-                  onClick={() => handleUpdateProduct(product.productId)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium hover:bg-blue-100 transition-colors"
-                >
-                  <Edit className="w-3 h-3" />
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteProduct(product.productId)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-medium hover:bg-red-100 transition-colors"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Delete
-                </button>
-              </div>
+              {isSuperAdmin && (
+                <div className="flex items-center gap-2 pt-3 border-t border-brand-mist-200">
+                  <button
+                    onClick={() => handleProductDetail(product.productId)}
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-brand-emerald-50 text-brand-emerald-600 text-xs font-medium hover:bg-brand-emerald-100 transition-colors"
+                  >
+                    <Eye className="w-3 h-3" />
+                    View
+                  </button>
+                  <button
+                    onClick={() => handleUpdateProduct(product.productId)}
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium hover:bg-blue-100 transition-colors"
+                  >
+                    <Edit className="w-3 h-3" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteProduct(product.productId)}
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-medium hover:bg-red-100 transition-colors"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

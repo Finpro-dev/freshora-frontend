@@ -3,6 +3,7 @@ import { useGetUser } from "./_hooks/use-get-user";
 import { useDeleteStoreAdmin } from "./_hooks/use-delete-store-admin";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { toast } from "sonner";
 import {
   Plus,
@@ -52,10 +53,13 @@ interface UserType {
 
 export default function PeoplePage() {
   const router = useRouter();
-  // Panggil custom hook data fetching kamu
+  const role = useAuthStore((state) => state.role);
+  if (role === "STORE_ADMIN") {
+    router.replace("/unauthorized");
+    return null;
+  }
   const { data: users } = useGetUser();
-  const { mutate: deleteStoreAdmin } = useDeleteStoreAdmin(); // Jika kamu punya hook untuk delete store admin
-  // Ambil array users dari response API dengan aman
+  const { mutate: deleteStoreAdmin } = useDeleteStoreAdmin();
   const handleDeleteStoreAdmin = async (userId: string) => {
     Swal.fire({
       title: "Are you sure?",
