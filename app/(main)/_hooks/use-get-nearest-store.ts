@@ -1,3 +1,6 @@
+// hooks/use-get-nearest-store.ts
+"use client";
+
 import { api } from "@/shared/lib/axios-instance";
 import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
 import { useQuery } from "@tanstack/react-query";
@@ -12,15 +15,19 @@ export const useGetNearestStore = (lat: number, lng: number) => {
     queryKey: ["nearest-store", lat, lng],
     queryFn: async () => {
       const { data } = await api.get(`/stores/nearest?lat=${lat}&lng=${lng}`);
-
-      setNearestStoreId(data?.data?.storeId);
       return data?.data?.storeId;
     },
   });
 
   useEffect(() => {
     setIsLoading(isLoading);
-  }, [isLoading]);
+  }, [isLoading, setIsLoading]);
+
+  useEffect(() => {
+    if (data) {
+      setNearestStoreId(data);
+    }
+  }, [data, setNearestStoreId]);
 
   return data;
 };
