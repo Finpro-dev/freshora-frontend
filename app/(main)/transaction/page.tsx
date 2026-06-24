@@ -17,11 +17,16 @@ import { useGetShippingFee } from "./_hooks/use-calculate-shipping-fee";
 import TransactionSummaryCard from "./_components/TransactionSummaryCard";
 import { capitalize } from "@/shared/utils/capitalize";
 import { useGetFreeShippingVoucher } from "./_hooks/use-get-free-shipping-voucher";
+import TransactionSummarySkeleton from "./_components/TransactionSummarySkeleton";
 
 function Page() {
-  const { data: cartData } = useGetCartItems();
-  const { data: freeShippingVoucherData } = useGetFreeShippingVoucher();
-  const { data: referralVoucherData } = useGetReferralVoucher();
+  const { data: cartData, isLoading: isCartItemLoading } = useGetCartItems();
+  const {
+    data: freeShippingVoucherData,
+    isLoading: isFreeShippingVoucherLoading,
+  } = useGetFreeShippingVoucher();
+  const { data: referralVoucherData, isLoading: isReferralVoucherLoading } =
+    useGetReferralVoucher();
   const nearestStoreId = useUserCoordinatesStore(
     (state) => state.nearestStoreId,
   );
@@ -53,7 +58,10 @@ function Page() {
     <main>
       {/* cart list */}
       <div className="w-full p-4">
-        <CheckoutItemPreview cartItems={cartArr} />
+        <CheckoutItemPreview
+          cartItems={cartArr}
+          isCartItemLoading={isCartItemLoading}
+        />
       </div>
 
       <div className="flex flex-col md:flex-row gap-2">
@@ -95,15 +103,19 @@ function Page() {
 
       {/* order summary */}
       <div className="p-4">
-        <TransactionSummaryCard
-          freeShippingVoucher={freeShippingVoucher}
-          referralVoucher={referralVoucher}
-          activeAddress={activeAddress}
-          activeCourier={activeCourier}
-          cartItems={cartArr}
-          isCalculateShippingFeeLoading={isCalculateShippingFeeLoading}
-          shippingFee={shippingFee}
-        />
+        {isFreeShippingVoucherLoading || isReferralVoucherLoading ? (
+          <TransactionSummarySkeleton />
+        ) : (
+          <TransactionSummaryCard
+            freeShippingVoucher={freeShippingVoucher}
+            referralVoucher={referralVoucher}
+            activeAddress={activeAddress}
+            activeCourier={activeCourier}
+            cartItems={cartArr}
+            isCalculateShippingFeeLoading={isCalculateShippingFeeLoading}
+            shippingFee={shippingFee}
+          />
+        )}
       </div>
     </main>
   );
