@@ -26,6 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${dmSans.className} h-full antialiased`}>
+      <meta
+        name="google-site-verification"
+        content="UY5je7U0EuGS3YKE_9l7vnhc-HCbnkeKkIZioVDD4-k"
+      />
       <body className="min-h-full flex flex-col bg-brand-mist-100/50">
         <Providers>{children}</Providers>
         <Toaster
