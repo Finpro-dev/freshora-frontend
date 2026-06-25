@@ -26,7 +26,9 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
   const router = useRouter();
   const userId = useAuthStore((state) => state.userId);
   const isVerified = useAuthStore((state) => state.isVerified);
-  const nearestStoreId = useUserCoordinatesStore((state) => state.nearestStoreId);
+  const nearestStoreId = useUserCoordinatesStore(
+    (state) => state.nearestStoreId,
+  );
   const addToCart = useAddToCart();
 
   const effectiveStoreId = storeId || nearestStoreId;
@@ -42,7 +44,9 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
     }
     if (isOutOfStock) return;
     if (!effectiveStoreId) {
-      toast.error("Unable to determine your nearest store. Please allow location access.");
+      toast.error(
+        "Unable to determine your nearest store. Please allow location access.",
+      );
       return;
     }
 
@@ -76,7 +80,8 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
 
   return (
     <div
-      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}>
+      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}
+    >
       {/* image */}
       <div className="relative w-full h-70 md:h-65 lg:h-100">
         <Image
@@ -142,8 +147,19 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
             btnType="primary"
             disabled={isOutOfStock || isAddingToCart}
             onClick={handleAddToCart}
+            pendingLabel={
+              isOutOfStock
+                ? "Out of stock"
+                : isAddingToCart
+                  ? "Adding..."
+                  : undefined
+            }
           >
-            {isAddingToCart ? "Adding..." : isOutOfStock ? "Out of stock" : "Add to cart"}
+            {isAddingToCart
+              ? "Adding..."
+              : isOutOfStock
+                ? "Out of stock"
+                : "Add to cart"}
           </Button>
         </div>
       </div>
