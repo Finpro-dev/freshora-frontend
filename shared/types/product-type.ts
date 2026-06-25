@@ -14,8 +14,6 @@ export enum ProductGrade {
 }
 
 export enum Unit {
-  KG = "KG",
-  G = "G",
   PCS = "PCS",
   PACK = "PACK",
 }
