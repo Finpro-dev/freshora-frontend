@@ -28,6 +28,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { deleteStore } from "@/actions/delete-store";
+import { clearAssignedStore } from "@/actions/clear-assigned-store";
 
 interface EditStoreFormProps {
   store: StoreType;
@@ -118,7 +119,7 @@ function EditStoreForm({ store }: EditStoreFormProps) {
   // get all unassigned store admin
   const { data: storeAdminData } = useGetUnassignedStoreAdmin();
   const storeAdmins: UnassignedStoreAdmin[] = storeAdminData?.data?.storeAdmin;
-
+  console.log(storeAdmins);
   const handleChangeProvince = (value: string) => {
     setValue("province", value);
     setValue("city", "");
@@ -215,6 +216,23 @@ function EditStoreForm({ store }: EditStoreFormProps) {
         }
       }
     });
+  };
+
+  const handleClearAssignedStore = async () => {
+    const res = await clearAssignedStore(store.storeId);
+
+    if (!res?.success) {
+      toast.error(res?.error);
+    } else {
+      toast.success("Admin clear successfully");
+      setValue("userId", "");
+      queryClient.invalidateQueries({
+        queryKey: ["store-admin"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["store-details"],
+      });
+    }
   };
 
   return (
@@ -472,10 +490,14 @@ function EditStoreForm({ store }: EditStoreFormProps) {
 
           {/* Store Admin */}
           <section className="w-full">
-            <div className="text-xs sm:text-sm pb-2 text-brand-mist-400">
+            <div className="flex gap-2 text-xs sm:text-sm pb-2 text-brand-mist-400">
               <label>
                 Assigned Store Admin <span className="text-red-500">*</span>
               </label>
+
+              <Button btnType="text" onClick={handleClearAssignedStore}>
+                Clear
+              </Button>
             </div>
             <UserSelectDropdown
               control={control}
@@ -514,12 +536,10 @@ function EditStoreForm({ store }: EditStoreFormProps) {
             <p>You are unable to delete primary store </p>
           </div>
         ) : (
-          // fixme ->> add functionality
           <form action={handleDeleteAddress} className="mt-2">
             <Button
               type="submit"
               pendingLabel={<SpinnerMini />}
-              //   disabled={isPending}
               btnType="danger">
               Delete address
             </Button>
