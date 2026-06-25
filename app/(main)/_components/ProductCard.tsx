@@ -15,6 +15,7 @@ import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRef } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -22,12 +23,17 @@ interface ProductCardProps {
   storeId?: string;
 }
 
+const CLICK_DEBOUNCE_MS = 1000;
+
 function ProductCard({ product, quantity, storeId }: ProductCardProps) {
   const router = useRouter();
   const userId = useAuthStore((state) => state.userId);
   const isVerified = useAuthStore((state) => state.isVerified);
-  const nearestStoreId = useUserCoordinatesStore((state) => state.nearestStoreId);
+  const nearestStoreId = useUserCoordinatesStore(
+    (state) => state.nearestStoreId,
+  );
   const addToCart = useAddToCart();
+  const lastAddToCartAtRef = useRef(0);
 
   const effectiveStoreId = storeId || nearestStoreId;
   const isAuth = Boolean(userId && isVerified);
@@ -40,9 +46,16 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
       router.push("/login");
       return;
     }
+
+    const now = Date.now();
+    if (now - lastAddToCartAtRef.current < CLICK_DEBOUNCE_MS) return;
+    lastAddToCartAtRef.current = now;
+
     if (isOutOfStock) return;
     if (!effectiveStoreId) {
-      toast.error("Unable to determine your nearest store. Please allow location access.");
+      toast.error(
+        "Unable to determine your nearest store. Please allow location access.",
+      );
       return;
     }
 
@@ -141,9 +154,12 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
           <Button
             btnType="primary"
             disabled={isOutOfStock || isAddingToCart}
-            onClick={handleAddToCart}
-          >
-            {isAddingToCart ? "Adding..." : isOutOfStock ? "Out of stock" : "Add to cart"}
+            onClick={handleAddToCart}>
+            {isAddingToCart
+              ? "Adding..."
+              : isOutOfStock
+                ? "Out of stock"
+                : "Add to cart"}
           </Button>
         </div>
       </div>
