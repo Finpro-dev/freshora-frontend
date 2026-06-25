@@ -16,6 +16,26 @@ export async function withAuthorizationRoutes(
     { prefix: "/order", allowedRoles: ["CUSTOMER"] },
     { prefix: "/transaction", allowedRoles: ["CUSTOMER"] },
     { prefix: "/dashboard/store", allowedRoles: ["SUPER_ADMIN"] },
+    { prefix: "/dashboard/people", allowedRoles: ["SUPER_ADMIN"] },
+    { prefix: "/dashboard/category", allowedRoles: ["SUPER_ADMIN"] },
+
+    {
+      prefix: "/dashboard/product",
+      allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"],
+    },
+    {
+      prefix: "/dashboard/inventory",
+      allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"],
+    },
+    {
+      prefix: "/dashboard/promotion",
+      allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"],
+    },
+    {
+      prefix: "/dashboard/report",
+      allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"],
+    },
+
     { prefix: "/dashboard", allowedRoles: ["SUPER_ADMIN", "STORE_ADMIN"] },
   ];
 

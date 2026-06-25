@@ -47,6 +47,7 @@ async function layout({ children }: DashboardLayout) {
     role: data?.data?.role as Role,
     isVerified: Boolean(data?.data?.isVerified),
     gender: data?.data?.gender as Gender,
+    storeId: data?.data?.storeId ? String(data.data.storeId) : null,
   };
 
   return (

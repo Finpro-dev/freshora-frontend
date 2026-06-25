@@ -56,6 +56,7 @@ async function layout({ children }: { children: React.ReactNode }) {
     role: (data?.data?.role as Role) || "CUSTOMER",
     isVerified: Boolean(data?.data?.isVerified),
     gender: (data?.data?.gender as Gender) || "MALE",
+    storeId: data?.data?.storeId ? String(data.data.storeId) : null,
   };
 
   const initialCart: CartStates = {
