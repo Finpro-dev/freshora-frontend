@@ -17,6 +17,7 @@ export interface Product {
 
 export interface StoreData {
   storeId: string;
+  id?: string;
   name: string;
 }
 
@@ -78,15 +79,19 @@ export function useGetStoresPaginated(
 }
 
 // Hook: Fetch stocks with optional store filter
-export function useGetStocks(storeId?: string) {
+export function useGetStocks(params?: {
+  storeId?: string;
+  page?: number;
+  limit?: number;
+}) {
   return useQuery({
-    queryKey: ["stocks", storeId],
+    queryKey: ["stocks", params],
     queryFn: async () => {
       const { data } = await api.get(
         `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory`,
-        { params: storeId ? { storeId } : {} },
+        { params: params || {} },
       );
-      return data.data as StockData[];
+      return data;
     },
   });
 }
