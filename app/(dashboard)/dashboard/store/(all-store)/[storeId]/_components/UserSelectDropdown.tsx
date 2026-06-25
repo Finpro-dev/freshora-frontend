@@ -55,7 +55,7 @@ export default function UserSelectDropdown({
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 border border-brand-mist-100 bg-brand-mist-100">
                       <Image
-                        src={selectedUser.avatar || "/default-avatar.png"}
+                        src={selectedUser.avatar || defaultUserAvatar}
                         alt={selectedUser.firstName}
                         fill
                         className="object-cover"
@@ -70,7 +70,7 @@ export default function UserSelectDropdown({
                       </p>
                     </div>
                   </div>
-                ) : assignedStoreAdmin ? (
+                ) : !value && assignedStoreAdmin ? (
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 border border-brand-mist-100 bg-brand-mist-100">
                       <Image
