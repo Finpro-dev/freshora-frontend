@@ -5,8 +5,7 @@ export const useGetUnassignedStoreAdmin = () => {
   const etUnassignedStoreAdminQuery = useQuery({
     queryKey: ["store-admin"],
     queryFn: async () => {
-      const { data } = await api.get(`/users/store-admin/unassigned`);
-
+      const { data } = await api.get("/users/store-admin/unassigned");
       return data;
     },
   });
