@@ -147,7 +147,6 @@ export default function TransactionSummaryCard({
     }).then(async (result) => {
       if (result.isConfirmed) {
         startTransition(async () => {
-          console.log("payload", payloadCreateTransaction);
           const res = await createTransaction(payloadCreateTransaction);
 
           if (!res?.success) {

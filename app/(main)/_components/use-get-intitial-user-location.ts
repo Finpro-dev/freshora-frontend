@@ -30,7 +30,6 @@ export const useInitializeUserLocation = () => {
       if (position?.lat && position?.lng) {
         setCords({ lat: position.lat, lng: position.lng });
       } else if (geoError) {
-        console.log("User rejected to use GPS");
         setIsLocating(false);
       }
 

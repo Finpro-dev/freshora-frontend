@@ -119,7 +119,6 @@ function EditStoreForm({ store }: EditStoreFormProps) {
   // get all unassigned store admin
   const { data: storeAdminData } = useGetUnassignedStoreAdmin();
   const storeAdmins: UnassignedStoreAdmin[] = storeAdminData?.data?.storeAdmin;
-  console.log(storeAdmins);
   const handleChangeProvince = (value: string) => {
     setValue("province", value);
     setValue("city", "");
