@@ -18,7 +18,7 @@ function BrowseProductCta() {
       {/* right */}
       <div className="md:block flex justify-center md:pt-0 pt-10">
         <Link
-          href="/products"
+          href="/product"
           className="text-brand-mist-500 hover:text-brand-emerald-700">
           See more
         </Link>

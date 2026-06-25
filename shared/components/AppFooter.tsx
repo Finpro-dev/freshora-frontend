@@ -32,7 +32,7 @@ function AppFooter() {
 
               <li>
                 <Link
-                  href="/products"
+                  href="/product"
                   className="transition hover:text-brand-emerald-700">
                   Products
                 </Link>
