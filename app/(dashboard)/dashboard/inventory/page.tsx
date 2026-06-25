@@ -127,7 +127,7 @@ export default function StockOverviewPage() {
         <div className="h-64 flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-brand-mist-200 shadow-sm">
           <Loader2 className="w-8 h-8 animate-spin text-brand-emerald-700" />
           <p className="text-sm font-medium text-brand-mist-500">
-            Syncing corporate inventory balance sheets...
+            Loading inventory...
           </p>
         </div>
       ) : isError ? (

@@ -6,6 +6,7 @@ import { RiMailSendLine } from "react-icons/ri";
 import { SlPeople } from "react-icons/sl";
 import { GrNotes } from "react-icons/gr";
 import { BiStore } from "react-icons/bi";
+import { BiBarChart } from "react-icons/bi";
 
 export const sidebarDashboardMenu = [
   {
@@ -41,7 +42,7 @@ export const sidebarDashboardMenu = [
   {
     id: 6,
     logo: <SlPeople />,
-    name: "people",
+    name: "People",
     href: "/dashboard/people",
   },
   {
@@ -55,5 +56,11 @@ export const sidebarDashboardMenu = [
     logo: <BiStore />,
     name: "Store",
     href: "/dashboard/store",
+  },
+  {
+    id: 9,
+    logo: <BiBarChart />,
+    name: "Reports",
+    href: "/dashboard/report",
   },
 ];
