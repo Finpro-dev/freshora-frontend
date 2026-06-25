@@ -200,8 +200,6 @@ export default function AddProductForm({
               onChange={onChange}
               className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
             >
-              <option value="KG">KG (Kilogram)</option>
-              <option value="G">G (Gram)</option>
               <option value="PCS">PCS (Pieces)</option>
               <option value="PACK">PACK (Package)</option>
             </select>
