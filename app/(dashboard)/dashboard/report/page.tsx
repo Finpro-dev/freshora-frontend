@@ -49,8 +49,8 @@ export default function ReportPage() {
   const { data: stores } = useStores();
   const isSuperAdmin = role === "SUPER_ADMIN";
 
-  const { data: monthlySales, error: monthlySalesError, isLoading: isLoadingMonthly } = useMonthlySalesReport({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
-  const { data: salesByCategory, error: salesByCategoryError } = useSalesByCategory({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
+  const { data: monthlySales, isLoading: isLoadingMonthly } = useMonthlySalesReport({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
+  const { data: salesByCategory } = useSalesByCategory({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
   const { data: salesByProduct } = useSalesByProduct({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
   const { data: stockSummary } = useStockSummary({ year, month, storeId: isSuperAdmin ? selectedStoreId : null });
   const { data: stockDetail } = useStockDetail({ 
@@ -71,6 +71,9 @@ export default function ReportPage() {
     { id: "sales", label: "Sales Report", icon: TrendingUp },
     { id: "stock", label: "Stock Report", icon: Package },
   ];
+
+  const isSingleMonth = month && month > 0;
+  const xAxisDataKey = isSingleMonth ? "dayName" : "monthName";
 
   return (
     <div className="min-h-dvh p-4 md:p-6 lg:p-8">
@@ -141,12 +144,14 @@ export default function ReportPage() {
       {activeTab === "sales" && (
         <div className="space-y-6">
           <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
-            <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">Monthly Sales Overview</h3>
+            <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">
+              {isSingleMonth ? "Daily Sales Overview" : "Monthly Sales Overview"}
+            </h3>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlySales?.months || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="monthName" stroke="#64748b" />
+                  <XAxis dataKey={xAxisDataKey} stroke="#64748b" />
                   <YAxis stroke="#64748b" tickFormatter={(v) => `Rp${(v / 1000000).toFixed(1)}jt`} />
                   <Tooltip contentStyle={{ backgroundColor: "#fff", borderColor: "#e2e8f0" }} />
                   <Legend />
