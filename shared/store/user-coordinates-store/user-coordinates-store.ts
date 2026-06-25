@@ -31,7 +31,7 @@ export const createUserCoordinatesStore = (
 ) => {
   return createStore<UserCoordinatesType>()((set) => ({
     ...initialCoords,
-    setCords: (cords) => set({ ...cords }),
+    setCords: (cords) => set({ lat: cords.lat, lng: cords.lng }),
     setError: (error) => set({ error }),
     setIsLoading: (isLoading) => set({ isLoading }),
     setNearestStoreId: (storeId) => set({ nearestStoreId: storeId }),

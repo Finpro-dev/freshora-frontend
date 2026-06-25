@@ -16,7 +16,7 @@ function HeroBanner() {
           <h1 className="text-center">
             From the <span className="text-emerald-400 ">farm</span>
           </h1>
-          <h2 className="text-center">To your hands</h2>
+          <h2 className="text-center">To your Table</h2>
         </div>
 
         <div className="w-full md:w-[60%] lg:w-[40%]">

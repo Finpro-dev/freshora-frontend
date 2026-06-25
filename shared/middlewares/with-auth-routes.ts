@@ -16,12 +16,13 @@ export async function withAuthRoutes(
 
   const isMatch = prefixes.some((prefix) => pathname.startsWith(prefix));
   const accessToken = request.cookies.get("accessToken")?.value;
+  const accessTokenSecret = String(TOKEN_CREDENTIALS.JWT_ACCESS_SECRET);
 
   if (isMatch && !accessToken) {
     return null;
   }
 
-  const role = await getRoleFromCookie(accessToken);
+  const role = await getRoleFromCookie(accessToken, accessTokenSecret);
   // const userRole = tokenPayload.role;
   const callbackUrl = role === "CUSTOMER" ? "/" : "/dashboard";
 
