@@ -166,15 +166,17 @@ function EditStoreForm({ store }: EditStoreFormProps) {
 
     startTransition(async () => {
       const res = await editStoreDetails(formData, store.storeId);
+
       if (!res?.success) {
         toast.error(res.error);
-      } else {
-        toast.success("Store modified successfully");
-        setError({});
-        setCords({ lat: 43.21, lng: 0.123 });
-        queryClient.invalidateQueries({ queryKey: ["store-details"] });
-        router.push("/dashboard/store");
+        return;
       }
+
+      toast.success("Store modified successfully");
+      setError({});
+      setCords({ lat: 43.21, lng: 0.123 });
+      await queryClient.invalidateQueries({ queryKey: ["store-details"] });
+      router.push("/dashboard/store");
     });
   });
 
