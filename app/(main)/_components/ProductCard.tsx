@@ -15,12 +15,15 @@ import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
 import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/UserCoordinatesProvider";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRef } from "react";
 
 interface ProductCardProps {
   product: Product;
   quantity: number;
   storeId?: string;
 }
+
+const CLICK_DEBOUNCE_MS = 1000;
 
 function ProductCard({ product, quantity, storeId }: ProductCardProps) {
   const router = useRouter();
@@ -30,6 +33,7 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
     (state) => state.nearestStoreId,
   );
   const addToCart = useAddToCart();
+  const lastAddToCartAtRef = useRef(0);
 
   const effectiveStoreId = storeId || nearestStoreId;
   const isAuth = Boolean(userId && isVerified);
@@ -42,6 +46,11 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
       router.push("/login");
       return;
     }
+
+    const now = Date.now();
+    if (now - lastAddToCartAtRef.current < CLICK_DEBOUNCE_MS) return;
+    lastAddToCartAtRef.current = now;
+
     if (isOutOfStock) return;
     if (!effectiveStoreId) {
       toast.error(
