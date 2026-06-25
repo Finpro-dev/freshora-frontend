@@ -11,7 +11,7 @@ interface CartSummaryProps {
 function CartSummary({ items }: CartSummaryProps) {
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
-    0
+    0,
   );
 
   const formatPrice = (price: number) => {
@@ -24,7 +24,9 @@ function CartSummary({ items }: CartSummaryProps) {
 
   return (
     <div className="bg-brand-mist-100 rounded-lg shadow-sm border border-brand-mist-300/50 p-6 h-fit sticky top-24">
-      <h2 className="text-xl font-bold text-brand-mist-900 mb-4">Order Summary</h2>
+      <h2 className="text-xl font-bold text-brand-mist-900 mb-4">
+        Order Summary
+      </h2>
 
       <div className="space-y-3 mb-6">
         <div className="flex justify-between text-brand-mist-700">
@@ -33,22 +35,27 @@ function CartSummary({ items }: CartSummaryProps) {
         </div>
         <div className="flex justify-between text-brand-mist-700">
           <span>Shipping</span>
-          <span className="text-brand-emerald-600 font-medium">Calculated at checkout</span>
+          <span className="text-brand-emerald-600 font-medium">
+            Calculated at checkout
+          </span>
         </div>
       </div>
 
       <div className="border-t border-brand-mist-300 pt-4 mb-6">
         <div className="flex justify-between text-lg font-bold text-brand-mist-900">
           <span>Total</span>
-          <span className="text-brand-emerald-700">{formatPrice(subtotal)}</span>
+          <span className="text-brand-emerald-700">
+            {formatPrice(subtotal)}
+          </span>
         </div>
       </div>
 
-      <Link href="/checkout">
-        <Button btnType="primary" disabled={items.length === 0}>
-          Proceed to Checkout
-        </Button>
-      </Link>
+      <Button
+        href="/transaction"
+        btnType="primary"
+        disabled={items.length === 0}>
+        Proceed to Checkout
+      </Button>
 
       <Link href="/" className="block mt-3">
         <Button btnType="secondary">Continue Shopping</Button>

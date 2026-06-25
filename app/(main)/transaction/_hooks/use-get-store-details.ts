@@ -3,15 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetStoreDetails = (storeId: string) => {
   const getStoreDetailsQuery = useQuery({
-    queryKey: ["store-details", storeId],
+    queryKey: ["store-details"],
     queryFn: async () => {
       const { data } = await api.get(`/stores/${storeId}`);
 
-      return data.data;
+      return data;
     },
+
     enabled: !!storeId,
-    staleTime: 0,
-    gcTime: 0,
   });
 
   return getStoreDetailsQuery;

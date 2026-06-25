@@ -1,0 +1,18 @@
+export const rajaOngkirCouriers = [
+  "jnt",
+  "sicepat",
+  "ide",
+  "sap",
+  "ninja",
+  "tiki",
+  "lion",
+  "anteraja",
+  "pos",
+  "ncs",
+  "rex",
+  "rpx",
+  "sentral",
+  "star",
+  "wahana",
+  "dse",
+];

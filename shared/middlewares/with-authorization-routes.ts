@@ -14,6 +14,7 @@ export async function withAuthorizationRoutes(
     { prefix: "/cart", allowedRoles: ["CUSTOMER"] },
     { prefix: "/account", allowedRoles: ["CUSTOMER"] },
     { prefix: "/order", allowedRoles: ["CUSTOMER"] },
+    { prefix: "/transaction", allowedRoles: ["CUSTOMER"] },
     { prefix: "/dashboard/store", allowedRoles: ["SUPER_ADMIN"] },
     { prefix: "/dashboard/people", allowedRoles: ["SUPER_ADMIN"] },
     { prefix: "/dashboard/category", allowedRoles: ["SUPER_ADMIN"] },

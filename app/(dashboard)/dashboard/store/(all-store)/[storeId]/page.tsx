@@ -18,7 +18,9 @@ function page() {
           <StoreMapWrapper />
         </section>
         {isLoading ? (
-          <p>Loading ...</p>
+          <div className="w-full lg:w-[50%] h-full flex justify-center items-center">
+            <p>Loading ...</p>
+          </div>
         ) : (
           <section className="w-full lg:w-[50%] px-2 py-2 ">
             <EditStoreForm store={storeData} />
