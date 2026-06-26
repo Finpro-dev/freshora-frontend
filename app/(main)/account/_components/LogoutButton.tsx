@@ -2,6 +2,7 @@
 
 import { logoutUser } from "@/actions/logout-user";
 import Button from "@/shared/components/Button";
+import SpinnerMini from "@/shared/components/SpinnerMini";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -26,7 +27,7 @@ function LogoutButton({ children, ...props }: LogoutButtonProps) {
     <form action={handleLogoutUser}>
       <Button
         disabled={isPending}
-        pendingLabel="Logging out..."
+        pendingLabel={<SpinnerMini />}
         type="submit"
         btnType="danger"
         {...props}>

@@ -16,14 +16,13 @@ import { useUserCoordinatesStore } from "@/shared/store/user-coordinates-store/U
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useRef } from "react";
+import { CLICK_DEBOUNCE_MS } from "../_statics/cart-click-debounce-static";
 
 interface ProductCardProps {
   product: Product;
   quantity: number;
   storeId?: string;
 }
-
-const CLICK_DEBOUNCE_MS = 1000;
 
 function ProductCard({ product, quantity, storeId }: ProductCardProps) {
   const router = useRouter();
@@ -89,8 +88,7 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
 
   return (
     <div
-      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}
-    >
+      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}>
       {/* image */}
       <div className="relative w-full h-70 md:h-65 lg:h-100">
         <Image
@@ -162,8 +160,7 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
                 : isAddingToCart
                   ? "Adding..."
                   : undefined
-            }
-          >
+            }>
             {isAddingToCart
               ? "Adding..."
               : isOutOfStock
