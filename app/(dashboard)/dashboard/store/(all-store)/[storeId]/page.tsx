@@ -13,21 +13,6 @@ function page() {
   const { data, isLoading } = useGetStoreDetails(storeId);
   const storeData: StoreType = data;
 
-  // testing only
-  const handleFetchStoreTesting = async () => {
-    const res = await fetch(
-      `${CORS_CREDENTIALS.API_BASE_URL}/stores/${storeId}`,
-      { method: "GET", credentials: "include" },
-    );
-
-    const data = await res.json();
-    console.log("DATA", data?.data);
-  };
-
-  useEffect(() => {
-    handleFetchStoreTesting();
-  }, []);
-
   return (
     <main className="px-5 pt-25 sm:pt-10 flex flex-col min-h-screen w-full bg-slate-50">
       <div className="w-full flex flex-col lg:flex-row gap-5">

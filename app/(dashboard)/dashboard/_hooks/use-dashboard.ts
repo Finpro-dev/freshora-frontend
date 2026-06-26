@@ -6,15 +6,12 @@ export function useRecentSales(limit: number = 6) {
   return useQuery({
     queryKey: ["dashboard", "recent-sales", limit],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/reports/sales/monthly`,
-        {
-          params: {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-          },
+      const { data } = await api.get(`/admin/reports/sales/monthly`, {
+        params: {
+          year: new Date().getFullYear(),
+          month: new Date().getMonth() + 1,
         },
-      );
+      });
       const months = data?.data?.months || [];
       const result = months.slice(-limit);
 
@@ -39,12 +36,9 @@ export function useLowStockAlerts(limit: number = 5) {
   return useQuery({
     queryKey: ["dashboard", "low-stock", limit],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory`,
-        {
-          params: { limit: 200 },
-        },
-      );
+      const { data } = await api.get(`/admin/inventory`, {
+        params: { limit: 200 },
+      });
       const stocks = data?.data || data || [];
       return stocks
         .filter((s: any) => s.quantity <= 10)
