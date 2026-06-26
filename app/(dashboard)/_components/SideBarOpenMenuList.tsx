@@ -10,7 +10,6 @@ import { MdOutlineLogout } from "react-icons/md";
 import { sidebarDashboardMenu } from "../_statics/sidebar-menu-static";
 import { ROLE_MAPPING } from "../_utils/role-mapping-util";
 import UserAvatar from "./UserAvatar";
-import path from "path";
 
 interface SideBarOpenMenuListProps {
   isSidebarOpen: boolean;

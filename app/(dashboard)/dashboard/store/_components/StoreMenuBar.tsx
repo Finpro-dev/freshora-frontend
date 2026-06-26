@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 function StoreMenuBar() {
   const pathName = usePathname();
   return (
-    <div className="flex items-end py-5 w-full border-y border-brand-mist-300 fixed sm:sticky top-5 h-30 sm:h-auto sm:top-0 z-10 bg-white dark:bg-black">
+    <div className="flex items-end py-5 w-full border-y border-brand-mist-300 fixed sm:sticky top-5 h-30 sm:h-auto sm:top-0 z-10 bg-white dark:bg-brand-mist-100">
       <div className="flex justify-center w-full">
         <div>
           {STORE_MENU_STATIC?.map((menu, index: number) => {
