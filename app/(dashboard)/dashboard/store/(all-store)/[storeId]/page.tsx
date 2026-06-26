@@ -13,6 +13,7 @@ function page() {
   const { data, isLoading } = useGetStoreDetails(storeId);
   const storeData: StoreType = data;
 
+  // testing only
   const handleFetchStoreTesting = async () => {
     const res = await fetch(
       `${CORS_CREDENTIALS.API_BASE_URL}/stores/${storeId}`,
