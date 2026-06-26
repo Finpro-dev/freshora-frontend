@@ -5,11 +5,27 @@ import { useParams } from "next/navigation";
 import EditStoreForm from "./_components/EditStoreForm";
 import StoreMapWrapper from "./_components/StoreMapWrapper";
 import { useGetStoreDetails } from "./hooks/use-get-store-details";
+import { useEffect } from "react";
+import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
 
 function page() {
   const { storeId } = useParams<Record<string, string>>();
   const { data, isLoading } = useGetStoreDetails(storeId);
   const storeData: StoreType = data;
+
+  const handleFetchStoreTesting = async () => {
+    const res = await fetch(
+      `${CORS_CREDENTIALS.API_BASE_URL}/stores/${storeId}`,
+      { method: "GET", credentials: "include" },
+    );
+
+    const data = await res.json();
+    console.log("DATA", data?.data);
+  };
+
+  useEffect(() => {
+    handleFetchStoreTesting();
+  }, []);
 
   return (
     <main className="px-5 pt-25 sm:pt-10 flex flex-col min-h-screen w-full bg-slate-50">
