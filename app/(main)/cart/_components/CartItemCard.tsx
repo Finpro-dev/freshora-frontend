@@ -4,13 +4,15 @@ import Image from "next/image";
 import { CartItem } from "@/shared/types/cart-type";
 import { useUpdateCartItem, useRemoveCartItem } from "@/shared/hooks/use-cart";
 import { IoAdd, IoRemove, IoTrash } from "react-icons/io5";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { CLICK_DEBOUNCE_MS } from "../../_statics/cart-click-debounce-static";
 
 interface CartItemCardProps {
   item: CartItem;
 }
 
 function CartItemCard({ item }: CartItemCardProps) {
+  const lastAddToCartAtRef = useRef(0);
   const updateCart = useUpdateCartItem();
   const removeCart = useRemoveCartItem();
   const [isUpdating, setIsUpdating] = useState(false);
@@ -27,6 +29,10 @@ function CartItemCard({ item }: CartItemCardProps) {
       : "/logo.png";
 
   const handleIncrement = async () => {
+    const now = Date.now();
+    if (now - lastAddToCartAtRef.current < CLICK_DEBOUNCE_MS) return;
+    lastAddToCartAtRef.current = now;
+
     setIsUpdating(true);
     await updateCart.mutateAsync({
       cartItemId: item.cartItemId,
@@ -39,6 +45,11 @@ function CartItemCard({ item }: CartItemCardProps) {
     if (item.quantity <= 1) {
       return;
     }
+
+    const now = Date.now();
+    if (now - lastAddToCartAtRef.current < CLICK_DEBOUNCE_MS) return;
+    lastAddToCartAtRef.current = now;
+
     setIsUpdating(true);
     await updateCart.mutateAsync({
       cartItemId: item.cartItemId,
