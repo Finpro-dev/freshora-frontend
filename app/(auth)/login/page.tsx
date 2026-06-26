@@ -16,9 +16,7 @@ async function page() {
             className="pb-5"
           />
         </Link>
-        <Button
-          btnType="primary"
-          href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}>
+        <Button btnType="primary" href={`/api-backend/auth/google`}>
           Continue with Google
         </Button>
 
