@@ -69,7 +69,7 @@ export function useGetDiscounts(params?: DiscountQueryParams) {
     queryKey: ["discounts", params],
     queryFn: async () => {
       const { data } = await api.get<BackendResponse<PaginatedDiscountResult>>(
-        `${BASE_DISCOUNT_URL}`,
+        `/admin/discounts`,
         { params: params || {} },
       );
       return data.data;
@@ -82,7 +82,7 @@ export function useCreateDiscount() {
   return useMutation({
     mutationFn: async (payload: CreateDiscountPayload) => {
       const { data } = await api.post<BackendResponse<DiscountData>>(
-        `${BASE_DISCOUNT_URL}/create-discount`,
+        `/admin/discounts/create-discount`,
         payload,
       );
       return data;
@@ -98,7 +98,7 @@ export function useDeleteDiscount() {
   return useMutation({
     mutationFn: async (discountId: string) => {
       const { data } = await api.delete<BackendResponse<any>>(
-        `${BASE_DISCOUNT_URL}/${discountId}`,
+        `/admin/discounts/${discountId}`,
       );
       return data;
     },
@@ -118,10 +118,7 @@ export function useGetProducts(params: {
   return useQuery({
     queryKey: ["discount-global-products", params],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products`,
-        { params },
-      );
+      const { data } = await api.get(`/products`, { params });
       return data;
     },
     enabled: params.enabled ?? true,
@@ -149,7 +146,7 @@ export function useGetStoreStocks(params: {
       const { enabled, ...apiParams } = params;
 
       const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory`,
+        `/admin/inventory`,
         { params: apiParams }, // Hanya kirim parameter yang dibutuhkan backend
       );
       return data;

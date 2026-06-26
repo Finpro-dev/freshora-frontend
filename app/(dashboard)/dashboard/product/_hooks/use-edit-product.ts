@@ -8,9 +8,7 @@ export function useGetProductById(productId: string) {
     queryKey: ["product", productId],
     queryFn: async () => {
       if (!productId) return null;
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/${productId}`,
-      );
+      const { data } = await api.get(`/products/${productId}`);
       return data?.data || data;
     },
     enabled: !!productId, // Query hanya berjalan jika productId valid
@@ -25,7 +23,7 @@ export function useUpdateProduct(productId: string) {
     mutationFn: async (formDataPayload: FormData) => {
       // Disinkronkan dengan route backend: /products/update/:productId
       const { data } = await api.put(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/update/${productId}`,
+        `/products/update/${productId}`,
         formDataPayload,
         {
           headers: {
@@ -48,9 +46,7 @@ export function useGetCategoriesMaster() {
   return useQuery({
     queryKey: ["categories-master"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories`,
-      );
+      const { data } = await api.get(`/admin/categories`);
       return data?.data || data;
     },
   });

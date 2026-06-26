@@ -6,9 +6,7 @@ export function useDeleteProduct() {
   const queryClient = useQueryClient();
   const deleteProductMutation = useMutation({
     mutationFn: async (productId: string) => {
-      const { data } = await api.delete(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/delete/${productId}`,
-      );
+      const { data } = await api.delete(`/products/delete/${productId}`);
       return data;
     },
     onSuccess: () => {

@@ -7,7 +7,7 @@ export const useGetAddressDetails = (addressId: string) => {
     queryKey: ["address-details", addressId],
     queryFn: async () => {
       const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/addresses/${addressId}`,
+        `/addresses/${addressId}`,
       );
 
       return data.data;

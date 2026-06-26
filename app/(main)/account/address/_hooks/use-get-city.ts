@@ -11,9 +11,7 @@ export const useGetCity = (province: string) => {
   return useQuery({
     queryKey: ["city", province],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/location/city/${provinceId}`,
-      );
+      const { data } = await api.get(`/location/city/${provinceId}`);
 
       return data;
     },

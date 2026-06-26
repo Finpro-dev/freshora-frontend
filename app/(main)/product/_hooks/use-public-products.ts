@@ -41,10 +41,9 @@ export function usePublicProducts(params?: UsePublicProductsParams) {
         }),
       );
 
-      const { data } = await api.get<ProductsResponse>(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/`,
-        { params: cleanParams },
-      );
+      const { data } = await api.get<ProductsResponse>(`/products`, {
+        params: cleanParams,
+      });
 
       return data;
     },

@@ -6,9 +6,7 @@ export function useGetUser() {
   const getUserQuery = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/users`,
-      );
+      const { data } = await api.get(`/admin/users`);
 
       return data;
     },

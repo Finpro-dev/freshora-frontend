@@ -6,9 +6,7 @@ export function useGetStoreAdminById(userId: string) {
   const getUserQuery = useQuery({
     queryKey: ["store-admin"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/users/${userId}`,
-      );
+      const { data } = await api.get(`/admin/users/${userId}`);
 
       return data;
     },

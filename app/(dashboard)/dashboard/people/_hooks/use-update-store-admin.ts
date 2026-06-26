@@ -14,10 +14,7 @@ export function useUpdateStoreAdmin() {
   const queryClient = useQueryClient();
   const updateStoreAdminMutation = useMutation({
     mutationFn: async ({ userId, ...body }: UpdateStoreAdminPayload) => {
-      const { data } = await api.patch(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/store-admin/${userId}`,
-        body,
-      );
+      const { data } = await api.patch(`/admin/store-admin/${userId}`, body);
       return data;
     },
     onSuccess: () => {

@@ -68,10 +68,7 @@ export function useGetStoresPaginated(
   return useQuery({
     queryKey: ["stores-catalog", params],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/stores`,
-        { params: params || {} },
-      );
+      const { data } = await api.get(`/stores`, { params: params || {} });
       return data;
     },
     enabled: enabled,
@@ -87,10 +84,9 @@ export function useGetStocks(params?: {
   return useQuery({
     queryKey: ["stocks", params],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory`,
-        { params: params || {} },
-      );
+      const { data } = await api.get(`/admin/inventory`, {
+        params: params || {},
+      });
       return data;
     },
   });
@@ -101,9 +97,7 @@ export function useGetStockById(stockId: string) {
   return useQuery({
     queryKey: ["stock", stockId],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory/${stockId}`,
-      );
+      const { data } = await api.get(`/admin/inventory/${stockId}`);
       return data.data as StockData;
     },
     enabled: !!stockId,
@@ -115,10 +109,9 @@ export function useGetStockJournals(storeId?: string) {
   return useQuery({
     queryKey: ["stock-journals", storeId],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory/journals`,
-        { params: storeId ? { storeId } : {} },
-      );
+      const { data } = await api.get(`/admin/inventory/journals`, {
+        params: storeId ? { storeId } : {},
+      });
       return data.data as JournalData[];
     },
   });
@@ -129,10 +122,7 @@ export function useUpdateStock(storeId?: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (payload: UpdateStockPayload) => {
-      const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/inventory/update`,
-        payload,
-      );
+      const { data } = await api.post(`/admin/inventory/update`, payload);
       return data;
     },
     onSuccess: () => {
@@ -147,10 +137,7 @@ export function useGetProducts(params?: ProductQueryParams) {
   return useQuery({
     queryKey: ["products-selector", params],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products`,
-        { params: params || {} },
-      );
+      const { data } = await api.get(`/products`, { params: params || {} });
       return data;
     },
   });

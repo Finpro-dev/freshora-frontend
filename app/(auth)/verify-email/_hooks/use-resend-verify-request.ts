@@ -13,10 +13,10 @@ export function useResendVerifyRequest() {
       email?: string;
       verifyType?: EmailVerifyType;
     }) => {
-      const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/auth/verify-request`,
-        { email, verifyType },
-      );
+      const { data } = await api.post(`/auth/verify-request`, {
+        email,
+        verifyType,
+      });
 
       return data;
     },

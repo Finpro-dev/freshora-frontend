@@ -6,9 +6,7 @@ export function useDeleteStoreAdmin() {
   const queryClient = useQueryClient();
   const deleteStoreAdminMutation = useMutation({
     mutationFn: async (userId: string) => {
-      const { data } = await api.delete(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/store-admin/${userId}`,
-      );
+      const { data } = await api.delete(`/admin/store-admin/${userId}`);
       return data;
     },
     onSuccess: () => {

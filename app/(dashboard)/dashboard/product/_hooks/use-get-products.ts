@@ -21,12 +21,9 @@ export function useGetAllProducts(params?: UseGetAllProductsParams) {
         }),
       );
 
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/`,
-        {
-          params: cleanParams,
-        },
-      );
+      const { data } = await api.get(`/products`, {
+        params: cleanParams,
+      });
 
       return data;
     },

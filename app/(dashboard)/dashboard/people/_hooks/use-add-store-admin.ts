@@ -16,10 +16,7 @@ export function useAddStoreAdmin() {
   const addStoreAdminMutation = useMutation({
     // Menggunakan metode POST untuk membuat data baru
     mutationFn: async (body: AddStoreAdminPayload) => {
-      const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/store-admin`,
-        body,
-      );
+      const { data } = await api.post(`/admin/store-admin`, body);
       return data;
     },
     onSuccess: () => {

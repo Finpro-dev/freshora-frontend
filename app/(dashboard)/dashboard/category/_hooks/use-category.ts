@@ -12,9 +12,7 @@ export function useGetCategories() {
   return useQuery({
     queryKey: ["product-categories"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories`, // 🆕 UPDATED: Jalur baru lewat admin
-      );
+      const { data } = await api.get(`/admin/categories`);
       return data.data as Category[];
     },
   });
@@ -26,10 +24,9 @@ export function useCreateCategory() {
 
   return useMutation({
     mutationFn: async (categoryName: string) => {
-      const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories`, // 🆕 UPDATED: Jalur baru lewat admin
-        { category: categoryName },
-      );
+      const { data } = await api.post(`/admin/categories`, {
+        category: categoryName,
+      });
       return data;
     },
     onSuccess: () => {
@@ -44,10 +41,9 @@ export function useUpdateCategory() {
 
   return useMutation({
     mutationFn: async ({ id, name }: { id: string; name: string }) => {
-      const { data } = await api.put(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories/${id}`, // 🆕 UPDATED: Jalur baru lewat admin
-        { category: name },
-      );
+      const { data } = await api.put(`/admin/categories/${id}`, {
+        category: name,
+      });
       return data;
     },
     onSuccess: () => {
@@ -62,9 +58,7 @@ export function useDeleteCategory() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data } = await api.delete(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories/${id}`, // 🆕 UPDATED: Jalur baru lewat admin
-      );
+      const { data } = await api.delete(`/admin/categories/${id}`);
       return data;
     },
     onSuccess: () => {

@@ -10,7 +10,7 @@ export function useAddProduct() {
       // Menggunakan instance api murni dan base URL dari shared config kamu
       // Selipkan ini tepat sebelum perintah axios.post(...)
       const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/create-product`,
+        `/products/create-product`,
         formDataPayload,
         {
           headers: {
@@ -32,9 +32,7 @@ export function useGetCategoriesMaster() {
     queryKey: ["categories-master"],
     queryFn: async () => {
       // Mengikuti pola destructuring { data } seperti useGetUser
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/admin/categories`,
-      );
+      const { data } = await api.get(`/admin/categories`);
 
       // Menangani jika backend membungkus response dalam format { data: [...] } atau langsung array
       return data?.data || data;

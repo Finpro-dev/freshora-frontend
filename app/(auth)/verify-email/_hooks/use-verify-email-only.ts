@@ -8,9 +8,7 @@ export function useVerifyEmailOnly() {
   const router = useRouter();
   const verifyEmailOnlyMutation = useMutation({
     mutationFn: async (token: string) => {
-      const { data } = await api.patch(
-        `${CORS_CREDENTIALS.API_BASE_URL}/users/verify-email/${token}`,
-      );
+      const { data } = await api.patch(`/users/verify-email/${token}`);
 
       return data;
     },

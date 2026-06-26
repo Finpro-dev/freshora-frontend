@@ -10,9 +10,7 @@ export const useGetDistrict = (city: string) => {
   return useQuery({
     queryKey: ["city", city],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/location/district/${cityId}`,
-      );
+      const { data } = await api.get(`/location/district/${cityId}`);
 
       return data;
     },

@@ -6,9 +6,7 @@ export function useGetUserProfile() {
   const userProfileMutation = useQuery({
     queryKey: ["user-profile"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/users/me`,
-      );
+      const { data } = await api.get(`/users/me`);
 
       return data;
     },

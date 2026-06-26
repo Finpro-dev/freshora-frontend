@@ -6,10 +6,9 @@ import { toast } from "sonner";
 export function useResendResetPasswordRequest() {
   const resendResetPasswordRequestMutation = useMutation({
     mutationFn: async (email?: string) => {
-      const { data } = await api.post(
-        `${CORS_CREDENTIALS.API_BASE_URL}/auth/reset-password-request`,
-        { email },
-      );
+      const { data } = await api.post(`/auth/reset-password-request`, {
+        email,
+      });
 
       return data;
     },

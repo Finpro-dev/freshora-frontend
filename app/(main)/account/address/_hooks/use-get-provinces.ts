@@ -8,9 +8,7 @@ export const useGetProvinces = () => {
   return useQuery({
     queryKey: ["provinces"],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/location/provinces`,
-      );
+      const { data } = await api.get(`/location/provinces`);
 
       return data;
     },

@@ -7,7 +7,7 @@ export const useGetProducts = (storeId: string) => {
     queryKey: ["product", storeId],
     queryFn: async () => {
       const { data } = await api.get(
-        `${CORS_CREDENTIALS.API_BASE_URL}/products/store/${storeId}?page=${1}&limit=${8}`,
+        `/products/store/${storeId}?page=${1}&limit=${8}`,
       );
 
       return data;
