@@ -2,7 +2,7 @@ import BrowseProductCta from "./_components/BrowseProductCta";
 import HeroBanner from "./_components/HeroBanner";
 import ProductGrid from "./_components/ProductGrid";
 import ProductLayout from "./_components/ProductLayout";
-import ProductSliderWrapper from "./_components/ProductSliderWrapper";
+import ProductSwiper from "./_components/ProductSwiper";
 import Services from "./_components/Services";
 import ShowcaseBanner from "./_components/ShowcaseBanner";
 import TextDivider from "./_components/TextDivider";
@@ -16,7 +16,7 @@ export default function Page() {
         <TextDivider>Our Products</TextDivider>
 
         <ProductLayout>
-          <ProductSliderWrapper />
+          <ProductSwiper />
           <BrowseProductCta />
           <ProductGrid />
         </ProductLayout>
