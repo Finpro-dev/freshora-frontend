@@ -7,6 +7,7 @@ import StoreMapWrapper from "./_components/StoreMapWrapper";
 import { useGetStoreDetails } from "./hooks/use-get-store-details";
 import { useEffect } from "react";
 import { CORS_CREDENTIALS } from "@/shared/config/dotenv-config";
+import EditStoreFormSkeleton from "./_components/EditStoreFormSkeleton";
 
 function page() {
   const { storeId } = useParams<Record<string, string>>();
@@ -20,9 +21,9 @@ function page() {
           <StoreMapWrapper />
         </section>
         {isLoading ? (
-          <div className="w-full lg:w-[50%] h-full flex justify-center items-center">
-            <p>Loading ...</p>
-          </div>
+          <section className="w-full lg:w-[50%] px-2 py-2 ">
+            <EditStoreFormSkeleton />
+          </section>
         ) : (
           <section className="w-full lg:w-[50%] px-2 py-2 ">
             <EditStoreForm store={storeData} />
