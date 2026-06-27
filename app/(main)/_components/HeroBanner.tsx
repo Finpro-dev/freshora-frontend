@@ -14,7 +14,7 @@ function HeroBanner() {
       <div className="absolute h-full w-full bg-linear-to-t sm:bg-linear-to-r from-brand-emerald-800 to-brand-mist-200/10 flex flex-col gap-10 items-center sm:items-start justify-center px-5 sm:px-15">
         <div className="text-5xl md:text-7xl font-bold text-mist-100">
           <h1 className="text-center sm:text-start">
-            From <span className="text-emerald-400 ">Farm</span>
+            From our <span className="text-emerald-400 ">Farm</span>
           </h1>
           <h2 className="text-center sm:text-start">To your Table</h2>
         </div>

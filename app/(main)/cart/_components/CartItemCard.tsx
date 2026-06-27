@@ -74,7 +74,7 @@ function CartItemCard({ item }: CartItemCardProps) {
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 p-4 bg-brand-mist-100 rounded-lg shadow-sm border border-brand-mist-300/50 hover:shadow-md transition-all duration-200">
-      <div className="relative w-full sm:w-32 h-32 flex-shrink-0">
+      <div className="relative w-full sm:w-32 h-32 shrink-0">
         <Image
           src={productPhoto}
           alt={item.product.name}
