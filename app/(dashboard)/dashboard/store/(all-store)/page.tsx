@@ -1,6 +1,7 @@
 import Spinner from "@/shared/components/Spinner";
 import { Suspense } from "react";
 import StoreList from "./_components/StoreList";
+import StoreListSkeleton from "./_components/StoreListSkeleton";
 
 interface PageProps {
   searchParams: Promise<{ page?: string }>;
@@ -12,7 +13,7 @@ async function page({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-dvh w-full px-5 mt-25 sm:mt-10 flex flex-col">
-      <Suspense key={page} fallback={<Spinner />}>
+      <Suspense key={page} fallback={<StoreListSkeleton />}>
         <StoreList currentPage={currentPage} />
       </Suspense>
     </main>
