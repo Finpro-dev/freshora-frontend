@@ -3,7 +3,7 @@ import AppLogo from "./AppLogo";
 import AppNavbarLink from "./AppNavbarLink";
 import AppNavbarProfile from "./AppNavbarProfile";
 import AppSearchBar from "./AppSearchBar";
-import { AppNavbarProfileSkeleton } from "./skeletons/AppNavbarProfileSkeleton";
+import { AppNavbarProfileSkeleton } from "./AppNavbarProfileSkeleton";
 import { cookies } from "next/headers";
 import AppNavbarAuthActions from "./AppNavbarAuthActions";
 import NavigationMenu from "./NavigationMenu";

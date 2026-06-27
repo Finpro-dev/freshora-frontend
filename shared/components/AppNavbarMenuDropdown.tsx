@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { appNavbarMenuDropdown } from "../statics/app-navbar-menu-dropdown-static";
 import { IoClose } from "react-icons/io5";
+import LogoutButton from "@/app/(main)/account/_components/LogoutButton";
 
 interface AppNavbarMenuDropdownProps {
   onCloseModal: () => void;
@@ -31,6 +32,11 @@ function AppNavbarMenuDropdown({ onCloseModal }: AppNavbarMenuDropdownProps) {
           onClick={onCloseModal}
           className="block md:hidden absolute text-brand-mist-500 hover:text-brand-emerald-500 -top-7 left-1 text-2xl cursor-pointer">
           <IoClose />
+        </div>
+        <div>
+          <LogoutButton className="mt-3 px-1 py-1 flex gap-2 items-center justify-center w-full bg-red-300/60 rounded-md hover:bg-red-900 hover:text-brand-mist-200 cursor-pointer transition-all duration-300">
+            Logout
+          </LogoutButton>
         </div>
       </div>
     </div>
