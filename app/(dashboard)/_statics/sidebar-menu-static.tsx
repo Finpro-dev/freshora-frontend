@@ -7,6 +7,7 @@ import { SlPeople } from "react-icons/sl";
 import { GrNotes } from "react-icons/gr";
 import { BiStore } from "react-icons/bi";
 import { BiBarChart } from "react-icons/bi";
+import { LuExternalLink } from "react-icons/lu";
 
 export const sidebarDashboardMenu = [
   {
@@ -62,5 +63,12 @@ export const sidebarDashboardMenu = [
     logo: <BiBarChart />,
     name: "Reports",
     href: "/dashboard/report",
+  },
+  {
+    id: 10,
+    logo: <LuExternalLink />,
+    name: "Back to Store",
+    href: "/",
+    isExternal: true,
   },
 ];
