@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useGetProductBySlug } from "../_hooks/use-get-product-by-slug";
 import { useAddToCart } from "@/shared/hooks/use-cart";
 import { useAuthStore } from "@/shared/store/auth-store/AuthStoreProvider";
@@ -17,14 +16,9 @@ import {
 import { capitalize } from "@/shared/utils/capitalize";
 import defaultProductThumbnail from "@/public/product/default-product-image.jpeg";
 import Link from "next/link";
-import { Product } from "@/shared/types/product-type";
 import ProductGallery from "./_components/ProductGallery";
 import CartButton from "./_components/CartButton";
 import ProductContent from "./_components/ProductContent";
-
-/* ------------------------------------------------------------------ */
-/*  Skeleton & Not Found                                               */
-/* ------------------------------------------------------------------ */
 
 function ProductDetailSkeleton() {
   return (
@@ -74,10 +68,6 @@ function ProductNotFound() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
 interface DiscountLike {
   discountAmount: string | null;
   validUntil: string;
@@ -111,11 +101,6 @@ function useProductStock(stocks: { quantity: number }[] | undefined) {
 
   return { totalQuantity, isOutOfStock };
 }
-
-/* ------------------------------------------------------------------ */
-/*  Main Product Detail Component                                      */
-/* ------------------------------------------------------------------ */
-
 function ProductDetail() {
   const params = useParams();
   const slug = params.slug as string[] | undefined;
@@ -169,9 +154,7 @@ function ProductDetail() {
         storeId: effectiveStoreId,
         quantity: 1,
       });
-    } catch {
-      // Error is handled by useAddToCart's onError
-    }
+    } catch {}
   };
 
   if (isLoading) return <ProductDetailSkeleton />;
