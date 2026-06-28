@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useRef } from "react";
 import { CLICK_DEBOUNCE_MS } from "../_statics/cart-click-debounce-static";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -39,7 +40,10 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
   const isOutOfStock = !quantity;
   const isAddingToCart = addToCart.isPending;
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (!isAuth) {
       toast.error("Please log in to add items to your cart");
       router.push("/login");
@@ -87,15 +91,17 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
     productPhotos?.[0]?.photoUrl || defaultProductThumbnail;
 
   return (
-    <div
-      className={`flex flex-col gap-2 mb-8 h-120 ${!quantity && "grayscale cursor-not-allowed"} shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden`}>
+    <Link
+      href={`/product/${product.slug}`}
+      className={`flex flex-col gap-2 mb-8 h-120 shadow-xl shadow-brand-mist-300/50 rounded-xl overflow-hidden group ${!quantity ? "grayscale" : ""}`}
+    >
       {/* image */}
-      <div className="relative w-full h-70 md:h-65 lg:h-100">
+      <div className="relative w-full h-70 md:h-65 lg:h-100 overflow-hidden">
         <Image
           src={productThumbnail}
-          alt="slug"
+          alt={name}
           fill
-          className="object-cover object-center"
+          className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
         />
         {Number(discounts?.[0]?.discountAmount) ? (
@@ -148,7 +154,7 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
           </div>
         </div>
 
-        {/* button */}
+        {/* button - inside the Link, disabled when out of stock */}
         <div className="pt-4">
           <Button
             btnType="primary"
@@ -156,20 +162,21 @@ function ProductCard({ product, quantity, storeId }: ProductCardProps) {
             onClick={handleAddToCart}
             pendingLabel={
               isOutOfStock
-                ? "Out of stock"
+                ? "Out of Stock"
                 : isAddingToCart
                   ? "Adding..."
                   : undefined
-            }>
+            }
+          >
             {isAddingToCart
               ? "Adding..."
               : isOutOfStock
-                ? "Out of stock"
+                ? "Out of Stock"
                 : "Add to cart"}
           </Button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
