@@ -28,7 +28,7 @@ export default function DashboardSalesChart({
     data.length > 0 && "dayName" in data[0] ? "dayName" : "monthName";
 
   return (
-    <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
+    <div className="bg-brand-mist-100/10 rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
       <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">
         Sales Overview
       </h3>
@@ -40,10 +40,20 @@ export default function DashboardSalesChart({
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey={xAxisKey} stroke="#64748b" fontSize={12} />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="currentColor"
+                className="text-brand-mist-200"
+              />
+              <XAxis
+                dataKey={xAxisKey}
+                stroke="currentColor"
+                className="text-brand-mist-500"
+                fontSize={12}
+              />
               <YAxis
-                stroke="#64748b"
+                stroke="currentColor"
+                className="text-brand-mist-500"
                 tickFormatter={(v) => `Rp${(v / 1000000).toFixed(1)}jt`}
                 fontSize={12}
               />
@@ -53,15 +63,17 @@ export default function DashboardSalesChart({
                   "Sales",
                 ]}
                 contentStyle={{
-                  backgroundColor: "#fff",
-                  borderColor: "#e2e8f0",
+                  backgroundColor: "var(--brand-mist-100)",
+                  borderColor: "var(--brand-mist-300)",
                   borderRadius: "8px",
+                  color: "var(--foreground)",
                 }}
               />
               <Legend />
               <Bar
                 dataKey="totalSales"
-                fill="#059669"
+                fill="currentColor"
+                className="text-brand-emerald-600"
                 name="Total Sales"
                 radius={[4, 4, 0, 0]}
               />

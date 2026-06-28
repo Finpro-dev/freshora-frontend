@@ -20,7 +20,7 @@ export default function AddProductHeader() {
           Add New Product
         </h1>
         <p className="text-sm text-brand-mist-500">
-          Create a new item configuration. Serial number will be auto-generated.
+          Create a new product configuration.
         </p>
       </div>
     </div>

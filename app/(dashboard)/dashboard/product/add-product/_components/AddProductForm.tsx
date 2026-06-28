@@ -36,7 +36,7 @@ export default function AddProductForm({
   onRefetchCategories,
 }: AddProductFormProps) {
   return (
-    <div className="bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <div className="bg-brand-mist-50 p-6 border-b border-brand-mist-200 flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-brand-emerald-100 flex items-center justify-center text-brand-emerald-700">
           <PackagePlus className="w-6 h-6" />
@@ -64,7 +64,7 @@ export default function AddProductForm({
             value={formData.name}
             onChange={onChange}
             required
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
 
@@ -80,7 +80,7 @@ export default function AddProductForm({
             onChange={onChange}
             required
             rows={3}
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="textarea w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
 
@@ -98,7 +98,7 @@ export default function AddProductForm({
               onChange={onChange}
               required
               min="0"
-              className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+              className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
             />
           </div>
 
@@ -124,7 +124,7 @@ export default function AddProductForm({
                 value={formData.productCategoryId}
                 onChange={onChange}
                 required
-                className="flex-1 px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+                className="select flex-1 border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm appearance-none pr-10"
               >
                 <option value="">Select a category</option>
                 {isLoadingCategories ? (
@@ -144,7 +144,7 @@ export default function AddProductForm({
               <button
                 type="button"
                 onClick={onRefetchCategories}
-                className="px-3 py-2 border border-brand-mist-300 rounded-lg bg-white hover:bg-brand-mist-50 text-brand-mist-500 transition-colors flex items-center justify-center flex-shrink-0"
+                className="px-3 py-2 border border-brand-mist-300 rounded-lg text-brand-mist-500 hover:bg-brand-mist-50 transition-colors flex items-center justify-center flex-shrink-0"
                 title="Refresh categories list"
               >
                 <RefreshCw className="w-4 h-4" />
@@ -167,7 +167,7 @@ export default function AddProductForm({
               onChange={onChange}
               required
               min="0"
-              className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+              className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
             />
           </div>
           <div>
@@ -178,7 +178,7 @@ export default function AddProductForm({
               name="dietType"
               value={formData.dietType}
               onChange={onChange}
-              className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+              className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm appearance-none pr-10"
             >
               <option value="HALAL">Halal</option>
               <option value="VEGAN">Vegan</option>
@@ -198,7 +198,7 @@ export default function AddProductForm({
               name="unit"
               value={formData.unit}
               onChange={onChange}
-              className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+              className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm appearance-none pr-10"
             >
               <option value="PCS">PCS (Pieces)</option>
               <option value="PACK">PACK (Package)</option>
@@ -212,7 +212,7 @@ export default function AddProductForm({
               name="grade"
               value={formData.grade}
               onChange={onChange}
-              className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+              className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm appearance-none pr-10"
             >
               <option value="A">Grade A</option>
               <option value="B">Grade B</option>
@@ -232,7 +232,7 @@ export default function AddProductForm({
             placeholder="e.g. Keep refrigerated below 5°C"
             value={formData.storageInstructions}
             onChange={onChange}
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
 
@@ -248,7 +248,7 @@ export default function AddProductForm({
             multiple
             onChange={onFileChange}
             required
-            className="w-full text-sm text-brand-mist-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-emerald-50 file:text-brand-emerald-700 hover:file:bg-brand-emerald-100"
+            className="file:input file:input-sm file:border-0 file:bg-brand-emerald-50 file:text-brand-emerald-700 hover:file:bg-brand-emerald-100 text-sm text-brand-mist-500 w-full"
           />
         </div>
       </div>

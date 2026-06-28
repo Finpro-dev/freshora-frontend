@@ -18,7 +18,7 @@ export default function ProductDescription({
         <h3 className="text-sm font-bold text-brand-mist-800 uppercase tracking-wider">
           Product Description
         </h3>
-        <p className="text-sm text-brand-mist-600 leading-relaxed bg-brand-mist-25 p-3 rounded-lg border border-dashed border-brand-mist-200">
+        <p className="text-sm text-brand-mist-600 leading-relaxed bg-brand-mist-100/10 p-3 rounded-lg border border-dashed border-brand-mist-200">
           {description || "No description provided for this product."}
         </p>
       </div>

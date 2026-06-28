@@ -174,7 +174,7 @@ export default function ProductPage() {
       />
 
       {products.length === 0 && (
-        <div className="bg-white rounded-xl p-8 text-center border border-brand-mist-200 shadow-sm">
+        <div className="bg-brand-mist-100/10 rounded-xl p-8 text-center border border-brand-mist-200 shadow-sm">
           <p className="text-brand-mist-500">
             No products found matching your criteria.
           </p>

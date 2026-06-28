@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Save, X, PackagePlus } from "lucide-react";
+import { Loader2, PackagePlus } from "lucide-react";
 
 interface FormActionsProps {
   onCancel: () => void;
@@ -11,7 +11,7 @@ interface FormActionsProps {
 export default function FormActions({
   onCancel,
   isPending,
-  submitLabel = "Save Changes",
+  submitLabel = "Add Product",
 }: FormActionsProps) {
   return (
     <div className="flex items-center justify-end gap-3 pt-6 border-t border-brand-mist-200">
