@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, PlusCircle, X } from "lucide-react";
+import { Loader2, PlusCircle } from "lucide-react";
 
 interface FormActionsProps {
   onCancel: () => void;
@@ -18,7 +18,7 @@ export default function FormActions({
       <button
         type="button"
         onClick={onCancel}
-        className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-50 transition"
+        className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-100 transition"
       >
         Cancel
       </button>

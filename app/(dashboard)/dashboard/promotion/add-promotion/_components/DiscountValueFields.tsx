@@ -3,7 +3,7 @@
 import { DiscountValueType, DiscountType } from "../../_hooks/use-discount";
 
 interface FormData {
-  type: DiscountType; // <-- ganti dari string
+  type: DiscountType;
   valueType: DiscountValueType;
   discountAmount: string;
   minTransaction: string;
@@ -32,7 +32,7 @@ export default function DiscountValueFields({
               onChange={(e) =>
                 onChange({ valueType: e.target.value as DiscountValueType })
               }
-              className="w-full bg-white border border-brand-mist-300 rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-brand-emerald-500 text-brand-mist-800"
+              className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs rounded-xl px-3 py-2.5 appearance-none pr-8"
             >
               <option value="PERCENTAGE">Percentage (%)</option>
               <option value="NOMINAL">Nominal (Rp)</option>
@@ -51,7 +51,7 @@ export default function DiscountValueFields({
               }
               value={formData.discountAmount}
               onChange={(e) => onChange({ discountAmount: e.target.value })}
-              className="w-full rounded-xl border border-brand-mist-300 p-3 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+              className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
             />
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function DiscountValueFields({
             placeholder="e.g., 75000"
             value={formData.minTransaction}
             onChange={(e) => onChange({ minTransaction: e.target.value })}
-            className="w-full rounded-xl border border-brand-mist-300 p-3 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
       )}
@@ -84,7 +84,7 @@ export default function DiscountValueFields({
               placeholder="Leave blank for no limit"
               value={formData.maxDiscount}
               onChange={(e) => onChange({ maxDiscount: e.target.value })}
-              className="w-full rounded-xl border border-brand-mist-300 p-3 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+              className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
             />
           </div>
         )}

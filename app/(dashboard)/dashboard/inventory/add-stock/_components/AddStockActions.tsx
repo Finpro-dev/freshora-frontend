@@ -26,7 +26,7 @@ export default function AddStockActions({
             type="number"
             min="1"
             required
-            className="w-full rounded-xl border border-brand-mist-300 p-3 pr-16 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm pr-16"
             placeholder="0"
             value={initialQty || ""}
             onChange={(e) =>
@@ -43,7 +43,7 @@ export default function AddStockActions({
         <button
           type="button"
           onClick={onCancel}
-          className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-50 transition"
+          className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-100 transition"
         >
           Cancel
         </button>

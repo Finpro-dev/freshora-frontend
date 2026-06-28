@@ -16,7 +16,7 @@ export default function StockAdjustmentForm({
   onQtyChange,
 }: StockAdjustmentFormProps) {
   return (
-    <div className="bg-white border border-brand-mist-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+    <div className="bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-sm p-6 md:p-8 space-y-6">
       {/* ADJUSTMENT TYPE TOGGLE */}
       <div className="space-y-3">
         <label className="text-sm font-bold text-brand-mist-800">
@@ -65,7 +65,7 @@ export default function StockAdjustmentForm({
             type="number"
             min="1"
             required
-            className="w-full rounded-xl border border-brand-mist-300 p-3 pr-16 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm pr-16"
             placeholder="Enter units quantity"
             value={qty || ""}
             onChange={(e) =>

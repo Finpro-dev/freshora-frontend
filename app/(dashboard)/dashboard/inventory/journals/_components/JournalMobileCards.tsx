@@ -46,7 +46,7 @@ export default function JournalMobileCards({ items }: JournalMobileCardsProps) {
       {items.map((item) => (
         <div
           key={item.stockJournalId}
-          className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm space-y-3"
+          className="bg-brand-mist-100/10 rounded-xl p-4 border border-brand-mist-200 shadow-sm space-y-3"
         >
           <div className="flex justify-between items-start">
             <div>

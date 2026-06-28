@@ -96,7 +96,7 @@ export default function ProductSelector({
       {/* PRODUCT MODAL */}
       {isProductModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
+          <div className="bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
             <div className="p-4 border-b border-brand-mist-100 flex items-center justify-between bg-brand-mist-50">
               <h2 className="text-md font-bold text-brand-mist-800">
                 Browse Product Catalog
@@ -109,7 +109,7 @@ export default function ProductSelector({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-4 border-b border-brand-mist-100 bg-white grid grid-cols-2 gap-3">
+            <div className="p-4 border-b border-brand-mist-100 bg-brand-mist-100/10 grid grid-cols-2 gap-3">
               <input
                 type="text"
                 placeholder="Search by product name..."
@@ -118,7 +118,7 @@ export default function ProductSelector({
                   setProductSearch(e.target.value);
                   setProductPage(1);
                 }}
-                className="w-full text-xs p-2.5 rounded-xl border border-brand-mist-300 bg-white outline-none"
+                className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs"
               />
               <select
                 value={categoryFilter}
@@ -126,7 +126,7 @@ export default function ProductSelector({
                   setCategoryFilter(e.target.value);
                   setProductPage(1);
                 }}
-                className="w-full text-xs p-2.5 rounded-xl border border-brand-mist-300 bg-white outline-none text-brand-mist-700"
+                className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs appearance-none pr-10"
               >
                 <option value="all">All Categories</option>
                 {categories.map((cat: any) => (
@@ -143,7 +143,7 @@ export default function ProductSelector({
                 </div>
               ) : (
                 <div className="border border-brand-mist-200 rounded-xl overflow-hidden text-xs">
-                  <table className="w-full text-left bg-white">
+                  <table className="w-full text-left bg-brand-mist-100/10">
                     <thead>
                       <tr className="bg-brand-mist-50 border-b border-brand-mist-200 text-brand-mist-500 uppercase font-bold">
                         <th className="p-3">Product Info</th>
@@ -187,7 +187,7 @@ export default function ProductSelector({
                   onClick={() =>
                     setProductPage((prev) => Math.max(prev - 1, 1))
                   }
-                  className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+                  className="p-1.5 rounded-lg border border-brand-mist-300 hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -199,7 +199,7 @@ export default function ProductSelector({
                       Math.min(prev + 1, totalProductPages),
                     )
                   }
-                  className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+                  className="p-1.5 rounded-lg border border-brand-mist-300 hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>

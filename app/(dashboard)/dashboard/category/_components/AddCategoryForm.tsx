@@ -35,7 +35,7 @@ export default function AddCategoryForm() {
   };
 
   return (
-    <div className="md:col-span-1 bg-white rounded-xl border border-brand-mist-200 shadow-sm p-5 h-fit">
+    <div className="md:col-span-1 bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm p-5 h-fit">
       <div className="flex items-center gap-2 mb-4 text-brand-emerald-700">
         <FolderPlus className="w-5 h-5" />
         <h2 className="font-semibold text-brand-mist-800 text-sm">
@@ -55,7 +55,7 @@ export default function AddCategoryForm() {
             onChange={(e) => setNewCategory(e.target.value)}
             required
             disabled={isAdding}
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm disabled:opacity-60"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm disabled:opacity-60"
           />
         </div>
 

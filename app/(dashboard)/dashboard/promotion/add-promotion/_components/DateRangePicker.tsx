@@ -29,7 +29,7 @@ export default function DateRangePicker({
             required
             value={formData.validFrom}
             onChange={(e) => onChange({ validFrom: e.target.value })}
-            className="w-full rounded-xl border border-brand-mist-300 p-3 pl-10 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm pl-10"
           />
         </div>
       </div>
@@ -45,7 +45,7 @@ export default function DateRangePicker({
             required
             value={formData.validUntil}
             onChange={(e) => onChange({ validUntil: e.target.value })}
-            className="w-full rounded-xl border border-brand-mist-300 p-3 pl-10 text-sm focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800 outline-none"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm pl-10"
           />
         </div>
       </div>

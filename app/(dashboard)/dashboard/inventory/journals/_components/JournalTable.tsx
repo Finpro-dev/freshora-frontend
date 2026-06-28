@@ -46,7 +46,7 @@ export default function JournalTable({ items }: JournalTableProps) {
   }
 
   return (
-    <div className="hidden lg:block bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="hidden lg:block bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <table className="w-full">
         <thead className="bg-brand-mist-50">
           <tr>
@@ -80,7 +80,7 @@ export default function JournalTable({ items }: JournalTableProps) {
           {items.map((item) => (
             <tr
               key={item.stockJournalId}
-              className="hover:bg-brand-mist-50 transition-colors text-sm"
+              className="hover:bg-brand-mist-50/40 transition-colors text-sm"
             >
               <td className="px-6 py-4 text-xs text-brand-mist-500 whitespace-nowrap">
                 {new Date(item.createdAt).toLocaleString("en-US", {
