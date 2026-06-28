@@ -157,7 +157,7 @@ export default function PeoplePage() {
       />
 
       {filteredUsers.length === 0 && (
-        <div className="bg-white rounded-xl p-8 text-center border border-brand-mist-200 shadow-sm">
+        <div className="bg-brand-mist-100/10 rounded-xl p-8 text-center border border-brand-mist-200 shadow-sm">
           <p className="text-brand-mist-500">
             No users found matching your criteria.
           </p>
@@ -187,12 +187,12 @@ export default function PeoplePage() {
                 type="button"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="px-3 py-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold text-sm shadow-sm text-brand-mist-700 hover:bg-brand-mist-50 transition-colors"
+                className="px-3 py-1.5 bg-brand-mist-100 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold text-sm text-brand-mist-700 hover:bg-brand-mist-200 transition-colors"
               >
                 ← Prev
               </button>
 
-              <span className="px-3 py-1.5 bg-brand-mist-50 border border-brand-mist-300 rounded-lg text-sm font-bold text-brand-mist-700">
+              <span className="px-3 py-1.5 bg-brand-mist-100 border border-brand-mist-300 rounded-lg text-sm font-bold text-brand-mist-700">
                 Page {currentPage} of {totalPages}
               </span>
 
@@ -200,7 +200,7 @@ export default function PeoplePage() {
                 type="button"
                 disabled={currentPage >= totalPages}
                 onClick={() => setCurrentPage((p) => p + 1)}
-                className="px-3 py-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold text-sm shadow-sm text-brand-mist-700 hover:bg-brand-mist-50 transition-colors"
+                className="px-3 py-1.5 bg-brand-mist-100 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold text-sm text-brand-mist-700 hover:bg-brand-mist-200 transition-colors"
               >
                 Next →
               </button>

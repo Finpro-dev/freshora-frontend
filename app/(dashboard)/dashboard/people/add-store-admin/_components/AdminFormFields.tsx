@@ -35,7 +35,7 @@ export default function AdminFormFields({
             value={formData.firstName}
             onChange={onChange}
             required
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
         <div>
@@ -49,7 +49,7 @@ export default function AdminFormFields({
             value={formData.lastName}
             onChange={onChange}
             required
-            className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
           />
         </div>
       </div>
@@ -66,10 +66,10 @@ export default function AdminFormFields({
           onChange={onChange}
           required
           readOnly={isEdit}
-          className={`w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm ${
+          className={`input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm ${
             isEdit
               ? "bg-brand-mist-50 text-brand-mist-500 cursor-not-allowed"
-              : "bg-white"
+              : ""
           }`}
         />
         {isEdit && (
@@ -95,7 +95,7 @@ export default function AdminFormFields({
           placeholder="e.g. 08123456789"
           value={formData.phone}
           onChange={onChange}
-          className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+          className="input w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm"
         />
       </div>
 
@@ -107,7 +107,7 @@ export default function AdminFormFields({
           name="gender"
           value={formData.gender}
           onChange={onChange}
-          className="w-full px-3 py-2 rounded-lg border border-brand-mist-300 focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm bg-white"
+          className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm rounded-xl px-3 py-2 appearance-none pr-8"
         >
           <option value="MALE">Male</option>
           <option value="FEMALE">Female</option>

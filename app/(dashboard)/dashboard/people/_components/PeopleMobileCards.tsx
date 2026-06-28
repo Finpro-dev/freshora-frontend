@@ -53,7 +53,7 @@ export default function PeopleMobileCards({
         return (
           <div
             key={user.userId}
-            className="bg-white rounded-xl p-4 border border-brand-mist-200 shadow-sm"
+            className="bg-brand-mist-100/10 rounded-xl p-4 border border-brand-mist-200 shadow-sm"
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">

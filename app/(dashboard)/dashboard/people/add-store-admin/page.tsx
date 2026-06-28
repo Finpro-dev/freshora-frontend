@@ -61,7 +61,7 @@ export default function AddStoreAdminPage() {
     <div className="min-h-dvh p-4 md:p-6 lg:p-8 max-w-2xl mx-auto">
       <AddAdminHeader />
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+        <div className="bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
           <div className="bg-brand-mist-50 p-6 border-b border-brand-mist-200 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-brand-emerald-100 flex items-center justify-center text-brand-emerald-700">
               <UserPlus className="w-6 h-6" />
