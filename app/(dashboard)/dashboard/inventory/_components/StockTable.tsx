@@ -19,7 +19,7 @@ interface StockTableProps {
 export default function StockTable({ selectedStore }: StockTableProps) {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [limit] = useState(5); // Sinkron dengan default backend
+  const [limit] = useState(5);
 
   const storeId = selectedStore?.storeId || selectedStore?.id || "";
 
@@ -38,7 +38,7 @@ export default function StockTable({ selectedStore }: StockTableProps) {
   const totalPages = pagination.totalPages || 1;
 
   return (
-    <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-sm overflow-hidden">
       {isLoading ? (
         <div className="h-64 flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-emerald-700" />
@@ -138,7 +138,7 @@ export default function StockTable({ selectedStore }: StockTableProps) {
                   type="button"
                   disabled={page === 1}
                   onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-                  className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                  className="p-1.5 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 text-brand-mist-700 hover:bg-brand-mist-100 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" /> Prev
                 </button>
@@ -146,7 +146,7 @@ export default function StockTable({ selectedStore }: StockTableProps) {
                   type="button"
                   disabled={page >= totalPages}
                   onClick={() => setPage((prev) => prev + 1)}
-                  className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                  className="p-1.5 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 text-brand-mist-700 hover:bg-brand-mist-100 transition-colors"
                 >
                   Next <ChevronRight className="w-4 h-4" />
                 </button>

@@ -53,7 +53,7 @@ export default function DashboardQuickLinks() {
   const router = useRouter();
 
   return (
-    <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
+    <div className="bg-brand-mist-100/10 rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
       <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">
         Quick Access
       </h3>

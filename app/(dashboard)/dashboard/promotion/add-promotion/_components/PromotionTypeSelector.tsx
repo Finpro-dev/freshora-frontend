@@ -19,7 +19,7 @@ export default function PromotionTypeSelector({
       <select
         value={value}
         onChange={onChange}
-        className="w-full bg-white border border-brand-mist-300 rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-brand-emerald-500 text-brand-mist-800"
+        className="select w-full border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs rounded-xl px-3 py-2.5 appearance-none pr-8"
       >
         <option value="NO_REQUIREMENT">No Requirement</option>
         <option value="MIN_TRANSACTION">Minimum Transaction</option>

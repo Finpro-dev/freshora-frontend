@@ -30,7 +30,7 @@ export default function FormActions({
       >
         {isPending ? (
           <>
-            <Loader2 className="w-4 h-4 animate-spin" /> Saving Changes...
+            <Loader2 className="w-4 h-4 animate-spin" /> Saving...
           </>
         ) : (
           <>

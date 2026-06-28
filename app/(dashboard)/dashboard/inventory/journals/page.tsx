@@ -79,7 +79,7 @@ export default function StockJournalLogPage() {
       <JournalMobileCards items={filteredAndSortedJournals} />
 
       {filteredAndSortedJournals.length === 0 && (
-        <div className="bg-white rounded-xl p-12 text-center border border-brand-mist-200 shadow-sm">
+        <div className="bg-brand-mist-100/10 rounded-xl p-12 text-center border border-brand-mist-200 shadow-sm">
           <p className="text-brand-mist-500 font-medium">
             {journals.length === 0
               ? "No operations records exist inside this transaction buffer window."

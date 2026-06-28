@@ -26,35 +26,45 @@ export function StockSummaryTable({ data }: StockSummaryTableProps) {
       accessorKey: "productName",
       header: "Product",
       cell: ({ row }: { row: { getValue: (key: string) => string } }) => (
-        <span className="text-sm font-medium text-brand-mist-800">{row.getValue("productName")}</span>
+        <span className="text-sm font-medium text-brand-mist-800">
+          {row.getValue("productName")}
+        </span>
       ),
     },
     {
       accessorKey: "storeName",
       header: "Store",
       cell: ({ row }: { row: { getValue: (key: string) => string } }) => (
-        <span className="text-sm text-brand-mist-600">{row.getValue("storeName")}</span>
+        <span className="text-sm text-brand-mist-600">
+          {row.getValue("storeName")}
+        </span>
       ),
     },
     {
       accessorKey: "totalAddition",
       header: "Addition",
       cell: ({ row }: { row: { getValue: (key: string) => number } }) => (
-        <span className="text-sm text-right font-medium text-green-600">+ {row.getValue("totalAddition")}</span>
+        <span className="text-sm text-right font-medium text-green-600">
+          + {row.getValue("totalAddition")}
+        </span>
       ),
     },
     {
       accessorKey: "totalDeduction",
       header: "Deduction",
       cell: ({ row }: { row: { getValue: (key: string) => number } }) => (
-        <span className="text-sm text-right font-medium text-red-600">- {row.getValue("totalDeduction")}</span>
+        <span className="text-sm text-right font-medium text-red-600">
+          - {row.getValue("totalDeduction")}
+        </span>
       ),
     },
     {
       accessorKey: "finalStock",
       header: "Final Stock",
       cell: ({ row }: { row: { getValue: (key: string) => number } }) => (
-        <span className="text-sm text-right font-medium">{row.getValue("finalStock")}</span>
+        <span className="text-sm text-right font-medium">
+          {row.getValue("finalStock")}
+        </span>
       ),
     },
   ];
@@ -82,7 +92,7 @@ export function StockSummaryTable({ data }: StockSummaryTableProps) {
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </th>
               ))}
@@ -91,7 +101,10 @@ export function StockSummaryTable({ data }: StockSummaryTableProps) {
         </thead>
         <tbody className="divide-y divide-brand-mist-200">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-brand-mist-50 transition-colors">
+            <tr
+              key={row.id}
+              className="hover:bg-brand-mist-50/40 transition-colors"
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="px-4 py-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

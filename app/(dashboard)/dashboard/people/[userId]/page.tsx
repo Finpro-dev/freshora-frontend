@@ -108,7 +108,7 @@ export default function EditStoreAdmin() {
       <EditAdminHeader />
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Quick View */}
-        <div className="bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+        <div className="bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
           <div className="bg-brand-mist-50 p-6 border-b border-brand-mist-200 flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-brand-emerald-100 flex items-center justify-center overflow-hidden border border-brand-mist-200">
               {storeAdminData.avatar ? (

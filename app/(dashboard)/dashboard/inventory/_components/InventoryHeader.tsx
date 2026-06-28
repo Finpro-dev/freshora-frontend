@@ -20,7 +20,7 @@ export default function InventoryHeader() {
       <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
         <button
           onClick={() => router.push("/dashboard/inventory/journals")}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-brand-mist-300 text-brand-mist-700 hover:bg-brand-mist-50 text-sm font-bold rounded-xl shadow-sm transition-all group flex-1 sm:flex-initial"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-mist-100/10 border border-brand-mist-300 text-brand-mist-700 hover:bg-brand-mist-100/20 text-sm font-bold rounded-xl shadow-sm transition-all group flex-1 sm:flex-initial"
         >
           <History className="w-4 h-4 text-brand-mist-500 group-hover:rotate-[-15deg] transition-transform" />
           Stock Journals

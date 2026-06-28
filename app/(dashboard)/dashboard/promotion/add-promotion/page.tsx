@@ -193,7 +193,7 @@ export default function CreateDiscountPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-brand-mist-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6"
+          className="bg-brand-mist-100/10 border border-brand-mist-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6"
         >
           <PromotionTypeSelector
             value={formData.type}

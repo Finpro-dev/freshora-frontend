@@ -11,7 +11,7 @@ export default function CategoryHeader() {
       <button
         type="button"
         onClick={() => router.push("/dashboard/product")}
-        className="p-2 hover:bg-brand-mist-100 rounded-lg transition-colors text-brand-mist-600 flex items-center justify-center border border-brand-mist-200 bg-white shadow-sm"
+        className="p-2 hover:bg-brand-mist-100 rounded-lg transition-colors text-brand-mist-600"
         title="Back to Products"
       >
         <ArrowLeft className="w-5 h-5" />

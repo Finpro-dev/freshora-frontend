@@ -31,7 +31,7 @@ export default function PromotionTable({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="bg-brand-mist-50/70 border-b border-brand-mist-200 text-xs font-bold text-brand-mist-500 uppercase tracking-wider">

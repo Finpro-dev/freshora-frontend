@@ -23,7 +23,7 @@ export default function ProductInfoPanel({
     <div className="space-y-6">
       {/* Title & Badges */}
       <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-wider text-brand-emerald-700 bg-brand-emerald-50 px-2.5 py-1 rounded-md">
+        <span className="text-xs font-semibold uppercase tracking-wider text-brand-emerald-700 bg-brand-emerald-100 px-2.5 py-1 rounded-md">
           {product.productCategory?.category || "Uncategorized"}
         </span>
         <h2 className="text-3xl font-bold text-brand-mist-800 tracking-tight">
@@ -102,7 +102,7 @@ export default function ProductInfoPanel({
           </svg>
           Specifications
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm bg-white p-4 rounded-xl border border-brand-mist-200 shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm bg-brand-mist-100/10 p-4 rounded-xl border border-brand-mist-200 shadow-sm">
           <div className="flex justify-between py-1.5 border-b border-brand-mist-100">
             <span className="text-brand-mist-500">Weight per Unit</span>
             <span className="font-semibold text-brand-mist-800">

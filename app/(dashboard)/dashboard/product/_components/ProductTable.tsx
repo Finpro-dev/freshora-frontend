@@ -24,7 +24,7 @@ export default function ProductTable({
   if (products.length === 0) return null;
 
   return (
-    <div className="hidden lg:block bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="hidden lg:block bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <table className="w-full">
         <thead className="bg-brand-mist-50">
           <tr>

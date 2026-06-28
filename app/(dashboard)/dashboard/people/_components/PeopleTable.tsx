@@ -39,7 +39,7 @@ export default function PeopleTable({
   if (users.length === 0) return null;
 
   return (
-    <div className="hidden md:block bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="hidden md:block bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <table className="w-full">
         <thead className="bg-brand-mist-50">
           <tr>
@@ -70,7 +70,7 @@ export default function PeopleTable({
             return (
               <tr
                 key={user.userId}
-                className="hover:bg-brand-mist-50 transition-colors"
+                className="hover:bg-brand-mist-50/40 transition-colors"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
@@ -124,9 +124,6 @@ export default function PeopleTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center justify-end gap-2">
-                    <button className="p-1.5 rounded-lg hover:bg-brand-emerald-100 text-brand-emerald-600 transition-colors">
-                      <Shield className="w-4 h-4" />
-                    </button>
                     <button
                       className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
                       onClick={() => onEdit(user.userId)}

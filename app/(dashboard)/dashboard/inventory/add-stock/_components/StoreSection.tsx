@@ -85,7 +85,7 @@ export default function StoreSection({
       {/* MODAL */}
       {isStoreModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
+          <div className="bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
             <div className="p-4 border-b border-brand-mist-100 flex items-center justify-between bg-brand-mist-50">
               <h2 className="text-md font-bold text-brand-mist-800">
                 Browse Target Distribution Stores
@@ -98,7 +98,7 @@ export default function StoreSection({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-4 border-b border-brand-mist-100 bg-white">
+            <div className="p-4 border-b border-brand-mist-100 bg-brand-mist-100/10">
               <div className="relative flex items-center">
                 <Search className="w-4 h-4 text-brand-mist-400 absolute left-3" />
                 <input
@@ -109,7 +109,7 @@ export default function StoreSection({
                     setStoreSearch(e.target.value);
                     setStorePage(1);
                   }}
-                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border border-brand-mist-300 bg-white outline-none"
+                  className="input w-full pl-9 pr-3 py-2.5 border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs"
                 />
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function StoreSection({
                 </div>
               ) : (
                 <div className="border border-brand-mist-200 rounded-xl overflow-hidden text-xs">
-                  <table className="w-full text-left bg-white">
+                  <table className="w-full text-left bg-brand-mist-100/10">
                     <thead>
                       <tr className="bg-brand-mist-50 border-b border-brand-mist-200 text-brand-mist-500 uppercase font-bold">
                         <th className="p-3">Store Unit</th>
@@ -172,7 +172,7 @@ export default function StoreSection({
                     onClick={() =>
                       setStorePage((prev) => Math.max(prev - 1, 1))
                     }
-                    className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+                    className="p-1.5 rounded-lg border border-brand-mist-300 hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -184,7 +184,7 @@ export default function StoreSection({
                         Math.min(prev + 1, totalStorePages),
                       )
                     }
-                    className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+                    className="p-1.5 rounded-lg border border-brand-mist-300 hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

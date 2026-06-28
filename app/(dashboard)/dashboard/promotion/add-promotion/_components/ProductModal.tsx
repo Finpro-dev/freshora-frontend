@@ -40,8 +40,9 @@ export default function ProductModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
-        <div className="p-4 border-b border-brand-mist-100 flex items-center justify-between bg-brand-mist-50">
+      <div className="bg-brand-mist-100 rounded-2xl border border-brand-mist-200 shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
+        {/* Header */}
+        <div className="p-4 border-b border-brand-mist-200 flex items-center justify-between bg-brand-mist-50">
           <h2 className="text-md font-bold text-brand-mist-800">
             {isGlobal ? "Global Product Catalog" : "Store Inventory Stocks"}
           </h2>
@@ -55,7 +56,7 @@ export default function ProductModal({
         </div>
 
         {/* Search & Filter */}
-        <div className="p-4 border-b border-brand-mist-100 bg-white flex gap-3">
+        <div className="p-4 border-b border-brand-mist-200 bg-brand-mist-100 flex gap-3">
           <input
             type="text"
             placeholder={
@@ -65,13 +66,13 @@ export default function ProductModal({
             }
             value={productSearch}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full text-xs p-2.5 rounded-xl border border-brand-mist-300 bg-white outline-none"
+            className="input flex-1 border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs"
           />
           {isGlobal && categories.length > 0 && (
             <select
               value={categoryFilter}
               onChange={(e) => onCategoryChange(e.target.value)}
-              className="text-xs p-2.5 rounded-xl border border-brand-mist-300 bg-white outline-none text-brand-mist-700"
+              className="select w-auto border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs rounded-xl px-3 py-2 appearance-none pr-8"
             >
               <option value="all">All Categories</option>
               {categories.map((cat) => (
@@ -84,16 +85,16 @@ export default function ProductModal({
         </div>
 
         {/* Product List */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 bg-brand-mist-100">
           {isLoading ? (
             <div className="h-48 flex flex-col items-center justify-center">
               <Loader2 className="w-6 h-6 animate-spin text-brand-emerald-700" />
             </div>
           ) : (
             <div className="border border-brand-mist-200 rounded-xl overflow-hidden text-xs">
-              <table className="w-full text-left bg-white">
+              <table className="w-full text-left bg-brand-mist-100">
                 <thead>
-                  <tr className="bg-brand-mist-50 border-b border-brand-mist-200 text-brand-mist-500 uppercase font-bold">
+                  <tr className="bg-brand-mist-50 border-b border-brand-mist-200 text-brand-mist-600 uppercase font-bold">
                     <th className="p-3">Product Name</th>
                     {!isGlobal && (
                       <th className="p-3 text-center">Available Stock</th>
@@ -101,12 +102,12 @@ export default function ProductModal({
                     <th className="p-3 text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-brand-mist-100 text-brand-mist-700">
+                <tbody className="divide-y divide-brand-mist-200 text-brand-mist-700">
                   {productItems.length === 0 ? (
                     <tr>
                       <td
                         colSpan={isGlobal ? 2 : 3}
-                        className="p-8 text-center text-brand-mist-400 font-medium"
+                        className="p-8 text-center text-brand-mist-500 font-medium"
                       >
                         No products found for this scope.
                       </td>
@@ -141,8 +142,8 @@ export default function ProductModal({
         </div>
 
         {/* Pagination */}
-        <div className="p-4 border-t border-brand-mist-100 bg-brand-mist-50 flex items-center justify-between text-xs">
-          <span className="text-brand-mist-500">
+        <div className="p-4 border-t border-brand-mist-200 bg-brand-mist-50 flex items-center justify-between text-xs">
+          <span className="text-brand-mist-600">
             Page <strong>{productPage}</strong> of{" "}
             <strong>{totalProductPages}</strong>
           </span>
@@ -151,7 +152,7 @@ export default function ProductModal({
               type="button"
               disabled={productPage === 1}
               onClick={() => onPageChange(Math.max(1, productPage - 1))}
-              className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+              className="p-1.5 rounded-lg border border-brand-mist-300 bg-brand-mist-100 hover:bg-brand-mist-200 disabled:opacity-50 text-brand-mist-600 transition"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -161,7 +162,7 @@ export default function ProductModal({
               onClick={() =>
                 onPageChange(Math.min(productPage + 1, totalProductPages))
               }
-              className="p-1.5 rounded-lg border border-brand-mist-300 bg-white hover:bg-brand-mist-50 disabled:opacity-50 text-brand-mist-600 transition"
+              className="p-1.5 rounded-lg border border-brand-mist-300 bg-brand-mist-100 hover:bg-brand-mist-200 disabled:opacity-50 text-brand-mist-600 transition"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

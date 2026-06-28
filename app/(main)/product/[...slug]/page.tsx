@@ -22,7 +22,7 @@ import ProductContent from "./_components/ProductContent";
 
 function ProductDetailSkeleton() {
   return (
-    <div className="min-h-dvh w-full bg-white animate-pulse">
+    <div className="min-h-dvh w-full animate-pulse">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="bg-brand-mist-200 rounded-2xl h-96 md:h-[500px]" />
@@ -47,7 +47,7 @@ function ProductDetailSkeleton() {
 
 function ProductNotFound() {
   return (
-    <div className="min-h-dvh w-full bg-white flex items-center justify-center">
+    <div className="min-h-dvh w-full flex items-center justify-center">
       <div className="text-center px-4">
         <p className="text-7xl mb-4">🔍</p>
         <h2 className="text-2xl font-bold text-brand-mist-800 mb-2">
@@ -183,7 +183,7 @@ function ProductDetail() {
     : [defaultProductThumbnail];
 
   return (
-    <div className="min-h-dvh w-full bg-white">
+    <div className="min-h-dvh w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         {/* Back Link */}
         <Link
@@ -228,7 +228,7 @@ function ProductDetail() {
               <span className="px-3 py-1 bg-orange-50 text-orange-800 text-xs font-semibold rounded-full border border-orange-200">
                 Grade {capitalize(grade)}
               </span>
-              <span className="px-3 py-1 bg-brand-mist-50 text-brand-mist-700 text-xs font-medium rounded-full border border-brand-mist-200">
+              <span className="px-3 py-1 bg-brand-mist-100 text-brand-mist-700 text-xs font-medium rounded-full border border-brand-mist-200">
                 {capitalize(unit)}
               </span>
             </div>
@@ -263,25 +263,25 @@ function ProductDetail() {
 
             {/* Specs Grid */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-brand-mist-50 border border-brand-mist-200 rounded-xl px-4 py-3">
+              <div className="bg-brand-mist-100/10 border border-brand-mist-200 rounded-xl px-4 py-3">
                 <p className="text-xs text-brand-mist-500 mb-1">Weight</p>
                 <p className="text-brand-mist-800 font-semibold">
                   {Number(weightPerGram).toLocaleString("id-ID")} gram
                 </p>
               </div>
-              <div className="bg-brand-mist-50 border border-brand-mist-200 rounded-xl px-4 py-3">
+              <div className="bg-brand-mist-100/10 border border-brand-mist-200 rounded-xl px-4 py-3">
                 <p className="text-xs text-brand-mist-500 mb-1">Unit</p>
                 <p className="text-brand-mist-800 font-semibold">
                   {capitalize(unit)}
                 </p>
               </div>
-              <div className="bg-brand-mist-50 border border-brand-mist-200 rounded-xl px-4 py-3">
+              <div className="bg-brand-mist-100/10 border border-brand-mist-200 rounded-xl px-4 py-3">
                 <p className="text-xs text-brand-mist-500 mb-1">Category</p>
                 <p className="text-brand-mist-800 font-semibold">
                   {productCategory?.category || "-"}
                 </p>
               </div>
-              <div className="bg-brand-mist-50 border border-brand-mist-200 rounded-xl px-4 py-3">
+              <div className="bg-brand-mist-100/10 border border-brand-mist-200 rounded-xl px-4 py-3">
                 <p className="text-xs text-brand-mist-500 mb-1">Diet Type</p>
                 <p className="text-brand-mist-800 font-semibold">
                   {capitalize(dietType)}
@@ -292,11 +292,11 @@ function ProductDetail() {
             {/* Stock Status */}
             <div className="mb-6">
               {totalQuantity > 0 ? (
-                <p className="text-emerald-700 text-sm font-medium bg-emerald-50 inline-block px-3 py-1.5 rounded-lg border border-emerald-200">
+                <p className="text-emerald-700 text-sm font-medium bg-emerald-50/60 inline-block px-3 py-1.5 rounded-lg border border-emerald-200">
                   In stock: {totalQuantity} {capitalize(unit)}
                 </p>
               ) : (
-                <p className="text-red-600 text-sm font-medium bg-red-50 inline-block px-3 py-1.5 rounded-lg border border-red-200">
+                <p className="text-red-600 text-sm font-medium bg-red-50/60 inline-block px-3 py-1.5 rounded-lg border border-red-200">
                   Out of stock
                 </p>
               )}

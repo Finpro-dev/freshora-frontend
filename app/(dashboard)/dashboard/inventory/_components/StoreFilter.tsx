@@ -33,8 +33,8 @@ export default function StoreFilter({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <div className="bg-white px-4 py-2.5 rounded-xl border border-brand-mist-300 flex items-center gap-3 shadow-inner min-w-[260px] max-w-xs h-[44px]">
-        <Store className="w-4 h-4 text-brand-mist-400 shrink-0" />
+      <div className="bg-brand-mist-100 px-4 py-2.5 rounded-xl border border-brand-mist-300 flex items-center gap-3 shadow-sm min-w-[260px] max-w-xs h-[44px]">
+        <Store className="w-4 h-4 text-brand-mist-500 shrink-0" />
         <span className="text-sm text-brand-mist-800 font-semibold truncate flex-1">
           {selectedStore ? selectedStore.name : "All Store Locations"}
         </span>
@@ -56,7 +56,7 @@ export default function StoreFilter({
       <button
         type="button"
         onClick={() => setIsStoreModalOpen(true)}
-        className="px-5 py-2.5 bg-brand-mist-800 text-white hover:bg-brand-mist-900 text-sm font-bold rounded-xl shadow-lg transition-all h-[44px]"
+        className="px-5 py-2.5 bg-brand-mist-100 border border-brand-mist-300 text-brand-mist-700 hover:bg-brand-mist-200 text-sm font-bold rounded-xl transition-all h-[44px]"
       >
         Browse & Filter Store
       </button>
@@ -64,14 +64,14 @@ export default function StoreFilter({
       {/* --- MODAL --- */}
       {isStoreModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-xl w-full flex flex-col max-h-[80vh] shadow-2xl border border-brand-mist-200 overflow-hidden">
+          <div className="bg-brand-mist-100 rounded-2xl max-w-xl w-full flex flex-col max-h-[80vh] shadow-2xl border border-brand-mist-200 overflow-hidden">
             {/* Modal Header */}
-            <div className="p-4 border-b border-brand-mist-100 flex justify-between items-center bg-brand-mist-50">
+            <div className="p-4 border-b border-brand-mist-200 flex justify-between items-center bg-brand-mist-50">
               <div>
                 <h2 className="font-bold text-brand-mist-800 text-md flex items-center gap-2">
                   Browse Store
                 </h2>
-                <p className="text-xs text-brand-mist-400">
+                <p className="text-xs text-brand-mist-500">
                   Search and map distributed enterprise retail store units.
                 </p>
               </div>
@@ -85,9 +85,9 @@ export default function StoreFilter({
             </div>
 
             {/* Search Input */}
-            <div className="p-4 border-b border-brand-mist-100 bg-white">
+            <div className="p-4 border-b border-brand-mist-200 bg-brand-mist-100">
               <div className="relative flex items-center">
-                <Search className="w-4 h-4 text-brand-mist-400 absolute left-3" />
+                <Search className="w-4 h-4 text-brand-mist-500 absolute left-3" />
                 <input
                   type="text"
                   placeholder="Filter store location name..."
@@ -96,42 +96,42 @@ export default function StoreFilter({
                     setStoreSearch(e.target.value);
                     setStorePage(1);
                   }}
-                  className="w-full pl-9 pr-4 py-2.5 border border-brand-mist-300 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-emerald-500 bg-white text-brand-mist-800"
+                  className="input w-full pl-9 pr-4 py-2.5 border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-xs"
                 />
               </div>
             </div>
 
             {/* Store List */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-white">
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-brand-mist-100">
               {isStoresLoading ? (
                 <div className="h-48 flex flex-col items-center justify-center gap-2">
-                  <span className="text-xs text-brand-mist-400">
+                  <span className="text-xs text-brand-mist-500">
                     Analyzing organization master ledgers...
                   </span>
                 </div>
               ) : storeList.length === 0 ? (
-                <div className="h-48 flex items-center justify-center text-center text-sm text-brand-mist-400">
+                <div className="h-48 flex items-center justify-center text-center text-sm text-brand-mist-500">
                   No active store footprints registered under criteria.
                 </div>
               ) : (
                 <div className="border border-brand-mist-200 rounded-xl overflow-hidden text-xs shadow-sm">
-                  <table className="w-full border-collapse text-left bg-white">
+                  <table className="w-full border-collapse text-left bg-brand-mist-100">
                     <thead>
-                      <tr className="bg-brand-mist-50 font-bold border-b border-brand-mist-200 text-brand-mist-500 uppercase tracking-wider">
+                      <tr className="bg-brand-mist-50 font-bold border-b border-brand-mist-200 text-brand-mist-600 uppercase tracking-wider">
                         <th className="p-3">Distribution Facility Name</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-brand-mist-100 text-brand-mist-700">
+                    <tbody className="divide-y divide-brand-mist-200 text-brand-mist-700">
                       {storeList.map((store: any) => (
                         <tr
                           key={store.storeId || store.id}
-                          className="hover:bg-brand-mist-50/50 transition-colors"
+                          className="hover:bg-brand-mist-200/50 transition-colors"
                         >
                           <td className="p-3">
-                            <p className="font-semibold text-brand-mist-900">
+                            <p className="font-semibold text-brand-mist-800">
                               {store.name}
                             </p>
-                            <p className="text-[10px] text-brand-mist-400 font-mono mt-0.5">
+                            <p className="text-[10px] text-brand-mist-500 font-mono mt-0.5">
                               UUID: {store.storeId || store.id}
                             </p>
                           </td>
@@ -157,7 +157,7 @@ export default function StoreFilter({
 
             {/* Pagination */}
             {storeResponse && totalStorePages > 1 && (
-              <div className="p-3 border-t border-brand-mist-100 bg-brand-mist-50 flex items-center justify-between text-xs font-semibold text-brand-mist-500">
+              <div className="p-3 border-t border-brand-mist-200 bg-brand-mist-50 flex items-center justify-between text-xs font-semibold text-brand-mist-600">
                 <span>
                   Page {storePage} of {totalStorePages}
                 </span>
@@ -168,7 +168,7 @@ export default function StoreFilter({
                     onClick={() =>
                       setStorePage((prev) => Math.max(1, prev - 1))
                     }
-                    className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                    className="p-1.5 bg-brand-mist-100 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 text-brand-mist-700 hover:bg-brand-mist-200 transition-colors"
                   >
                     <ChevronLeft className="w-4 h-4" /> Prev
                   </button>
@@ -176,7 +176,7 @@ export default function StoreFilter({
                     type="button"
                     disabled={storePage >= totalStorePages}
                     onClick={() => setStorePage((prev) => prev + 1)}
-                    className="p-1.5 bg-white border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 shadow-sm text-brand-mist-700"
+                    className="p-1.5 bg-brand-mist-100 border border-brand-mist-300 rounded-lg disabled:opacity-40 font-bold flex items-center gap-1 text-brand-mist-700 hover:bg-brand-mist-200 transition-colors"
                   >
                     Next <ChevronRight className="w-4 h-4" />
                   </button>

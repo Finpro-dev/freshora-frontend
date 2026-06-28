@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Scale, X } from "lucide-react";
+import { Loader2, PlusCircle } from "lucide-react";
 
 interface StockAdjustmentActionsProps {
   onCancel: () => void;
@@ -16,7 +16,7 @@ export default function StockAdjustmentActions({
       <button
         type="button"
         onClick={onCancel}
-        className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-50 transition"
+        className="px-6 py-2.5 rounded-xl text-sm font-bold text-brand-mist-500 hover:bg-brand-mist-100 transition"
       >
         Cancel
       </button>
@@ -29,8 +29,7 @@ export default function StockAdjustmentActions({
           <Loader2 className="w-4 h-4 animate-spin" />
         ) : (
           <>
-            <Scale className="w-4 h-4" />
-            Apply Adjustment
+            <PlusCircle className="w-4 h-4" /> Initialize Stock
           </>
         )}
       </button>

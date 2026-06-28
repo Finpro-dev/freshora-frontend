@@ -19,7 +19,7 @@ export default function SalesByCategoryChart({
   colors,
 }: SalesByCategoryChartProps) {
   return (
-    <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
+    <div className="bg-brand-mist-100/10 rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
       <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">
         Sales by Category
       </h3>
@@ -43,7 +43,12 @@ export default function SalesByCategoryChart({
               ))}
             </Pie>
             <Tooltip
-              contentStyle={{ backgroundColor: "#fff", borderColor: "#e2e8f0" }}
+              contentStyle={{
+                backgroundColor: "var(--brand-mist-100)",
+                borderColor: "var(--brand-mist-300)",
+                borderRadius: "8px",
+                color: "var(--foreground)",
+              }}
             />
             <Legend />
           </PieChart>

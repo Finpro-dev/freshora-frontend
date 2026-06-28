@@ -39,7 +39,7 @@ export default function ReportFilters({
             <select
               value={selectedStoreId || ""}
               onChange={(e) => onSelectStore(e.target.value || null)}
-              className="appearance-none px-4 py-2.5 pr-10 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+              className="select w-auto border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm rounded-xl px-3 py-2 appearance-none pr-8"
             >
               <option value="">All Stores</option>
               {stores.map((store) => (
@@ -54,7 +54,7 @@ export default function ReportFilters({
         <select
           value={year}
           onChange={(e) => onYearChange(Number(e.target.value))}
-          className="appearance-none px-4 py-2.5 pr-10 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+          className="select w-auto border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm rounded-xl px-3 py-2 appearance-none pr-8"
         >
           <option value={2024}>2024</option>
           <option value={2025}>2025</option>
@@ -66,7 +66,7 @@ export default function ReportFilters({
           <select
             value={month}
             onChange={(e) => onMonthChange(Number(e.target.value))}
-            className="appearance-none px-4 py-2.5 pr-10 rounded-lg border border-brand-mist-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-emerald-500 text-sm"
+            className="select w-auto border border-brand-mist-300 text-brand-mist-700 focus:outline-none focus:border-brand-mist-400 text-sm rounded-xl px-3 py-2 appearance-none pr-8"
           >
             {monthOptions.map((m) => (
               <option key={m.value} value={m.value}>

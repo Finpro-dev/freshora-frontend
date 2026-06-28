@@ -25,28 +25,41 @@ export default function SalesOverviewChart({
   isSingleMonth,
 }: SalesOverviewChartProps) {
   return (
-    <div className="bg-white rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
+    <div className="bg-brand-mist-100/10 rounded-xl p-4 md:p-6 border border-brand-mist-200 shadow-sm">
       <h3 className="text-lg font-semibold text-brand-mist-800 mb-4">
         {isSingleMonth ? "Daily Sales Overview" : "Monthly Sales Overview"}
       </h3>
       <div className="h-80">
         {isLoading ? (
-          <div className="h-full flex items-center justify-center text-brand-mist-400 text-sm">
+          <div className="h-full flex items-center justify-center text-brand-mist-500 text-sm">
             Loading chart data...
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey={xAxisDataKey} stroke="#64748b" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="currentColor"
+                className="text-brand-mist-200"
+              />
+              <XAxis
+                dataKey={xAxisDataKey}
+                stroke="currentColor"
+                className="text-brand-mist-500"
+                fontSize={12}
+              />
               <YAxis
-                stroke="#64748b"
+                stroke="currentColor"
+                className="text-brand-mist-500"
                 tickFormatter={(v) => `Rp${(v / 1000000).toFixed(1)}jt`}
+                fontSize={12}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#fff",
-                  borderColor: "#e2e8f0",
+                  backgroundColor: "var(--brand-mist-100)",
+                  borderColor: "var(--brand-mist-300)",
+                  borderRadius: "8px",
+                  color: "var(--foreground)",
                 }}
               />
               <Legend />

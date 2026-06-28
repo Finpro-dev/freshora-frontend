@@ -91,7 +91,7 @@ export default function CategoryList() {
   };
 
   return (
-    <div className="md:col-span-2 bg-white rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
+    <div className="md:col-span-2 bg-brand-mist-100/10 rounded-xl border border-brand-mist-200 shadow-sm overflow-hidden">
       <div className="bg-brand-mist-50 p-4 border-b border-brand-mist-200 flex items-center gap-2 text-brand-mist-700">
         <Layers className="w-4 h-4" />
         <h2 className="font-semibold text-sm">Active Master Categories</h2>
@@ -129,7 +129,7 @@ export default function CategoryList() {
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
                       disabled={isUpdating}
-                      className="w-full px-3 py-1.5 text-sm rounded-lg border border-brand-emerald-500 focus:outline-none bg-white shadow-inner disabled:opacity-60"
+                      className="input w-full border border-brand-emerald-500 focus:outline-none text-sm disabled:opacity-60"
                       autoFocus
                     />
                   </div>

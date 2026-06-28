@@ -32,14 +32,18 @@ export function SalesByProductTable({ data }: SalesByProductTableProps) {
       accessorKey: "productName",
       header: "Product",
       cell: ({ row }: { row: { getValue: (key: string) => string } }) => (
-        <span className="text-sm font-medium text-brand-mist-800">{row.getValue("productName")}</span>
+        <span className="text-sm font-medium text-brand-mist-800">
+          {row.getValue("productName")}
+        </span>
       ),
     },
     {
       accessorKey: "categoryName",
       header: "Category",
       cell: ({ row }: { row: { getValue: (key: string) => string } }) => (
-        <span className="text-sm text-brand-mist-600">{row.getValue("categoryName")}</span>
+        <span className="text-sm text-brand-mist-600">
+          {row.getValue("categoryName")}
+        </span>
       ),
     },
     {
@@ -55,7 +59,9 @@ export function SalesByProductTable({ data }: SalesByProductTableProps) {
       accessorKey: "quantity",
       header: "Quantity Sold",
       cell: ({ row }: { row: { getValue: (key: string) => number } }) => (
-        <span className="text-sm text-brand-mist-600">{row.getValue("quantity")} units</span>
+        <span className="text-sm text-brand-mist-600">
+          {row.getValue("quantity")} units
+        </span>
       ),
     },
   ];
@@ -83,7 +89,7 @@ export function SalesByProductTable({ data }: SalesByProductTableProps) {
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </th>
               ))}
@@ -92,7 +98,10 @@ export function SalesByProductTable({ data }: SalesByProductTableProps) {
         </thead>
         <tbody className="divide-y divide-brand-mist-200">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-brand-mist-50 transition-colors">
+            <tr
+              key={row.id}
+              className="hover:bg-brand-mist-50/40 transition-colors"
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="px-4 py-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -21,14 +21,14 @@ export default function JournalHeader({ onRefresh }: JournalHeaderProps) {
       <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
         <button
           onClick={onRefresh}
-          className="p-2.5 border border-brand-mist-300 rounded-lg bg-white hover:bg-brand-mist-50 text-brand-mist-500 transition-colors flex items-center justify-center shadow-sm"
+          className="p-2.5 border border-brand-mist-300 rounded-lg bg-brand-mist-100/10 hover:bg-brand-mist-100/20 text-brand-mist-500 transition-colors flex items-center justify-center shadow-sm"
           title="Refresh Data"
         >
           <RefreshCw className="w-4 h-4" />
         </button>
         <Link
           href="/dashboard/inventory"
-          className="group flex items-center gap-2 px-4 py-2 border border-brand-mist-300 text-brand-mist-700 bg-white rounded-lg hover:bg-brand-mist-50 transition-all duration-200 text-sm font-medium shadow-sm"
+          className="group flex items-center gap-2 px-4 py-2 border border-brand-mist-300 text-brand-mist-700 bg-brand-mist-100/10 rounded-lg hover:bg-brand-mist-100/20 transition-all duration-200 text-sm font-medium shadow-sm"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
           <span>Overview Inventory</span>

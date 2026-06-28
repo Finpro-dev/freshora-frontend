@@ -111,7 +111,7 @@ export default function DiscountManagementPage() {
       />
 
       {(!discountResult || discountResult.data.length === 0) && (
-        <div className="h-64 flex items-center justify-center text-center text-sm text-brand-mist-400 bg-white rounded-2xl border border-brand-mist-200 shadow-sm">
+        <div className="h-64 flex items-center justify-center text-center text-sm text-brand-mist-400 bg-brand-mist-100/10 rounded-2xl border border-brand-mist-200 shadow-sm">
           No active markdown architectures recorded matching current parameter
           matrices.
         </div>
